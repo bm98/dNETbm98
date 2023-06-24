@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dNetBm98
 {
@@ -159,6 +155,15 @@ namespace dNetBm98
     public static void Multiply( this ref PointF _p, float factor ) { _p.X *= factor; _p.Y *= factor; }
 
     /// <summary>
+    /// Multiply this Point with a SizeF in X and Y (rounds)
+    /// </summary>
+    public static void Multiply( this ref Point _p, SizeF size ) { _p.X = (int)(_p.X * size.Width); _p.Y = (int)(_p.Y * size.Height); }
+    /// <summary>
+    /// Multiply this PointF with a SizeF in X and Y
+    /// </summary>
+    public static void Multiply( this ref PointF _p, SizeF size ) { _p.X *= size.Width; _p.Y *= size.Height; }
+
+    /// <summary>
     /// Returns the Multiplicative inverse value
     /// </summary>
     public static PointF MInverse( this PointF _p ) => new PointF( 1f / _p.X, 1f / _p.Y );
@@ -166,6 +171,24 @@ namespace dNetBm98
     /// Returns the Multiplicative inverse value
     /// </summary>
     public static PointF MInverse( this Point _p ) => new PointF( 1f / _p.X, 1f / _p.Y );
+
+
+    /// <summary>
+    /// Returns a new Point scaled by the given Size in X and Y (rounds)
+    /// </summary>
+    public static Point Scale( this Point _p, Size size ) { return new Point( (int)(_p.X * size.Width), (int)(_p.Y * size.Height) ); }
+    /// <summary>
+    /// Returns a new Point scaled by the given SizeF in X and Y (rounds)
+    /// </summary>
+    public static Point Scale( this Point _p, SizeF size ) { return new Point( (int)(_p.X * size.Width), (int)(_p.Y * size.Height) ); }
+    /// <summary>
+    /// Returns a new PointF scaled by the given Size in X and Y
+    /// </summary>
+    public static PointF Scale( this PointF _p, Size size ) { return new PointF( _p.X * size.Width, _p.Y * size.Height ); }
+    /// <summary>
+    /// Returns a new PointF scaled by the given SizeF in X and Y
+    /// </summary>
+    public static PointF Scale( this PointF _p, SizeF size ) { return new PointF( _p.X * size.Width, _p.Y * size.Height ); }
   }
 }
 

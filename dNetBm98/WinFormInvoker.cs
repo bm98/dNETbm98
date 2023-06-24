@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace dNetBm98
@@ -13,13 +9,13 @@ namespace dNetBm98
   public class WinFormInvoker
   {
 
-    private ContainerControl _cctrl;
+    private Control _cctrl;
 
     /// <summary>
     /// cTor:
     /// </summary>
-    /// <param name="cctrl">The ContainertControl to handle</param>
-    public WinFormInvoker( ContainerControl cctrl )
+    /// <param name="cctrl">The Control to handle</param>
+    public WinFormInvoker( Control cctrl )
     {
       _cctrl = cctrl;
     }
@@ -32,7 +28,7 @@ namespace dNetBm98
     {
       // sanity 
       if (_cctrl == null) return;
-
+      
       if (_cctrl.InvokeRequired) {
         _cctrl.Invoke( (MethodInvoker)delegate { method( ); } );
       }

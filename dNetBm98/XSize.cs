@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dNetBm98
 {
@@ -66,6 +62,15 @@ namespace dNetBm98
     /// </summary>
     public static Size Multiply( this Size _s, Single f ) { return new Size( (int)(_s.Width * f), (int)(_s.Height * f) ); }
     /// <summary>
+    /// Returns this scaled with the Size
+    /// </summary>
+    public static Size Scale( this Size _s, Size size ) { return new Size( (int)(_s.Width * size.Width), (int)(_s.Height * size.Height) ); }
+    /// <summary>
+    /// Returns this scaled with the SizeF
+    /// </summary>
+    public static Size Scale( this Size _s, SizeF size ) { return new Size( (int)(_s.Width * size.Width), (int)(_s.Height * size.Height) ); }
+
+    /// <summary>
     /// Length of this Size item (Vector Size)
     /// </summary>
     public static float Length( this Size _s ) => (float)Math.Sqrt( _s.Width * _s.Width + _s.Height * _s.Height );
@@ -90,6 +95,15 @@ namespace dNetBm98
     /// Returns this scaled with the given factor
     /// </summary>
     public static SizeF Multiply( this SizeF _s, Single f ) { return new SizeF( _s.Width * f, _s.Height * f ); }
+    /// <summary>
+    /// Returns this scaled with the give Size
+    /// </summary>
+    public static SizeF Scale( this SizeF _s, Size size ) { return new SizeF( _s.Width * size.Width, _s.Height * size.Height ); }
+    /// <summary>
+    /// Returns this scaled with the give SizeF
+    /// </summary>
+    public static SizeF Scale( this SizeF _s, SizeF size ) { return new SizeF( _s.Width * size.Width, _s.Height * size.Height ); }
+
     /// <summary>
     /// Length of this Size item (Vector Size)
     /// </summary>
