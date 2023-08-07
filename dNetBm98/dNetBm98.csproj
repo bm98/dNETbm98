@@ -55,6 +55,7 @@
     <Compile Include="Logging\WinVersion.cs" />
     <Compile Include="OutsideLimitDetector.cs" />
     <Compile Include="Units.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="WinFormInvoker.cs" />
     <Compile Include="WinUser.cs" />
     <Compile Include="XColor.cs" />
