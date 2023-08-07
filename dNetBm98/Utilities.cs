@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace dNetBm98
 {
@@ -26,6 +28,22 @@ namespace dNetBm98
         hashedValue *= 3074457345618258799ul;
       }
       return hashedValue;
+    }
+
+    /// <summary>
+    /// Checks if a Point is visible on any screen
+    /// </summary>
+    /// <param name="point">The Location to check</param>
+    /// <returns>True if visible</returns>
+    public static bool IsOnScreen( Point point )
+    {
+      Screen[] screens = Screen.AllScreens;
+      foreach (Screen screen in screens) {
+        if (screen.WorkingArea.Contains( point )) {
+          return true;
+        }
+      }
+      return false;
     }
 
   }
