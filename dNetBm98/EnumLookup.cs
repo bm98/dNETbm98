@@ -53,7 +53,7 @@ namespace dNetBm98
     /// Get;Set: Element indexed by the Enum
     /// </summary>
     /// <param name="item">An Enum E</param>
-    /// <returns>An element T</returns>
+    /// <returns>An element TRef</returns>
     public T this[E item] {
       get {
         int index = (int)Convert.ChangeType( item, typeof( int ) );
@@ -74,10 +74,10 @@ namespace dNetBm98
     }
 
     /// <summary>
-    /// True if the item is default(T)
+    /// True if the item is default(TRef)
     /// </summary>
     /// <param name="item">An Enum E</param>
-    /// <returns>True if the item is default(T)</returns>
+    /// <returns>True if the item is default(TRef)</returns>
     public bool IsDefault( E item ) => EqualityComparer<T>.Default.Equals( this[item], default );
 
     /// <summary>
@@ -85,18 +85,18 @@ namespace dNetBm98
     /// 
     /// </summary>
     /// <param name="item">An Enum E</param>
-    /// <returns>True if the item is NOT default(T)</returns>
+    /// <returns>True if the item is NOT default(TRef)</returns>
     public bool ContainsKey( E item ) => !IsDefault( item );
 
     /// <summary>
     /// Mock for the Dictionary Add
     /// </summary>
     /// <param name="item">An Enum E</param>
-    /// <param name="element">An item of type T</param>
+    /// <param name="element">An item of type TRef</param>
     public void Add( E item, T element ) => this[item] = element;
 
     /// <summary>
-    /// Clears the Table by assiging default(T) to each element
+    /// Clears the Table by assiging default(TRef) to each element
     /// </summary>
     public void Clear( )
     {
@@ -126,7 +126,7 @@ namespace dNetBm98
     /// Returns the Enumerator for this object
     /// </summary>
     /// <returns>An enumerator</returns>
-    //   public IEnumerator<T> GetEnumerator( )
+    //   public IEnumerator<TRef> GetEnumerator( )
 
 
 

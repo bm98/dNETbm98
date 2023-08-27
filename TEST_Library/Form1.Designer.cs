@@ -31,6 +31,13 @@
       this.RTB = new System.Windows.Forms.RichTextBox();
       this.lblFocus = new System.Windows.Forms.Label();
       this.lblDPI = new System.Windows.Forms.Label();
+      this.txCAS = new System.Windows.Forms.TextBox();
+      this.label1 = new System.Windows.Forms.Label();
+      this.label2 = new System.Windows.Forms.Label();
+      this.txALT = new System.Windows.Forms.TextBox();
+      this.btCalcTAS = new System.Windows.Forms.Button();
+      this.label3 = new System.Windows.Forms.Label();
+      this.txTAS = new System.Windows.Forms.TextBox();
       this.SuspendLayout();
       // 
       // button1
@@ -73,11 +80,79 @@
       this.lblDPI.TabIndex = 3;
       this.lblDPI.Text = "DPI";
       // 
+      // txCAS
+      // 
+      this.txCAS.Location = new System.Drawing.Point(476, 182);
+      this.txCAS.Name = "txCAS";
+      this.txCAS.Size = new System.Drawing.Size(81, 20);
+      this.txCAS.TabIndex = 4;
+      this.txCAS.Text = "50";
+      // 
+      // label1
+      // 
+      this.label1.AutoSize = true;
+      this.label1.Location = new System.Drawing.Point(473, 166);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(28, 13);
+      this.label1.TabIndex = 5;
+      this.label1.Text = "CAS";
+      // 
+      // label2
+      // 
+      this.label2.AutoSize = true;
+      this.label2.Location = new System.Drawing.Point(560, 166);
+      this.label2.Name = "label2";
+      this.label2.Size = new System.Drawing.Size(27, 13);
+      this.label2.TabIndex = 7;
+      this.label2.Text = "ALT";
+      // 
+      // txALT
+      // 
+      this.txALT.Location = new System.Drawing.Point(563, 182);
+      this.txALT.Name = "txALT";
+      this.txALT.Size = new System.Drawing.Size(81, 20);
+      this.txALT.TabIndex = 6;
+      this.txALT.Text = "20000";
+      // 
+      // btCalcTAS
+      // 
+      this.btCalcTAS.Location = new System.Drawing.Point(650, 182);
+      this.btCalcTAS.Name = "btCalcTAS";
+      this.btCalcTAS.Size = new System.Drawing.Size(94, 20);
+      this.btCalcTAS.TabIndex = 8;
+      this.btCalcTAS.Text = "Calc TAS";
+      this.btCalcTAS.UseVisualStyleBackColor = true;
+      this.btCalcTAS.Click += new System.EventHandler(this.btCalcTAS_Click);
+      // 
+      // label3
+      // 
+      this.label3.AutoSize = true;
+      this.label3.Location = new System.Drawing.Point(473, 204);
+      this.label3.Name = "label3";
+      this.label3.Size = new System.Drawing.Size(28, 13);
+      this.label3.TabIndex = 10;
+      this.label3.Text = "TAS";
+      // 
+      // txTAS
+      // 
+      this.txTAS.Location = new System.Drawing.Point(476, 220);
+      this.txTAS.Name = "txTAS";
+      this.txTAS.Size = new System.Drawing.Size(81, 20);
+      this.txTAS.TabIndex = 9;
+      this.txTAS.Text = "..";
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(800, 450);
+      this.Controls.Add(this.label3);
+      this.Controls.Add(this.txTAS);
+      this.Controls.Add(this.btCalcTAS);
+      this.Controls.Add(this.label2);
+      this.Controls.Add(this.txALT);
+      this.Controls.Add(this.label1);
+      this.Controls.Add(this.txCAS);
       this.Controls.Add(this.lblDPI);
       this.Controls.Add(this.lblFocus);
       this.Controls.Add(this.RTB);
@@ -96,6 +171,13 @@
     private System.Windows.Forms.RichTextBox RTB;
     private System.Windows.Forms.Label lblFocus;
     private System.Windows.Forms.Label lblDPI;
+    private System.Windows.Forms.TextBox txCAS;
+    private System.Windows.Forms.Label label1;
+    private System.Windows.Forms.Label label2;
+    private System.Windows.Forms.TextBox txALT;
+    private System.Windows.Forms.Button btCalcTAS;
+    private System.Windows.Forms.Label label3;
+    private System.Windows.Forms.TextBox txTAS;
   }
 }
 

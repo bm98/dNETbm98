@@ -9,7 +9,7 @@ namespace dNetBm98
   public class WinFormInvoker
   {
 
-    private Control _cctrl;
+    private readonly Control _cctrl;
 
     /// <summary>
     /// cTor:

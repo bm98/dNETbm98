@@ -115,7 +115,7 @@ namespace dNetBm98
     #region Push Pop Ops
 
     // use for push pop operations
-    private static ConcurrentStack<IntPtr> _windowStack = new ConcurrentStack<IntPtr>( );
+    private static readonly ConcurrentStack<IntPtr> _windowStack = new ConcurrentStack<IntPtr>( );
 
     /// <summary>
     /// Pushes the currently active Window on the stack and makes the hwnd one active

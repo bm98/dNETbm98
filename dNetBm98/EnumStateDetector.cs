@@ -8,7 +8,7 @@ namespace dNetBm98
 {
   /// <summary>
   /// Detects a value for the given type which is _outside_ given limits
-  /// Must provide a Type which implement IComparable(T)
+  /// Must provide a Type which implement IComparable(TRef)
   /// 
   ///   triggers a predefined action if one is provided
   /// </summary>

@@ -89,5 +89,13 @@ namespace TEST_Library
     {
       lblDPI.Text = $"DPI: {this.DeviceDpi}";
     }
+
+    private void btCalcTAS_Click( object sender, EventArgs e )
+    {
+      double cas = double.Parse( txCAS.Text );
+      double alt = double.Parse( txALT.Text );
+      double tas= Units.TAS_From_CAS(cas, alt);
+      txTAS.Text = $"{tas:##0.00}";
+    }
   }
 }
