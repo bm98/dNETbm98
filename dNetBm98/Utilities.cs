@@ -46,5 +46,22 @@ namespace dNetBm98
       return false;
     }
 
+    // readout letter from value 0..6 (+1 extra for number conversion issues)
+    private static readonly string[] _rsiScale = new string[] { "F", "E", "D", "C", "B", "A", "A", };
+    /// <summary>
+    /// Returns an RSI (radio signale intensity) scale Letter A..F
+    /// where A is strongest to F is least strength
+    /// </summary>
+    /// <param name="dist">The distance from the Sender</param>
+    /// <param name="range">The reange of the Sender</param>
+    /// <returns>An RSI letter A..F</returns>
+    public static string RSI( double dist, double range )
+    {
+      // rsi drops by dist^2; d=0 -> rsi=1; d=r -> rsi=0; d>r -> rsi is negative 
+      var rsivalue = (range - dist) / range; rsivalue *= rsivalue; // ^2 .. cheap
+      var rsiS = _rsiScale[(int)XMath.Clip( XMath.RoundInt( rsivalue * 6.0, 1 ), 0, 6 )]; // round to 0..6 and clip to index the Scale
+      return rsiS;
+    }
+
   }
 }

@@ -12,6 +12,21 @@ namespace dNetBm98
     static readonly double R2D = 180.0 / PI;
     static readonly double D2R = PI / 180.0;
 
+    #region Rounding
+
+    /// <summary>
+    /// Rounds to the quant given
+    /// i.e. RoundInt( 12345, 100) = 12300
+    /// </summary>
+    public static int AsRoundInt( this double x, int quant ) => (quant > 0) ? (int)Math.Round( x / quant ) * quant : int.MinValue;
+    /// <summary>
+    /// Rounds to the quant given
+    /// i.e. RoundInt( 12345, 100) = 12300
+    /// </summary>
+    public static int RoundInt( double x, int quant ) => x.AsRoundInt( quant );
+
+    #endregion
+
     #region Clip (MinMax)
 
     // double

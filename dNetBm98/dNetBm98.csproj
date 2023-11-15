@@ -49,6 +49,13 @@
     <Compile Include="BooleanStateDetector.cs" />
     <Compile Include="EnumLookup.cs" />
     <Compile Include="EnumStateDetector.cs" />
+    <Compile Include="IniLib\IniFileAttribute.cs" />
+    <Compile Include="IniLib\IniItem.cs" />
+    <Compile Include="IniLib\IniSection.cs" />
+    <Compile Include="IniLib\IniSerializer.cs" />
+    <Compile Include="IniLib\ItemCat.cs" />
+    <Compile Include="IniLib\MSiniFile.cs" />
+    <Compile Include="IniLib\SectionCat.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\Logger.cs" />
@@ -67,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.22621.755</Version>
+      <Version>10.0.22621.2428</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

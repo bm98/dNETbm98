@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
@@ -32,6 +33,8 @@ namespace dNetBm98
     /// </summary>
     public const double LSpeed = 299_792_458.0;
 
+
+    //*** Kg_From_Lbs
     /// <summary>
     /// Kilograms from Pounds
     /// </summary>
@@ -41,11 +44,54 @@ namespace dNetBm98
     /// <summary>
     /// Kilograms from Pounds
     /// </summary>
+    /// <param name="lbs">Pound</param>
+    /// <returns>Kilograms</returns>
+    public static double AsKg_From_Lbs( this double lbs ) => Kg_From_Lbs( lbs );
+    /// <summary>
+    /// Kilograms from Pounds
+    /// </summary>
+    /// <param name="lbs">Pound</param>
+    /// <returns>Kilograms</returns>
+    public static float AsKg_From_Lbs( this float lbs ) => (float)Kg_From_Lbs( lbs );
+
+
+    //*** Lbs_From_Kg
+    /// <summary>
+    /// Kilograms from Pounds
+    /// </summary>
     /// <param name="kg">Kilograms</param>
     /// <returns>Pound</returns>
     public static double Lbs_From_Kg( double kg ) => (kg * c_lbsPkg);
+    /// <summary>
+    /// Kilograms from Pounds
+    /// </summary>
+    /// <param name="kg">Kilograms</param>
+    /// <returns>Pound</returns>
+    public static double AsLbs_From_Kg( this double kg ) => Lbs_From_Kg( kg );
+    /// <summary>
+    /// Kilograms from Pounds
+    /// </summary>
+    /// <param name="kg">Kilograms</param>
+    /// <returns>Pound</returns>
+    public static float AsLbs_From_Kg( this float kg ) => (float)Lbs_From_Kg( kg );
+
+    /// <summary>
+    /// Kilograms from Pounds rounding to quantity
+    /// </summary>
+    /// <param name="kg">Kilograms</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Pound</returns>
+    public static int Lbs_From_Kg( double kg, int quant ) => Lbs_From_Kg( kg ).AsRoundInt( quant );
+    /// <summary>
+    /// Kilograms from Pounds rounding to quantity
+    /// </summary>
+    /// <param name="kg">Kilograms</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Pound</returns>
+    public static int AsLbs_From_Kg( this double kg, int quant ) => Lbs_From_Kg( kg, quant );
 
 
+    //*** Nm_From_M
     /// <summary>
     /// Nautical Miles from Meters
     /// </summary>
@@ -53,13 +99,71 @@ namespace dNetBm98
     /// <returns>Nautical Miles</returns>
     public static double Nm_From_M( double meter ) => (meter * c_nmPm);
     /// <summary>
+    /// Nautical Miles from Meters
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <returns>Nautical Miles</returns>
+    public static double AsNm_From_M( this double meter ) => Nm_From_M( meter );
+    /// <summary>
+    /// Nautical Miles from Meters
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <returns>Nautical Miles</returns>
+    public static float AsNm_From_M( this float meter ) => (float)Nm_From_M( meter );
+
+    /// <summary>
+    /// Nautical Miles from Meters rounding to quantity
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Nautical Miles</returns>
+    public static int Nm_From_M( double meter, int quant ) => Nm_From_M( meter ).AsRoundInt( quant );
+    /// <summary>
+    /// Nautical Miles from Meters rounding to quantity
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Nautical Miles</returns>
+    public static int AsNm_From_M( this double meter, int quant ) => Nm_From_M( meter, quant );
+
+
+    //*** M_From_Nm
+    /// <summary>
     /// Meters from Nautical Miles
     /// </summary>
     /// <param name="nm">Nautical Miles</param>
     /// <returns>Meter</returns>
     public static double M_From_Nm( double nm ) => (nm * c_mPNm);
+    /// <summary>
+    /// Meters from Nautical Miles
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <returns>Meter</returns>
+    public static double AsM_From_Nm( this double nm ) => M_From_Nm( nm );
+    /// <summary>
+    /// Meters from Nautical Miles
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <returns>Meter</returns>
+    public static float AsM_From_Nm( this float nm ) => (float)M_From_Nm( nm );
+
+    /// <summary>
+    /// Meters from Nautical Miles rounding to quantity
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter</returns>
+    public static int M_From_Nm( double nm, int quant ) => M_From_Nm( nm ).AsRoundInt( quant );
+    /// <summary>
+    /// Meters from Nautical Miles rounding to quantity
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter</returns>
+    public static int AsM_From_Nm( this double nm, int quant ) => M_From_Nm( nm, quant );
 
 
+    //*** Nm_From_Km
     /// <summary>
     /// Nautical Miles from Kilometers
     /// </summary>
@@ -67,27 +171,143 @@ namespace dNetBm98
     /// <returns>Nautical Miles</returns>
     public static double Nm_From_Km( double km ) => Nm_From_M( km * 1000.0 );
     /// <summary>
+    /// Nautical Miles from Kilometers
+    /// </summary>
+    /// <param name="km">Kilometer</param>
+    /// <returns>Nautical Miles</returns>
+    public static double AsNm_From_Km( this double km ) => Nm_From_Km( km );
+    /// <summary>
+    /// Nautical Miles from Kilometers
+    /// </summary>
+    /// <param name="km">Kilometer</param>
+    /// <returns>Nautical Miles</returns>
+    public static float AsNm_From_Km( this float km ) => (float)Nm_From_Km( km );
+
+    /// <summary>
+    /// Nautical Miles from Kilometers rounding to quantity
+    /// </summary>
+    /// <param name="km">Kilometer</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Nautical Miles</returns>
+    public static int Nm_From_Km( double km, int quant ) => Nm_From_Km( km ).AsRoundInt( quant );
+    /// <summary>
+    /// Nautical Miles from Kilometers rounding to quantity
+    /// </summary>
+    /// <param name="km">Kilometer</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Nautical Miles</returns>
+    public static int AsNm_From_Km( this double km, int quant ) => Nm_From_Km( km, quant );
+
+
+    //*** Km_From_Nm
+    /// <summary>
     /// Kilometers from Nautical Miles
     /// </summary>
     /// <param name="nm">Nautical Miles</param>
     /// <returns>Kilometer</returns>
-    public static double Km_From_Nm( double nm ) => M_From_Nm( nm ) / 1000.0;
-
+    public static double Km_From_Nm( double nm ) => (M_From_Nm( nm ) / 1000.0);
+    /// <summary>
+    /// Kilometers from Nautical Miles
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <returns>Kilometer</returns>
+    public static double AsKm_From_Nm( this double nm ) => Km_From_Nm( nm );
+    /// <summary>
+    /// Kilometers from Nautical Miles
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <returns>Kilometer</returns>
+    public static float AsKm_From_Nm( this float nm ) => (float)Km_From_Nm( nm );
 
     /// <summary>
-    /// Meters from Foot
+    /// Kilometers from Nautical Miles rounding to quantity
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer</returns>
+    public static int Km_From_Nm( double nm, int quant ) => Km_From_Nm( nm ).AsRoundInt( quant );
+    /// <summary>
+    /// Kilometers from Nautical Miles rounding to quantity
+    /// </summary>
+    /// <param name="nm">Nautical Miles</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer</returns>
+    public static int AsKm_From_Nm( this double nm, int quant ) => Km_From_Nm( nm, quant );
+
+
+    //*** M_From_Ft
+    /// <summary>
+    /// Meter from Foot
     /// </summary>
     /// <param name="ft">Foot</param>
     /// <returns>Meter</returns>
     public static double M_From_Ft( double ft ) => (ft * c_mPFt);
+    /// <summary>
+    /// Meter from Foot
+    /// </summary>
+    /// <param name="ft">Foot</param>
+    /// <returns>Meter</returns>
+    public static double AsM_From_Ft( this double ft ) => M_From_Ft( ft );
+    /// <summary>
+    /// Meter from Foot
+    /// </summary>
+    /// <param name="ft">Foot</param>
+    /// <returns>Meter</returns>
+    public static float AsM_From_Ft( this float ft ) => (float)M_From_Ft( ft );
+
+    /// <summary>
+    /// Meter from Foot rounding to the given quant
+    /// </summary>
+    /// <param name="ft">Foot</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter</returns>
+    public static int M_From_Ft( double ft, int quant ) => M_From_Ft( ft ).AsRoundInt( quant );
+    /// <summary>
+    /// Meter from Foot rounding to the given quant
+    /// </summary>
+    /// <param name="ft">Foot</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter</returns>
+    public static int AsM_From_Ft( this int ft, int quant ) => M_From_Ft( ft, quant );
+
+
+    //*** Ft_From_M
     /// <summary>
     /// Foot from Meters
     /// </summary>
     /// <param name="meter">Meter</param>
     /// <returns>Foot</returns>
     public static double Ft_From_M( double meter ) => (meter * c_ftPm);
+    /// <summary>
+    /// Foot from Meters
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <returns>Foot</returns>
+    public static double AsFt_From_M( this double meter ) => Ft_From_M( meter );
+    /// <summary>
+    /// Foot from Meters
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <returns>Foot</returns>
+    public static float AsFt_From_M( this float meter ) => (float)Ft_From_M( meter );
+
+    /// <summary>
+    /// Foot from Meters rounding to the given quantity
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Foot</returns>
+    public static int Ft_From_M( double meter, int quant ) => Ft_From_M( meter ).AsRoundInt( quant );
+    /// <summary>
+    /// Foot from Meters rounding to the given quantity
+    /// </summary>
+    /// <param name="meter">Meter</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Foot</returns>
+    public static int AsFt_From_M( this int meter, int quant ) => Ft_From_M( meter, quant );
 
 
+    //*** Mps_From_Ftpm
     /// <summary>
     /// Returns Meter/Sec from Foot/Min
     /// </summary>
@@ -95,80 +315,405 @@ namespace dNetBm98
     /// <returns>The meter/second value</returns>
     public static double Mps_From_Ftpm( double fpm ) => (fpm * c_mPFt / 60.0);
     /// <summary>
+    /// Returns Meter/Sec from Foot/Min
+    /// </summary>
+    /// <param name="fpm">A foot/minute value</param>
+    /// <returns>The meter/second value</returns>
+    public static double AsMps_From_Ftpm( this double fpm ) => Mps_From_Ftpm( fpm );
+    /// <summary>
+    /// Returns Meter/Sec from Foot/Min
+    /// </summary>
+    /// <param name="fpm">A foot/minute value</param>
+    /// <returns>The meter/second value</returns>
+    public static float AsMps_From_Ftpm( this float fpm ) => (float)Mps_From_Ftpm( fpm );
+
+    /// <summary>
+    /// Returns Meter/Sec from Foot/Min rounding to quantity
+    /// </summary>
+    /// <param name="fpm">A foot/minute value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>The meter/second value</returns>
+    public static int Mps_From_Ftpm( double fpm, int quant ) => Mps_From_Ftpm( fpm ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns Meter/Sec from Foot/Min rounding to quantity
+    /// </summary>
+    /// <param name="fpm">A foot/minute value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>The meter/second value</returns>
+    public static int AsMps_From_Ftpm( this double fpm, int quant ) => Mps_From_Ftpm( fpm, quant );
+
+
+    //*** Ftpm_From_Mps
+    /// <summary>
     /// Returns Foot/Min from Meter/Sec
     /// </summary>
     /// <param name="mps">A foot/minute value</param>
     /// <returns>The foot/Min value</returns>
     public static double Ftpm_From_Mps( double mps ) => (mps * 60.0 * c_ftPm);
+    /// <summary>
+    /// Returns Foot/Min from Meter/Sec
+    /// </summary>
+    /// <param name="mps">A foot/minute value</param>
+    /// <returns>The foot/Min value</returns>
+    public static double AsFtpm_From_Mps( this double mps ) => Ftpm_From_Mps( mps );
+    /// <summary>
+    /// Returns Foot/Min from Meter/Sec
+    /// </summary>
+    /// <param name="mps">A foot/minute value</param>
+    /// <returns>The foot/Min value</returns>
+    public static float AsFtpm_From_Mps( this float mps ) => (float)Ftpm_From_Mps( mps );
+
+    /// <summary>
+    /// Returns Foot/Min from Meter/Sec rounding to quantity
+    /// </summary>
+    /// <param name="mps">A foot/minute value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>The foot/Min value</returns>
+    public static int Ftpm_From_Mps( double mps, int quant ) => Ftpm_From_Mps( mps ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns Foot/Min from Meter/Sec rounding to quantity
+    /// </summary>
+    /// <param name="mps">A foot/minute value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>The foot/Min value</returns>
+    public static int AsFtpm_From_Mps( this double mps, int quant ) => Ftpm_From_Mps( mps, quant );
 
 
+    //*** Mps_From_Kt
     /// <summary>
     /// Returns m/s from kt
     /// </summary>
     /// <param name="kt">Knots value</param>
     /// <returns>Meter / second</returns>
-    public static double Mps_From_Kt( double kt ) => (kt * c_mPNm / 3600f);
+    public static double Mps_From_Kt( double kt ) => (kt * c_mPNm / 3600.0);
+    /// <summary>
+    /// Returns m/s from kt
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <returns>Meter / second</returns>
+    public static double AsMps_From_Kt( this double kt ) => Mps_From_Kt( kt );
+    /// <summary>
+    /// Returns m/s from kt
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <returns>Meter / second</returns>
+    public static float AsMps_From_Kt( this float kt ) => (float)Mps_From_Kt( kt );
+
+    /// <summary>
+    /// Returns m/s from kt rounding to quantity
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter / second</returns>
+    public static int Mps_From_Kt( double kt, int quant ) => Mps_From_Kt( kt ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns m/s from kt rounding to quantity
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter / second</returns>
+    public static int AsMps_From_Kt( this double kt, int quant ) => Mps_From_Kt( kt, quant );
+
+
+    //*** Kt_From_Mps
     /// <summary>
     /// Returns kts from m/sec
     /// </summary>
     /// <param name="mps">Meter per sec value</param>
     /// <returns>Converted Knots value</returns>
-    public static double Kt_From_Mps( double mps ) => (mps * 3600f * c_nmPm);
-
+    public static double Kt_From_Mps( double mps ) => (mps * 3600.0 * c_nmPm);
+    /// <summary>
+    /// Returns kts from m/sec
+    /// </summary>
+    /// <param name="mps">Meter per sec value</param>
+    /// <returns>Converted Knots value</returns>
+    public static double AsKt_From_Mps( this double mps ) => Kt_From_Mps( mps );
+    /// <summary>
+    /// Returns kts from m/sec
+    /// </summary>
+    /// <param name="mps">Meter per sec value</param>
+    /// <returns>Converted Knots value</returns>
+    public static float AsKt_From_Mps( this float mps ) => (float)Kt_From_Mps( mps );
 
     /// <summary>
-    /// Returns kmh from kt
+    /// Returns kts from m/sec rounding to quantity
+    /// </summary>
+    /// <param name="mps">Meter per sec value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Converted Knots value</returns>
+    public static int Kt_From_Mps( double mps, int quant ) => Kt_From_Mps( mps ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns kts from m/sec rounding to quantity
+    /// </summary>
+    /// <param name="mps">Meter per sec value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Converted Knots value</returns>
+    public static int AsKt_From_Mps( this double mps, int quant ) => Kt_From_Mps( mps, quant );
+
+
+    //*** Kmh_From_Kt
+    /// <summary>
+    /// Returns km/h from kt
     /// </summary>
     /// <param name="kt">Knots value</param>
     /// <returns>Kilometer per hour</returns>
     public static double Kmh_From_Kt( double kt ) => (kt * c_kmhPkt);
     /// <summary>
-    /// Returns kt from km/h_m
+    /// Returns km/h from kt
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <returns>Kilometer per hour</returns>
+    public static double AsKmh_From_Kt( this double kt ) => Kmh_From_Kt( kt );
+    /// <summary>
+    /// Returns km/h from kt
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <returns>Kilometer per hour</returns>
+    public static float AsKmh_From_Kt( this float kt ) => (float)Kmh_From_Kt( kt );
+    /// <summary>
+    /// Returns km/h from kt (rounds the conversion to an int)
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <returns>Kilometer per hour</returns>
+    public static int AsKmh_From_Kt( this int kt ) => (int)Math.Round( Kmh_From_Kt( kt ) );
+
+    /// <summary>
+    /// Returns km/h from kt rounding to quantity
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer per hour</returns>
+    public static int Kmh_From_Kt( double kt, int quant ) => Kmh_From_Kt( kt ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns km/h from kt rounding to quantity
+    /// </summary>
+    /// <param name="kt">Knots value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer per hour</returns>
+    public static int AsKmh_From_Kt( this double kt, int quant ) => Kmh_From_Kt( kt, quant );
+
+
+    //*** Kt_From_Kmh
+    /// <summary>
+    /// Returns kt from km/h
     /// </summary>
     /// <param name="kmh">Knots value</param>
     /// <returns>Kilometer per hour</returns>
     public static double Kt_From_Kmh( double kmh ) => (kmh * c_ktPkmh);
+    /// <summary>
+    /// Returns kt from km/h
+    /// </summary>
+    /// <param name="kmh">Knots value</param>
+    /// <returns>Kilometer per hour</returns>
+    public static double AsKt_From_Kmh( this double kmh ) => Kt_From_Kmh( kmh );
+    /// <summary>
+    /// Returns kt from km/h
+    /// </summary>
+    /// <param name="kmh">Knots value</param>
+    /// <returns>Kilometer per hour</returns>
+    public static float AsKt_From_Kmh( this float kmh ) => (float)Kt_From_Kmh( kmh );
 
+    /// <summary>
+    /// Returns kt from km/h rounding to quantity
+    /// </summary>
+    /// <param name="kmh">Knots value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer per hour</returns>
+    public static int Kt_From_Kmh( double kmh, int quant ) => Kt_From_Kmh( kmh ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns kt from km/h rounding to quantity
+    /// </summary>
+    /// <param name="kmh">Knots value</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer per hour</returns>
+    public static int AsKt_From_Kmh( this double kmh, int quant ) => Kt_From_Kmh( kmh, quant );
+
+
+    //*** Fpm_From_Fps
     /// <summary>
     /// Returns feet per Minute from Feet per Second
     /// </summary>
     /// <param name="fps">Feet per Second</param>
     /// <returns>Feet per Minute</returns>
-    public static double Fpm_From_Fps( double fps ) => fps * 60.0;
+    public static double Fpm_From_Fps( double fps ) => (fps * 60.0);
+    /// <summary>
+    /// Returns feet per Minute from Feet per Second
+    /// </summary>
+    /// <param name="fps">Feet per Second</param>
+    /// <returns>Feet per Minute</returns>
+    public static double AsFpm_From_Fps( this double fps ) => Fpm_From_Fps( fps );
+    /// <summary>
+    /// Returns feet per Minute from Feet per Second
+    /// </summary>
+    /// <param name="fps">Feet per Second</param>
+    /// <returns>Feet per Minute</returns>
+    public static float AsFpm_From_Fps( this float fps ) => (float)Fpm_From_Fps( fps );
+
+    /// <summary>
+    /// Returns feet per Minute from Feet per Second rounding to quantity
+    /// </summary>
+    /// <param name="fps">Feet per Second</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Feet per Minute</returns>
+    public static int Fpm_From_Fps( double fps, int quant ) => Fpm_From_Fps( fps ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns feet per Minute from Feet per Second rounding to quantity
+    /// </summary>
+    /// <param name="fps">Feet per Second</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Feet per Minute</returns>
+    public static int AsFpm_From_Fps( this double fps, int quant ) => Fpm_From_Fps( fps, quant );
+
+
+    //*** Fps_From_Fpm
     /// <summary>
     /// Returns feet per Second from Feet per Minute
     /// </summary>
     /// <param name="fpm">Feet per Minute</param>
     /// <returns>Feet per Second</returns>
     public static double Fps_From_Fpm( double fpm ) => fpm / 60.0;
+    /// <summary>
+    /// Returns feet per Second from Feet per Minute
+    /// </summary>
+    /// <param name="fpm">Feet per Minute</param>
+    /// <returns>Feet per Second</returns>
+    public static double AsFps_From_Fpm( this double fpm ) => Fps_From_Fpm( fpm );
+    /// <summary>
+    /// Returns feet per Second from Feet per Minute
+    /// </summary>
+    /// <param name="fpm">Feet per Minute</param>
+    /// <returns>Feet per Second</returns>
+    public static float AsFps_From_Fpm( this float fpm ) => (float)Fps_From_Fpm( fpm );
 
     /// <summary>
-    /// Returns km/h_m from m/sec
+    /// Returns feet per Second from Feet per Minute rounding to quantity
+    /// </summary>
+    /// <param name="fpm">Feet per Minute</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Feet per Second</returns>
+    public static int Fps_From_Fpm( double fpm, int quant ) => Fps_From_Fpm( fpm ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns feet per Second from Feet per Minute rounding to quantity
+    /// </summary>
+    /// <param name="fpm">Feet per Minute</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Feet per Second</returns>
+    public static int AsFps_From_Fpm( this double fpm, int quant ) => Fps_From_Fpm( fpm, quant );
+
+
+    //*** Kmh_From_Mps
+    /// <summary>
+    /// Returns km/h from m/sec
     /// </summary>
     /// <param name="kmh">m/sec</param>
     /// <returns>Kilometer per hour</returns>
     public static double Kmh_From_Mps( double kmh ) => kmh * 3600.0 / 1000.0;
     /// <summary>
-    /// Returns m/sec from km/h_m
+    /// Returns km/h from m/sec
     /// </summary>
-    /// <param name="kmh">km/h_m</param>
+    /// <param name="kmh">m/sec</param>
+    /// <returns>Kilometer per hour</returns>
+    public static double AsKmh_From_Mps( this double kmh ) => Kmh_From_Mps( kmh );
+    /// <summary>
+    /// Returns km/h from m/sec
+    /// </summary>
+    /// <param name="kmh">m/sec</param>
+    /// <returns>Kilometer per hour</returns>
+    public static float AsKmh_From_Mps( this float kmh ) => (float)Kmh_From_Mps( kmh );
+
+    /// <summary>
+    /// Returns km/h from m/sec rounding to quantity
+    /// </summary>
+    /// <param name="kmh">m/sec</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer per hour</returns>
+    public static int Kmh_From_Mps( double kmh, int quant ) => Kmh_From_Mps( kmh ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns km/h from m/sec rounding to quantity
+    /// </summary>
+    /// <param name="kmh">m/sec</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Kilometer per hour</returns>
+    public static int AsKmh_From_Mps( this double kmh, int quant ) => Kmh_From_Mps( kmh, quant );
+
+
+    //*** Mps_From_Kmh
+    /// <summary>
+    /// Returns m/sec from km/h
+    /// </summary>
+    /// <param name="kmh">km/h</param>
     /// <returns>Meter per sec</returns>
     public static double Mps_From_Kmh( double kmh ) => kmh * 1000.0 / 3600.0;
+    /// <summary>
+    /// Returns m/sec from km/h
+    /// </summary>
+    /// <param name="kmh">km/h</param>
+    /// <returns>Meter per sec</returns>
+    public static double AsMps_From_Kmh( this double kmh ) => Mps_From_Kmh( kmh );
+    /// <summary>
+    /// Returns m/sec from km/h
+    /// </summary>
+    /// <param name="kmh">km/h</param>
+    /// <returns>Meter per sec</returns>
+    public static float AsMps_From_Kmh( this float kmh ) => (float)Mps_From_Kmh( kmh );
+
+    /// <summary>
+    /// Returns m/sec from km/h rounding to quantity
+    /// </summary>
+    /// <param name="kmh">km/h</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter per sec</returns>
+    public static int Mps_From_Kmh( double kmh, int quant ) => Mps_From_Kmh( kmh ).AsRoundInt( quant );
+    /// <summary>
+    /// Returns m/sec from km/h rounding to quantity
+    /// </summary>
+    /// <param name="kmh">km/h</param>
+    /// <param name="quant">Min quantity (for rounding)</param>
+    /// <returns>Meter per sec</returns>
+    public static int AsMps_From_Kmh( this double kmh, int quant ) => Mps_From_Kmh( kmh, quant );
 
 
+    //*** DegF_From_DegC
     /// <summary>
     /// Returns DegF from DegC ((DEG°C * 9/5) + 32)
     /// </summary>
     /// <param name="degC">Temp deg C</param>
     /// <returns>Temp in deg F</returns>
-    public static double DegF_From_DegC( double degC ) => ((degC * c_degF) + 32.0f);
+    public static double DegF_From_DegC( double degC ) => (degC * c_degF) + 32.0;
+    /// <summary>
+    /// Returns DegF from DegC ((DEG°C * 9/5) + 32)
+    /// </summary>
+    /// <param name="degC">Temp deg C</param>
+    /// <returns>Temp in deg F</returns>
+    public static double AsDegF_From_DegC( this double degC ) => DegF_From_DegC( degC );
+    /// <summary>
+    /// Returns DegF from DegC ((DEG°C * 9/5) + 32)
+    /// </summary>
+    /// <param name="degC">Temp deg C</param>
+    /// <returns>Temp in deg F</returns>
+    public static float AsDegF_From_DegC( this float degC ) => (float)DegF_From_DegC( degC );
 
+
+    //*** DegC_From_DegF
     /// <summary>
     /// Returns DegC from DegF  ((DegF-32) / (9/5))
     /// </summary>
     /// <param name="degF">Temp deg C</param>
     /// <returns>Temp in deg F</returns>
     public static double DegC_From_DegF( double degF ) => ((degF - 32.0) / c_degF);
+    /// <summary>
+    /// Returns DegC from DegF  ((DegF-32) / (9/5))
+    /// </summary>
+    /// <param name="degF">Temp deg C</param>
+    /// <returns>Temp in deg F</returns>
+    public static double AsDegC_From_DegF( this double degF ) => DegC_From_DegF( degF );
+    /// <summary>
+    /// Returns DegC from DegF  ((DegF-32) / (9/5))
+    /// </summary>
+    /// <param name="degF">Temp deg C</param>
+    /// <returns>Temp in deg F</returns>
+    public static float AsDegC_From_DegF( this float degF ) => (float)DegC_From_DegF( degF );
+
 
     #region TAS, CAS conversions
 
@@ -176,6 +721,7 @@ namespace dNetBm98
      Credit: http://walter.bislins.ch/fsim/index.asp?page=Fluggeschwindigkeiten
 
      */
+    #region Altitude Atm Model 
 
     // Const helper for the conversions below
     // instantiate the class with a specific altitude [ft]
@@ -286,6 +832,8 @@ namespace dNetBm98
 
     }
 
+    #endregion
+
     /// <summary>
     /// Returns CAS (Calibrated Airspeed) from TAS (True Airspeed) in [kt]
     /// </summary>
@@ -385,6 +933,80 @@ namespace dNetBm98
       double tas = a * Math.Sqrt( (1 / k1) * (Math.Pow( qc / p + 1, 1 / k2 ) - 1) );
 
       return Kt_From_Mps( tas );
+    }
+
+    // * Mach Kt conversion
+    // mach tables for conversion
+    private static readonly double[] c_AltAbove_ft = new double[] { 0, 10_000, 15_000, 20_000, 25_000, 30_000, 35_000, 40_000 };
+    private static readonly double[] c_Mach2Kt = new double[] { 660.0, 638.0, 627.0, 614.0, 602.0, 590.0, 577.0, 573.0 };
+
+    /// <summary>
+    /// Convert from Kt to Mach at Altitude [ft] defaults to 30_000 ft
+    /// </summary>
+    /// <param name="tas_kt">TAS Speed [kt]</param>
+    /// <param name="alt_ft">Designated altitude [ft]</param>
+    /// <returns>A Mach Number</returns>
+    public static double Mach_From_TAS_Kt( double tas_kt, double alt_ft = 30_000 )
+    {
+      var tas = Mps_From_Kt( tas_kt );
+      var c = new SConst( alt_ft );
+      return (tas / c.Aof);
+
+      /* Table Lookup Code
+            double ret = kt / 660; // default for below 0 alt
+            for (int i = 0; i < c_AltAbove_ft.Length; i++) {
+              if (alt_ft >= c_AltAbove_ft[i]) {
+                ret = kt / c_Mach2Kt[i]; // recalc while going up - well could be done inversely but then...
+              }
+            }
+            return ret;
+      */
+    }
+
+    /// <summary>
+    /// Convert from Mach to Kt at Altitude [ft] defaults to 30_000 ft
+    /// </summary>
+    /// <param name="mach">A Mach number</param>
+    /// <param name="alt_ft">Designated altitude [ft]</param>
+    /// <returns>TAS Speed [kt]</returns>
+    public static double TAS_Kt_From_Mach( double mach, double alt_ft = 30_000 )
+    {
+      var c = new SConst( alt_ft );
+      return (mach * c.Aof).AsKt_From_Mps( );
+
+      /* Table Lookup Code
+      double ret = mach * 660; // default for below 0 alt
+      for (int i = 0; i < c_AltAbove_ft.Length; i++) {
+        if (alt_ft >= c_AltAbove_ft[i]) {
+          ret = mach * c_Mach2Kt[i]; // recalc while going up - well could be done inversely but then...
+        }
+      }
+      return ret;
+      */
+    }
+
+    /// <summary>
+    /// Convert from Kt to Mach at Altitude [ft] defaults to 30_000 ft
+    /// </summary>
+    /// <param name="cas_kt">CAS Speed [kt]</param>
+    /// <param name="alt_ft">Designated altitude [ft]</param>
+    /// <returns>A Mach Number</returns>
+    public static double Mach_From_CAS_Kt( double cas_kt, double alt_ft = 30_000 )
+    {
+      var tas_kt = TAS_From_CAS( cas_kt, alt_ft );
+      return Mach_From_TAS_Kt( tas_kt, alt_ft );
+    }
+
+    /// <summary>
+    /// Convert from Mach to Kt at Altitude [ft] defaults to 30_000 ft
+    /// </summary>
+    /// <param name="mach">A Mach number</param>
+    /// <param name="alt_ft">Designated altitude [ft]</param>
+    /// <returns>CAS Speed [kt]</returns>
+    public static double CAS_Kt_From_Mach( double mach, double alt_ft = 30_000 )
+    {
+      var tas_kt = TAS_Kt_From_Mach( mach, alt_ft );
+      return CAS_From_TAS( tas_kt, alt_ft );
     }
 
     #endregion
