@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dNetBm98", "dNetBm98\dNetBm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TEST_Library", "TEST_Library\TEST_Library.csproj", "{043AC441-584A-42AB-BE4D-10FBEF23AFD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTEST_dNETbm98", "NTEST_dNETbm98\NTEST_dNETbm98.csproj", "{DECBA9FE-B5DE-4B17-8FA2-D87A60F2E487}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{043AC441-584A-42AB-BE4D-10FBEF23AFD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{043AC441-584A-42AB-BE4D-10FBEF23AFD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{043AC441-584A-42AB-BE4D-10FBEF23AFD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DECBA9FE-B5DE-4B17-8FA2-D87A60F2E487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DECBA9FE-B5DE-4B17-8FA2-D87A60F2E487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DECBA9FE-B5DE-4B17-8FA2-D87A60F2E487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DECBA9FE-B5DE-4B17-8FA2-D87A60F2E487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

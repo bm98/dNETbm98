@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace dNetBm98
 {
   /// <summary>
   /// A number of Unit Conversions and Constants
+  ///  Syntax of the function is:
+  ///    "newValue = NEWUNIT_From_OLDUNIT(oldValue)"
+  ///   if extending value types
+  ///    "newValue = AsNEWUNIT_From_OLDUNIT(this)"
   /// </summary>
   public static class Units
   {
@@ -19,10 +24,15 @@ namespace dNetBm98
     private const double c_mPFt = 0.3048;
     private const double c_ftPm = 1.0 / c_mPFt;
 
+    private const double c_m2PFt2 = c_mPFt * c_mPFt; // 0.09290304
+    private const double c_ft2Pm2 = 1.0 / c_m2PFt2;
+
     private const double c_lbsPkg = 2.204622621848776;
     private const double c_kgPlbs = 1.0 / c_lbsPkg;
 
     private const double c_degF = 9f / 5f;
+
+    private const double K0deg = 273.15; // K at 0°C 
 
     /// <summary>
     /// Gravitational acceleration [m/sec2]
@@ -270,7 +280,6 @@ namespace dNetBm98
     /// <returns>Meter</returns>
     public static int AsM_From_Ft( this int ft, int quant ) => M_From_Ft( ft, quant );
 
-
     //*** Ft_From_M
     /// <summary>
     /// Foot from Meters
@@ -305,6 +314,49 @@ namespace dNetBm98
     /// <param name="quant">Min quantity (for rounding)</param>
     /// <returns>Foot</returns>
     public static int AsFt_From_M( this int meter, int quant ) => Ft_From_M( meter, quant );
+
+
+    //*** M2_From_Ft2
+    /// <summary>
+    /// Meter^2 from Foot^2
+    /// </summary>
+    /// <param name="ft2">Foot ^2</param>
+    /// <returns>Meter</returns>
+    public static double M2_From_Ft2( double ft2 ) => (ft2 * c_m2PFt2);
+    /// <summary>
+    /// Meter^2 from Foot^2
+    /// </summary>
+    /// <param name="ft2">Foot ^2</param>
+    /// <returns>Meter</returns>
+    public static double AsM2_From_Ft2( this double ft2 ) => M2_From_Ft2( ft2 );
+    /// <summary>
+    /// Meter^2 from Foot^2
+    /// </summary>
+    /// <param name="ft2">Foot ^2</param>
+    /// <returns>Meter</returns>
+    public static float AsM2_From_Ft2( this float ft2 ) => (float)M2_From_Ft2( ft2 );
+
+
+    //*** Ft2_From_M2
+    /// <summary>
+    /// Foot^2 from Meters^2
+    /// </summary>
+    /// <param name="meter2">Meter ^2</param>
+    /// <returns>Foot ^2</returns>
+    public static double Ft2_From_M2( double meter2 ) => (meter2 * c_ft2Pm2);
+    /// <summary>
+    /// Foot^2 from Meters^2
+    /// </summary>
+    /// <param name="meter2">Meter ^2</param>
+    /// <returns>Foot ^2</returns>
+    public static double AsFt2_From_M2( this double meter2 ) => Ft2_From_M2( meter2 );
+    /// <summary>
+    /// Foot^2 from Meters^2
+    /// </summary>
+    /// <param name="meter2">Meter ^2</param>
+    /// <returns>Foot ^2</returns>
+    public static float AsFt2_From_M2( this float meter2 ) => (float)Ft2_From_M2( meter2 );
+
 
 
     //*** Mps_From_Ftpm
@@ -673,6 +725,26 @@ namespace dNetBm98
     public static int AsMps_From_Kmh( this double kmh, int quant ) => Mps_From_Kmh( kmh, quant );
 
 
+    //*** DegC_From_K
+    /// <summary>
+    /// Returns DegC from K
+    /// </summary>
+    /// <param name="degK">Temp K</param>
+    /// <returns>Temp in deg C</returns>
+    public static double DegC_From_K( double degK ) => degK - K0deg;
+    /// <summary>
+    /// Returns DegC from K
+    /// </summary>
+    /// <param name="degK">Temp K</param>
+    /// <returns>Temp in deg C</returns>
+    public static double AsDegC_From_K( this double degK ) => DegC_From_K( degK );
+    /// <summary>
+    /// Returns DegC from K
+    /// </summary>
+    /// <param name="degK">Temp K</param>
+    /// <returns>Temp in deg C</returns>
+    public static float AsDegC_From_K( this float degK ) => (float)DegC_From_K( degK );
+
     //*** DegF_From_DegC
     /// <summary>
     /// Returns DegF from DegC ((DEG°C * 9/5) + 32)
@@ -714,6 +786,29 @@ namespace dNetBm98
     /// <returns>Temp in deg F</returns>
     public static float AsDegC_From_DegF( this float degF ) => (float)DegC_From_DegF( degF );
 
+    // ** Pressure Altitude
+    /// <summary>
+    /// Pressure Altitude Formula from NOAA
+    /// https://en.wikipedia.org/wiki/Pressure_altitude
+    /// </summary>
+    /// <param name="pressure_pa">Isobare pressure Pa</param>
+    /// <returns>An altitude in m</returns>
+    public static int PressureAltitude_m( double pressure_pa )
+    {
+      return (int)M_From_Ft( PressureAltitude_ft( pressure_pa ) );
+    }
+
+    /// <summary>
+    /// Pressure Altitude Formula from NOAA
+    /// https://en.wikipedia.org/wiki/Pressure_altitude
+    /// </summary>
+    /// <param name="pressure_pa">Isobare pressure Pa</param>
+    /// <returns>An altitude in ft</returns>
+    public static int PressureAltitude_ft( double pressure_pa )
+    {
+      // Resulting Alt in ft, pressure in mBar; hence div 100.0
+      return (int)(145366.45 * (1.0 - Math.Pow( (pressure_pa / 100.0) / 1013.25, 0.190284 )));
+    }
 
     #region TAS, CAS conversions
 

@@ -1,9 +1,12 @@
 ﻿using dNetBm98;
+using dNetBm98.IniLib;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,8 +97,33 @@ namespace TEST_Library
     {
       double cas = double.Parse( txCAS.Text );
       double alt = double.Parse( txALT.Text );
-      double tas= Units.TAS_From_CAS(cas, alt);
+      double tas = Units.TAS_From_CAS( cas, alt );
       txTAS.Text = $"{tas:##0.00}";
+    }
+
+    private void btReadEnc_Click( object sender, EventArgs e )
+    {
+      string tFile = @".\Test-iso_8859_1.ini";
+
+      var MSINI = new MSiniFile( );
+      MSINI.Load( tFile, MSiniFile.IniEncoding.iso_8859_1 );
+      RTB.Text = MSINI.ToString( );
+    }
+
+    private void btWriteEnc_Click( object sender, EventArgs e )
+    {
+      string tFile = @".\Test-iso_8859_1.ini";
+      var MSINI = new MSiniFile( );
+      MSINI.Load( tFile, MSiniFile.IniEncoding.iso_8859_1 );
+
+      tFile = @".\Test-iso_8859_1.ini.written";
+      if (File.Exists( tFile )) { File.Delete( tFile ); }
+
+      MSINI.SetFilename( tFile );
+      MSINI.WriteFile( );
+
+      RTB.Text = $"{tFile} written";
+
     }
   }
 }

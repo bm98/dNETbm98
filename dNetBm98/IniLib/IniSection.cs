@@ -143,7 +143,8 @@ namespace dNetBm98.IniLib
     /// Write this section to the stream
     /// </summary>
     /// <param name="streamWriter">A writable stream</param>
-    public void Write( StreamWriter streamWriter )
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void Write( StreamWriter streamWriter, bool unQuote )
     {
       streamWriter.WriteLine( ); // prepend with an empty line
       // Write the Section Name only if not MAIN
@@ -151,7 +152,23 @@ namespace dNetBm98.IniLib
         streamWriter.WriteLine( $"[{Name}]" );
 
       // dump all items
-      _items.WriteAll( streamWriter );
+      _items.WriteAll( streamWriter, unQuote );
+    }
+
+    /// <summary>
+    /// Write this section to the stream
+    /// </summary>
+    /// <param name="stringBuilder">A prepared StringBuilder</param>
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void Write( StringBuilder stringBuilder, bool unQuote)
+    {
+      stringBuilder.AppendLine(); // prepend with an empty line
+      // Write the Section Name only if not MAIN
+      if ( Name != MainSection )
+        stringBuilder.AppendLine( $"[{Name}]" );
+
+      // dump all items
+      _items.WriteAll( stringBuilder, unQuote );
     }
 
   }

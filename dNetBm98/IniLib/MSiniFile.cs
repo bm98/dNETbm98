@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+using Windows.Media.AppBroadcasting;
+
 namespace dNetBm98.IniLib
 {
   /// <summary>
@@ -18,6 +20,17 @@ namespace dNetBm98.IniLib
   /// lines may apear before, or within a section
   /// The SECTION name for the lines before any section starts use an empty section "" qualifier
   /// 
+  /// Use:
+  ///   string = ini.ItemValue("section", "item")
+  ///   double = ini.ItemNumber("section", "item")
+  ///   bool SetValue( "section", "item", "value" )
+  ///   bool SetQuotedValue( "section", "item", "value" )
+  ///  
+  ///   // raw access to sections and items
+  ///   List[string] = GetSection("section")
+  ///   IEnumerable[Section] = ini.SectionCatalog.Sections
+  ///   IniItem = section.Items.GetItem("item")
+  ///   
   /// </summary>
   public class MSiniFile
   {
@@ -46,11 +59,11 @@ namespace dNetBm98.IniLib
     private bool _unquote = false;
 
 
-    // Read the Inifile from the stream
-    private void LoadStreamLow( Stream stream )
+    // Read the Inifile from the stream with given encoding
+    private void LoadStreamLow( Stream stream, Encoding encoding )
     {
       _valid = false;
-      using (var reader = new StreamReader( stream )) {
+      using (var reader = new StreamReader( stream, encoding, true )) {
         // this shall never throw - we use IsValid to evaluate the outcome
         try {
           IniSection.GetMainSection( _sections, reader );
@@ -68,26 +81,6 @@ namespace dNetBm98.IniLib
         }
       }
     }
-
-    /// <summary>
-    /// Get the quoted part of this string
-    /// </summary>
-    /// <param name="inp">Input string where a quoted part must be extracted</param>
-    /// <param name="quoteChar">The quote character, defaults to " (double quote)</param>
-    /// <returns>The unqoted string</returns>
-    private static string FromQuoted( string inp, char quoteChar = '"' )
-    {
-      if (inp.TrimStart( ).StartsWith( quoteChar.ToString( ) )) {
-        var sx = inp.ToArray( )
-          .SkipWhile( c => c != quoteChar )
-          .Skip( 1 )
-          .TakeWhile( c => c != quoteChar );
-        var v = new string( sx.ToArray( ) );
-        return v;
-      }
-      return inp;
-    }
-
 
     // Set the File Encoding to the ISO-8859-1 codepage (Western European ISO)
     //  this is preferred for MSFS (it seems they are not on UTF8 for at least the FLT files)
@@ -208,7 +201,8 @@ namespace dNetBm98.IniLib
 
 
     /// <summary>
-    /// Load from a stream (encoding is UTF8)
+    /// Load from a stream using set encoding
+    ///   (defaults to UTF8 if not set otherwise)
     /// </summary>
     /// <param name="stream">An open stream</param>
     public void Load( Stream stream )
@@ -219,11 +213,12 @@ namespace dNetBm98.IniLib
       if (stream.Length < 1) return; // ERROR too short...
 
       _fileName = "$$$STREAM$$$";
-      LoadStreamLow( stream ); // get all
+      LoadStreamLow( stream, _encoding ); // get all
     }
 
     /// <summary>
-    /// Load a new file
+    /// Load a new file with optional encoding
+    /// Sets the Encoding for the MSINI File
     /// 
     ///  Note: default encoding is iso-8859-1 (MSFS FLT encoding) 
     /// </summary>
@@ -236,34 +231,32 @@ namespace dNetBm98.IniLib
       _fileName = "";
       if (!File.Exists( fileName )) return; // ERROR file does not exist..
 
-      _fileName = fileName;
+      SetFilename( fileName );
       SetEncoding( encoding );
-      byte[] byt;
+
+      // never fail
       try {
-        using (var ts = File.Open( _fileName, FileMode.Open, FileAccess.Read, FileShare.Read )) {
-          // convert the file content
-          byt = new byte[ts.Length];
-          ts.Read( byt, 0, byt.Length );
-          var iString = Encoding.UTF8.GetString( Encoding.Convert( _encoding, Encoding.UTF8, byt ) );
-          using (var ms = new MemoryStream( Encoding.UTF8.GetBytes( iString ) )) {
-            LoadStreamLow( ms );
-          }
+        string buf = "";
+        using (var sr = new StreamReader( _fileName, _encoding, true )) {
+          buf = sr.ReadToEnd( );
         }
+        using (var stream = XString.StreamFromString( buf, Encoding.Unicode )) {
+          LoadStreamLow( stream, Encoding.Unicode );
+        }
+
+        return;
       }
       catch { }
-      finally {
-        byt = new byte[0]; // help the GC
-      }
     }
 
     /// <summary>
-    /// Write the INI file to the set filename
+    /// Write the INI file to the set filename with the set encoding
     ///  Note: default encoding is UTF8 
     ///    if you need another encoding:
     ///    - Set another encoding
     ///    - Write()
     /// </summary>
-    public void Write( )
+    public void WriteFile( )
     {
       if (!string.IsNullOrEmpty( Path.GetDirectoryName( _fileName ) ))
         if (!Directory.Exists( Path.GetDirectoryName( _fileName ) )) return; // ERROR no dir for this file
@@ -271,13 +264,50 @@ namespace dNetBm98.IniLib
       // this shall never throw
       try {
         using (var sw = new StreamWriter( _fileName, false, _encoding )) {
-          _sections.WriteAll( sw );
+          _sections.WriteAll( sw, _unquote );
         }
-
       }
       catch {
         ; // DEBUG
       }
+    }
+
+    /// <summary>
+    /// Write the INI file to the stream with the set encoding
+    ///  Note: default encoding is UTF8 
+    ///    if you need another encoding:
+    ///    - Set another encoding
+    ///    - Write()
+    /// </summary>
+    /// <param name="stream">The stream to output to.</param>
+    public void WriteStream( Stream stream )
+    {
+      // sanity
+      if (stream == null) throw new ArgumentNullException( "stream" );
+
+      // this shall never throw
+      try {
+        // don't close the stream after writing
+        using (var sw = new StreamWriter( stream, _encoding, 1024, true )) {
+          _sections.WriteAll( sw, _unquote );
+          sw.Flush( );
+        }
+      }
+      catch {
+        ; // DEBUG
+      }
+    }
+
+    /// <summary>
+    /// Set the Value as double quoted String for an item
+    ///   will create section and item if needed, else it overwrites
+    /// </summary>
+    /// <param name="sectionName">A section name (can be empty for the main section)</param>
+    /// <param name="itemName">The item name (cannot be empty)</param>
+    /// <param name="value">A value to set (can be empty)</param>
+    public bool SetQuotedValue( string sectionName, string itemName, string value )
+    {
+      return SetValue( sectionName, itemName, $"\"{value}\"" );
     }
 
     /// <summary>
@@ -330,8 +360,9 @@ namespace dNetBm98.IniLib
     /// </summary>
     /// <param name="sectionName">The section name</param>
     /// <param name="item">The item sought</param>
+    /// <param name="unquote">On the fly unqoting</param>
     /// <returns>The item value (can be empty string)</returns>
-    public string ItemValue( string sectionName, string item )
+    public string ItemValue( string sectionName, string item, bool unquote = false )
     {
       var section = _sections.GetSection( sectionName );
       if (section == null) return ""; // empty one
@@ -339,7 +370,7 @@ namespace dNetBm98.IniLib
       var it = section.Items.GetItem( item );
       if (it == null) return ""; // empty one
 
-      return _unquote ? FromQuoted( it.Value ) : it.Value;
+      return (unquote || _unquote) ? Utilities.FromQuoted( it.Value ) : it.Value;
     }
 
     /// <summary>
@@ -349,15 +380,26 @@ namespace dNetBm98.IniLib
     /// </summary>
     /// <param name="sectionName">The section name</param>
     /// <param name="item">The item sought</param>
-    /// <returns>A number or float.MinValue if not found or not a number</returns>
-    public float ItemNumber( string sectionName, string item )
+    /// <returns>A number or double.MinValue if not found or not a number</returns>
+    public double ItemNumber( string sectionName, string item )
     {
-      string value = ItemValue( sectionName, item );
-      if (string.IsNullOrWhiteSpace( value )) return float.MinValue;
-      if (float.TryParse( value, out float num )) {
+      string value = ItemValue( sectionName, item, true ); // get unquoted
+      if (string.IsNullOrWhiteSpace( value )) return double.MinValue;
+      if (double.TryParse( value, out double num )) {
         return num;
       }
-      return float.MinValue;
+      return double.MinValue;
+    }
+
+    /// <summary>
+    /// Returns the INI File content as a string
+    /// </summary>
+    /// <returns>A string</returns>
+    public override string ToString( )
+    {
+      var sb = new StringBuilder( );
+      _sections.WriteAll( sb, _unquote );
+      return sb.ToString( );
     }
 
   }

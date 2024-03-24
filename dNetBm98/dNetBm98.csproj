@@ -47,6 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BooleanStateDetector.cs" />
+    <Compile Include="ColorModel\CMYK.cs" />
+    <Compile Include="ColorModel\HSB.cs" />
+    <Compile Include="ColorModel\HSL.cs" />
+    <Compile Include="CsvLib\CsvContainer.cs" />
+    <Compile Include="CsvLib\CsvFile.cs" />
+    <Compile Include="CsvLib\CsvLine.cs" />
+    <Compile Include="CsvLib\CsvProcessingEventArgs.cs" />
+    <Compile Include="CsvLib\CsvReader.cs" />
     <Compile Include="EnumLookup.cs" />
     <Compile Include="EnumStateDetector.cs" />
     <Compile Include="IniLib\IniFileAttribute.cs" />
@@ -60,6 +68,9 @@
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\WinVersion.cs" />
+    <Compile Include="Metrics\Average.cs" />
+    <Compile Include="Metrics\Histogram.cs" />
+    <Compile Include="Metrics\RollingAverage.cs" />
     <Compile Include="OutsideLimitDetector.cs" />
     <Compile Include="Units.cs" />
     <Compile Include="Utilities.cs" />
@@ -71,6 +82,7 @@
     <Compile Include="XPoint.cs" />
     <Compile Include="XRect.cs" />
     <Compile Include="XSize.cs" />
+    <Compile Include="XString.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">

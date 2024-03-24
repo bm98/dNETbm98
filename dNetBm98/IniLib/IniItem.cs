@@ -21,7 +21,7 @@ namespace dNetBm98.IniLib
 
     // Regex to match:  item  = content  (an item must start with a literal, content can by anyting)
     //  succeeds only when an Item = is found
-    private readonly static Regex c_Item = new Regex(@"^(?<item>[^=]+)(\s*=)(?<cont>.*)?", RegexOptions.Compiled);
+    private readonly static Regex c_Item = new Regex( @"^(?<item>[^=]+)(\s*=)(?<cont>.*)?", RegexOptions.Compiled );
 
     /// <summary>
     /// Returns the content of an item (item=content)
@@ -35,11 +35,11 @@ namespace dNetBm98.IniLib
     {
       itemName = ""; itemContent = ""; // defaults
       line = line.TrimStart( );
-      if ( string.IsNullOrEmpty( line ) ) return false; // shortcut
+      if (string.IsNullOrEmpty( line )) return false; // shortcut
 
       Match match = c_Item.Match( line );
-      if ( match.Success ) {
-        itemName = match.Groups["item"].Value.TrimEnd();
+      if (match.Success) {
+        itemName = match.Groups["item"].Value.TrimEnd( );
         itemContent = match.Groups["cont"].Success ? match.Groups["cont"].Value : "";
         return true;
       }
@@ -48,11 +48,11 @@ namespace dNetBm98.IniLib
 
 
     // Derive if the string starts with a " and has a terminating " somewhere 
-    private readonly static Regex c_dQuoted = new Regex(@"^("")(?<cont>.*)("")(?<rest>.*)?", RegexOptions.Compiled);
+    private readonly static Regex c_dQuoted = new Regex( @"^("")(?<cont>.*)("")(?<rest>.*)?", RegexOptions.Compiled );
 
     // Catches the first ; and reports it as comment the leading part is cont
     // cont OR comment may be empty (comment is undef if there is no semi)
-    private readonly static Regex c_semi    = new Regex(@"^(?<cont>[^;]*)(?<comment>;.*)?", RegexOptions.Compiled);
+    private readonly static Regex c_semi = new Regex( @"^(?<cont>[^;]*)(?<comment>;.*)?", RegexOptions.Compiled );
 
     private static bool SplitContent( string itemContent, out string value, out string comment )
     {
@@ -64,19 +64,19 @@ namespace dNetBm98.IniLib
         |"quoted ; content" ; comment
        */
       value = ""; comment = ""; // defaults
-      if ( string.IsNullOrEmpty( itemContent ) ) return true; // shortcut
+      if (string.IsNullOrEmpty( itemContent )) return true; // shortcut
 
-      Match match = c_dQuoted.Match(itemContent); // starting " needed
-      if ( match.Success ) {
+      Match match = c_dQuoted.Match( itemContent ); // starting " needed
+      if (match.Success) {
         value = "\"" + match.Groups["cont"].Value + "\""; // can be empty between quotes
         var rest = match.Groups["rest"].Success ? match.Groups["rest"].Value : ""; // can be empty
-        if ( !string.IsNullOrEmpty( rest ) ) {
+        if (!string.IsNullOrEmpty( rest )) {
           match = c_semi.Match( rest );
-          if ( match.Success ) {
+          if (match.Success) {
             comment = match.Groups["comment"].Success ? match.Groups["cont"].Value : ""; // can be empty
             // remove the starting ;
-            if ( comment.Length > 1 ) comment = comment.Remove( 0, 1 );
-            else if ( comment.Length > 0 ) comment = "";
+            if (comment.Length > 1) comment = comment.Remove( 0, 1 );
+            else if (comment.Length > 0) comment = "";
           }
         }
         return true;
@@ -84,7 +84,7 @@ namespace dNetBm98.IniLib
 
       // not quoted
       match = c_semi.Match( itemContent ); // may or may not have a semi
-      if ( match.Success ) {
+      if (match.Success) {
         value = match.Groups["cont"].Success ? match.Groups["cont"].Value : ""; // can be empty
         comment = match.Groups["comment"].Success ? match.Groups["comment"].Value : ""; // can be empty
         return true;
@@ -107,10 +107,10 @@ namespace dNetBm98.IniLib
       itemName = ""; value = ""; comment = ""; // defaults
 
       // Split from A=B
-      if ( SplitItem( line, out string iName, out string iCont ) ) {
+      if (SplitItem( line, out string iName, out string iCont )) {
         itemName = iName;
         // Split B part
-        if ( SplitContent( iCont, out string iValue, out string iComment ) ) {
+        if (SplitContent( iCont, out string iValue, out string iComment )) {
           value = iValue;
           comment = iComment;
           return true;
@@ -127,22 +127,22 @@ namespace dNetBm98.IniLib
     {
       string line;
       do {
-        if ( reader.Peek( ) == -1 ) return ""; // EOF
-        if ( Convert.ToChar( reader.Peek( ) ) == '[' ) {
+        if (reader.Peek( ) == -1) return ""; // EOF
+        if (Convert.ToChar( reader.Peek( ) ) == '[') {
           return ""; // just the start of a new section 
         }
         // read and use a line (cannot be null, checked above)
         line = reader.ReadLine( );
-        if ( string.IsNullOrWhiteSpace( line ) ) {
+        if (string.IsNullOrWhiteSpace( line )) {
           ; // skip empty lines
         }
-        else if ( line.TrimStart( ).StartsWith( ";" ) ) {
+        else if (line.TrimStart( ).StartsWith( ";" )) {
           ; // skip line comments
         }
         else {
           return line;
         }
-      } while ( line != null );
+      } while (line != null);
 
       return ""; // no item found
     }
@@ -192,8 +192,8 @@ namespace dNetBm98.IniLib
     /// <param name="line">The INI Line</param>
     public IniItem( string line )
     {
-      if ( SplitLine( line, out string iName, out string iValue, out string iComment ) ) {
-        Name = iName.TrimEnd();
+      if (SplitLine( line, out string iName, out string iValue, out string iComment )) {
+        Name = iName.TrimEnd( );
         Value = iValue.TrimEnd( );
         Comment = iComment.TrimEnd( );
         Valid = true;
@@ -213,7 +213,7 @@ namespace dNetBm98.IniLib
     /// <param name="comment">An optional comment (can be empty)</param>
     public IniItem( string itemName, string value, string comment = "" )
     {
-      if ( string.IsNullOrWhiteSpace( itemName ) ) throw new ArgumentException( "The Item name cannot be empty" );
+      if (string.IsNullOrWhiteSpace( itemName )) throw new ArgumentException( "The Item name cannot be empty" );
 
       Name = itemName.Trim( );
       Value = value;
@@ -244,27 +244,49 @@ namespace dNetBm98.IniLib
     /// Write this item to the stream
     /// </summary>
     /// <param name="streamWriter">A writable stream</param>
-    public void Write( StreamWriter streamWriter )
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void Write( StreamWriter streamWriter, bool unQuote )
     {
-      if ( !Valid ) return; // cannot write invalid items
+      if (!Valid) return; // cannot write invalid items
 
-      streamWriter.WriteLine( this.ToString() );
+      streamWriter.WriteLine( this.ToString( unQuote ) );
+    }
+
+    /// <summary>
+    /// Write this item to the stream
+    /// </summary>
+    /// <param name="stringBuilder">A prepared StringBuilder</param>
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void Write( StringBuilder stringBuilder, bool unQuote )
+    {
+      if (!Valid) return; // cannot write invalid items
+
+      stringBuilder.AppendLine( this.ToString( unQuote ) );
     }
 
     /// <summary>
     /// Returns a string that represents the current object
     /// </summary>
     /// <returns>A string</returns>
-    public override string ToString( )
+    public string ToString( bool unQuote )
     {
-      if ( !Valid ) return ""; 
+      // sanity
+      if (!Valid) return "";
 
-      string line = $"{Name}={Value}";
-      if ( !string.IsNullOrEmpty( Comment ) ) {
+      string value = unQuote ? Utilities.FromQuoted( Value ) : Value;
+      string line = $"{Name}={value}";
+      if (!string.IsNullOrEmpty( Comment )) {
         line += $"  ; {Comment}";
       }
       return line;
     }
+
+    /// <summary>
+    /// Returns a string that represents the current object
+    /// </summary>
+    /// <returns>A string</returns>
+    public override string ToString( ) => this.ToString( false );
+
 
   }
 }

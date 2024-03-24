@@ -1,7 +1,5 @@
 ﻿using System;
 
-using static System.Math;
-
 namespace dNetBm98
 {
   /// <summary>
@@ -9,8 +7,8 @@ namespace dNetBm98
   /// </summary>
   public static class XMath
   {
-    static readonly double R2D = 180.0 / PI;
-    static readonly double D2R = PI / 180.0;
+    private const double R2D = 180.0 / Math.PI;
+    private const double D2R = Math.PI / 180.0;
 
     #region Rounding
 
@@ -25,6 +23,100 @@ namespace dNetBm98
     /// </summary>
     public static int RoundInt( double x, int quant ) => x.AsRoundInt( quant );
 
+    /// <summary>
+    /// Returns a Rounded Up integer
+    /// </summary>
+    /// <param name="value">double value to be rounded to an integer</param>
+    /// <returns>An Int</returns>
+    public static int RoundUp( double value )
+    {
+      return (int)Math.Round( value, mode: MidpointRounding.AwayFromZero );
+    }
+
+
+    #endregion
+
+    #region Comparing values to be within an Epsilon
+
+    /// <summary>
+    /// Returns wether or not 2 values are closer together than epsilon
+    /// </summary>
+    /// <param name="v1">Value 1</param>
+    /// <param name="v2">Value 2</param>
+    /// <param name="epsilon">Closeness value (> double.Epsilon)</param>
+    /// <returns>True if the the values are closer together than epsilon</returns>
+    public static bool AboutEqual( double v1, double v2, double epsilon )
+    {
+      // sanity
+      if (epsilon <= double.Epsilon) throw new ArgumentException( "Epsilon minimum is double.Epsilon" );
+
+      if (v1.Equals( v2 )) return true; // trivial
+      // consider those as non equal
+      if (double.IsNaN( v1 )) return false;
+      if (double.IsNaN( v2 )) return false;
+      if (double.IsInfinity( v1 )) return false;
+      if (double.IsInfinity( v2 )) return false;
+
+      return Math.Abs( v1 - v2 ) < epsilon;
+    }
+
+    /// <summary>
+    /// Returns wether or not 2 values are closer together than epsilon
+    /// </summary>
+    /// <param name="v1">Value 1</param>
+    /// <param name="v2">Value 2</param>
+    /// <param name="epsilon">Closeness value (> float.Epsilon)</param>
+    /// <returns>True if the the values are closer together than epsilon</returns>
+    public static bool AboutEqual( float v1, float v2, float epsilon )
+    {
+      // sanity
+      if (epsilon <= float.Epsilon) throw new ArgumentException( "Epsilon minimum is float.Epsilon" );
+
+      if (v1.Equals( v2 )) return true; // trivial
+      // consider those as non equal
+      if (float.IsNaN( v1 )) return false;
+      if (float.IsNaN( v2 )) return false;
+      if (float.IsInfinity( v1 )) return false;
+      if (float.IsInfinity( v2 )) return false;
+
+      return Math.Abs( v1 - v2 ) < epsilon;
+    }
+
+    /// <summary>
+    /// Returns wether or not 2 values are closer together than epsilon
+    /// </summary>
+    /// <param name="v1">Value 1</param>
+    /// <param name="v2">Value 2</param>
+    /// <param name="epsilon">Closeness value (> 0)</param>
+    /// <returns>True if the the values are closer together than epsilon</returns>
+    public static bool AboutEqual( long v1, long v2, long epsilon )
+    {
+      // sanity
+      if (epsilon <= 0) throw new ArgumentException( "Epsilon minimum is 1" );
+
+      if (v1.Equals( v2 )) return true; // trivial
+
+      return Math.Abs( v1 - v2 ) < epsilon;
+    }
+
+    /// <summary>
+    /// Returns wether or not 2 values are closer together than epsilon
+    /// </summary>
+    /// <param name="v1">Value 1</param>
+    /// <param name="v2">Value 2</param>
+    /// <param name="epsilon">Closeness value (> 0)</param>
+    /// <returns>True if the the values are closer together than epsilon</returns>
+    public static bool AboutEqual( int v1, int v2, int epsilon )
+    {
+      // sanity
+      if (epsilon <= 0) throw new ArgumentException( "Epsilon minimum is 1" );
+
+      if (v1.Equals( v2 )) return true; // trivial
+
+      return Math.Abs( v1 - v2 ) < epsilon;
+    }
+
+
     #endregion
 
     #region Clip (MinMax)
@@ -35,18 +127,12 @@ namespace dNetBm98
     /// Clips a number to the specified minimum and maximum values.
     /// Returns the clipped value
     /// </summary>
-    public static double Clip( this double _d, double minValue, double maxValue ) => Min( Max( _d, minValue ), maxValue );
-
-    /// <summary>
-    /// Clips a number to the specified minimum and maximum values.
-    /// Returns the clipped value
-    /// </summary>
-    public static double Clip( this int _i, double minValue, double maxValue ) => Min( Max( _i, minValue ), maxValue );
+    public static double Clip( this double _d, double min, double max ) => Math.Min( Math.Max( _d, min ), max );
 
     /// <summary>
     /// Clips the variable by the Min, Max argument
     /// </summary>
-    public static double Clip( this ref double _d, double dMin, double dMax ) => _d = Clip( _d, dMin, dMax );
+    public static double Clip( this ref double _d, double dMin, double dMax ) => _d = _d.Clip( min: dMin, max: dMax );
 
     // float
 
@@ -54,24 +140,24 @@ namespace dNetBm98
     /// Clips a number to the specified minimum and maximum values.
     /// Returns the clipped value
     /// </summary>
-    public static float Clip( this float _f, double minValue, double maxValue ) => (float)Min( Max( _f, minValue ), maxValue );
+    public static float Clip( this float _f, double min, double max ) => (float)Math.Min( Math.Max( _f, min ), max );
 
     /// <summary>
     /// Clips the variable by the Min, Max argument
     /// </summary>
-    public static float Clip( this ref float _f, double dMin, double dMax ) => _f = Clip( _f, dMin, dMax );
+    public static float Clip( this ref float _f, double dMin, double dMax ) => _f = _f.Clip( min: dMin, max: dMax );
 
     // long
 
     /// <summary>
     /// Returns MinMax value of the argument and the borders (inclusive)
     /// </summary>
-    public static long Clip( this long _l, long dMin, long dMax ) => Max( Min( _l, dMax ), dMin );
+    public static long Clip( this long _l, long min, long max ) => Math.Min( Math.Max( _l, min ), max );
 
     /// <summary>
     /// Clips the variable by the Min, Max argument
     /// </summary>
-    public static long Clip( this ref long _l, long dMin, long dMax ) => _l = Clip( _l, dMin, dMax );
+    public static long Clip( this ref long _l, long dMin, long dMax ) => _l = _l.Clip( min: dMin, max: dMax );
 
     // int
 
@@ -79,23 +165,70 @@ namespace dNetBm98
     /// Clips a number to the specified minimum and maximum values.
     /// Returns the clipped value
     /// </summary>
-    public static int Clip( this int _i, int minValue, int maxValue ) => (int)Min( Max( _i, minValue ), maxValue );
+    public static int Clip( this int _i, int min, int max ) => (int)Math.Min( Math.Max( _i, min ), max );
 
     /// <summary>
     /// Clips the variable by the Min, Max argument
     /// </summary>
-    public static int Clip( this ref int _i, long dMin, long dMax ) => _i = (int)Clip( (long)_i, dMin, dMax );
+    public static int Clip( this ref int _i, int lMin, int lMax ) => _i = _i.Clip( min: lMin, max: lMax );
 
     // decimal
 
     /// <summary>
     /// Returns MinMax value of the argument and the borders (inclusive)
     /// </summary>
-    public static decimal Clip( this decimal _dec, decimal dMin, decimal dMax ) => Max( Min( _dec, dMax ), dMin );
+    public static decimal Clip( this decimal _dec, decimal min, decimal max ) => Math.Max( Math.Min( _dec, max ), min );
     /// <summary>
     /// Clips the variable by the Min, Max argument
     /// </summary>
-    public static decimal Clip( this ref decimal _dec, decimal dMin, decimal dMax ) => _dec = Clip( _dec, dMin, dMax );
+    public static decimal Clip( this ref decimal _dec, decimal mMin, decimal mMax ) => _dec = _dec.Clip( min: mMin, max: mMax );
+
+    #endregion
+
+    #region Min/Max of many
+
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static long Max( long val1, long val2, long val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static int Max( int val1, int val2, int val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static short Max( short val1, short val2, short val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static double Max( double val1, double val2, double val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static float Max( float val1, float val2, float val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+
+
+    /// <summary>
+    /// Returns Min of the arguments
+    /// </summary>
+    public static long Min( long val1, long val2, long val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
+    /// <summary>
+    /// Returns Min of the arguments
+    /// </summary>
+    public static int Min( int val1, int val2, int val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static short Min( short val1, short val2, short val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
+    /// <summary>
+    /// Returns Min of the arguments
+    /// </summary>
+    public static double Min( double val1, double val2, double val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
+    /// <summary>
+    /// Returns Min of the arguments
+    /// </summary>
+    public static float Min( float val1, float val2, float val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
 
     #endregion
 

@@ -77,10 +77,23 @@ namespace dNetBm98.IniLib
     /// Write all sections of this Catalog
     /// </summary>
     /// <param name="streamWriter">A prepared streamwriter</param>
-    public void WriteAll( StreamWriter streamWriter )
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void WriteAll( StreamWriter streamWriter, bool unQuote )
     {
-      foreach ( var section in _catalog.Values ) {
-        section.Write( streamWriter );
+      foreach (var section in _catalog.Values) {
+        section.Write( streamWriter, unQuote );
+      }
+    }
+
+    /// <summary>
+    /// Write all sections of this Catalog
+    /// </summary>
+    /// <param name="stringBuilder">A prepared StringBuilder</param>
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void WriteAll( StringBuilder  stringBuilder, bool unQuote )
+    {
+      foreach (var section in _catalog.Values) {
+        section.Write( stringBuilder, unQuote  );
       }
     }
 

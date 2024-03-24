@@ -38,6 +38,8 @@
       this.btCalcTAS = new System.Windows.Forms.Button();
       this.label3 = new System.Windows.Forms.Label();
       this.txTAS = new System.Windows.Forms.TextBox();
+      this.btReadEnc = new System.Windows.Forms.Button();
+      this.btWriteEnc = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // button1
@@ -62,7 +64,7 @@
       // 
       this.lblFocus.AutoSize = true;
       this.lblFocus.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblFocus.Location = new System.Drawing.Point(553, 101);
+      this.lblFocus.Location = new System.Drawing.Point(566, 23);
       this.lblFocus.Name = "lblFocus";
       this.lblFocus.Size = new System.Drawing.Size(80, 24);
       this.lblFocus.TabIndex = 2;
@@ -82,7 +84,7 @@
       // 
       // txCAS
       // 
-      this.txCAS.Location = new System.Drawing.Point(476, 182);
+      this.txCAS.Location = new System.Drawing.Point(489, 104);
       this.txCAS.Name = "txCAS";
       this.txCAS.Size = new System.Drawing.Size(81, 20);
       this.txCAS.TabIndex = 4;
@@ -91,7 +93,7 @@
       // label1
       // 
       this.label1.AutoSize = true;
-      this.label1.Location = new System.Drawing.Point(473, 166);
+      this.label1.Location = new System.Drawing.Point(486, 88);
       this.label1.Name = "label1";
       this.label1.Size = new System.Drawing.Size(28, 13);
       this.label1.TabIndex = 5;
@@ -100,7 +102,7 @@
       // label2
       // 
       this.label2.AutoSize = true;
-      this.label2.Location = new System.Drawing.Point(560, 166);
+      this.label2.Location = new System.Drawing.Point(573, 88);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(27, 13);
       this.label2.TabIndex = 7;
@@ -108,7 +110,7 @@
       // 
       // txALT
       // 
-      this.txALT.Location = new System.Drawing.Point(563, 182);
+      this.txALT.Location = new System.Drawing.Point(576, 104);
       this.txALT.Name = "txALT";
       this.txALT.Size = new System.Drawing.Size(81, 20);
       this.txALT.TabIndex = 6;
@@ -116,7 +118,7 @@
       // 
       // btCalcTAS
       // 
-      this.btCalcTAS.Location = new System.Drawing.Point(650, 182);
+      this.btCalcTAS.Location = new System.Drawing.Point(663, 104);
       this.btCalcTAS.Name = "btCalcTAS";
       this.btCalcTAS.Size = new System.Drawing.Size(94, 20);
       this.btCalcTAS.TabIndex = 8;
@@ -127,7 +129,7 @@
       // label3
       // 
       this.label3.AutoSize = true;
-      this.label3.Location = new System.Drawing.Point(473, 204);
+      this.label3.Location = new System.Drawing.Point(486, 126);
       this.label3.Name = "label3";
       this.label3.Size = new System.Drawing.Size(28, 13);
       this.label3.TabIndex = 10;
@@ -135,17 +137,39 @@
       // 
       // txTAS
       // 
-      this.txTAS.Location = new System.Drawing.Point(476, 220);
+      this.txTAS.Location = new System.Drawing.Point(489, 142);
       this.txTAS.Name = "txTAS";
       this.txTAS.Size = new System.Drawing.Size(81, 20);
       this.txTAS.TabIndex = 9;
       this.txTAS.Text = "..";
+      // 
+      // btReadEnc
+      // 
+      this.btReadEnc.Location = new System.Drawing.Point(463, 238);
+      this.btReadEnc.Name = "btReadEnc";
+      this.btReadEnc.Size = new System.Drawing.Size(94, 42);
+      this.btReadEnc.TabIndex = 11;
+      this.btReadEnc.Text = "Read enc";
+      this.btReadEnc.UseVisualStyleBackColor = true;
+      this.btReadEnc.Click += new System.EventHandler(this.btReadEnc_Click);
+      // 
+      // btWriteEnc
+      // 
+      this.btWriteEnc.Location = new System.Drawing.Point(563, 238);
+      this.btWriteEnc.Name = "btWriteEnc";
+      this.btWriteEnc.Size = new System.Drawing.Size(94, 42);
+      this.btWriteEnc.TabIndex = 12;
+      this.btWriteEnc.Text = "Write enc";
+      this.btWriteEnc.UseVisualStyleBackColor = true;
+      this.btWriteEnc.Click += new System.EventHandler(this.btWriteEnc_Click);
       // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(800, 450);
+      this.Controls.Add(this.btWriteEnc);
+      this.Controls.Add(this.btReadEnc);
       this.Controls.Add(this.label3);
       this.Controls.Add(this.txTAS);
       this.Controls.Add(this.btCalcTAS);
@@ -178,6 +202,8 @@
     private System.Windows.Forms.Button btCalcTAS;
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.TextBox txTAS;
+    private System.Windows.Forms.Button btReadEnc;
+    private System.Windows.Forms.Button btWriteEnc;
   }
 }
 

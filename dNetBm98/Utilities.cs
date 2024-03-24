@@ -63,5 +63,90 @@ namespace dNetBm98
       return rsiS;
     }
 
+    /// <summary>
+    /// Get the quoted part of this string or all when the input does not start with a quote
+    ///  the Quote character is " by default but can be set as argument
+    /// </summary>
+    /// <param name="inp">Input string where a quoted part must be extracted</param>
+    /// <param name="quoteChar">The quote character, defaults to " (double quote)</param>
+    /// <returns>The unqoted string</returns>
+    public static string FromQuoted( string inp, char quoteChar = '"' )
+    {
+      if (inp.TrimStart( ).StartsWith( quoteChar.ToString( ) )) {
+        var sx = inp.ToArray( )
+          .SkipWhile( c => c != quoteChar )
+          .Skip( 1 )
+          .TakeWhile( c => c != quoteChar );
+        var v = new string( sx.ToArray( ) );
+        return v;
+      }
+      // no starting quote found
+      return inp;
+    }
+
+
+    #region Endianess
+
+    /*
+    * Thank You for the Swaps !
+    *    https://stackoverflow.com/questions/19560436/bitwise-endian-swap-for-various-types
+    */
+
+    private static UInt16 SwapBytes( UInt16 x )
+    {
+      // swap adjacent 8-bit blocks
+      return (ushort)(((UInt32)x >> 8) | ((UInt32)x << 8));
+    }
+
+    private static UInt32 SwapBytes( UInt32 x )
+    {
+      // swap adjacent 16-bit blocks
+      x = (x >> 16) | (x << 16);
+      // swap adjacent 8-bit blocks
+      return ((x & 0xFF00FF00) >> 8) | ((x & 0x00FF00FF) << 8);
+    }
+
+    private static UInt64 SwapBytes( UInt64 x )
+    {
+      // swap adjacent 32-bit blocks
+      x = (x >> 32) | (x << 32);
+      // swap adjacent 16-bit blocks
+      x = ((x & 0xFFFF0000FFFF0000) >> 16) | ((x & 0x0000FFFF0000FFFF) << 16);
+      // swap adjacent 8-bit blocks
+      return ((x & 0xFF00FF00FF00FF00) >> 8) | ((x & 0x00FF00FF00FF00FF) << 8);
+    }
+
+    /// <summary>
+    /// Returns an unsigned long with Swapped bytes
+    /// </summary>
+    public static ulong ReverseEndianess( ulong be ) => SwapBytes( be );
+
+    /// <summary>
+    /// Returns an unsigned int with Swapped bytes
+    /// </summary>
+    public static uint ReverseEndianess( uint be ) => SwapBytes( be );
+
+    /// <summary>
+    /// Returns an unsigned short with Swapped bytes
+    /// </summary>
+    public static ushort ReverseEndianess( ushort be ) => SwapBytes( be );
+
+    /// <summary>
+    /// Returns a signed long with Swapped bytes
+    /// </summary>
+    public static long ReverseEndianess( long be ) => (long)SwapBytes( (ulong)be );
+
+    /// <summary>
+    /// Returns a signed int with Swapped bytes
+    /// </summary>
+    public static int ReverseEndianess( int be ) => (int)SwapBytes( (uint)be );
+
+    /// <summary>
+    /// Returns a signed short with Swapped bytes
+    /// </summary>
+    public static short ReverseEndianess( short be ) => (short)SwapBytes( (ushort)be );
+
+    #endregion
+
   }
 }

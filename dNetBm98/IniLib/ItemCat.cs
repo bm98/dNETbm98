@@ -11,7 +11,7 @@ namespace dNetBm98.IniLib
   public class ItemCat
   {
     // The cat
-    private Dictionary<string, IniItem> _catalog = new Dictionary<string, IniItem>();
+    private Dictionary<string, IniItem> _catalog = new Dictionary<string, IniItem>( );
 
     /// <summary>
     /// The number of items in the catalog
@@ -30,10 +30,10 @@ namespace dNetBm98.IniLib
     /// <returns>True if added</returns>
     public bool Add( IniItem item )
     {
-      if ( !item.Valid ) return false; // cannot add invalid items
+      if (!item.Valid) return false; // cannot add invalid items
 
       string itemName = IniItem.CatalogName( item.Name );
-      if ( !_catalog.ContainsKey( itemName ) ) {
+      if (!_catalog.ContainsKey( itemName )) {
         _catalog.Add( IniItem.CatalogName( item.Name ), item );
         return true;
       }
@@ -47,13 +47,13 @@ namespace dNetBm98.IniLib
     ///  case insensitive search
     /// </summary>
     /// <param name="itemName">The Item name</param>
-    /// <returns>The Section or Null if not found</returns>
+    /// <returns>The Item or Null if not found</returns>
     public IniItem GetItem( string itemName )
     {
-      if ( string.IsNullOrWhiteSpace( itemName ) ) throw new ArgumentException( "The Item name cannot be empty" );
+      if (string.IsNullOrWhiteSpace( itemName )) throw new ArgumentException( "The Item name cannot be empty" );
 
       itemName = IniItem.CatalogName( itemName );
-      if ( _catalog.ContainsKey( itemName ) ) {
+      if (_catalog.ContainsKey( itemName )) {
         return _catalog[itemName];
       }
       return null;
@@ -78,9 +78,9 @@ namespace dNetBm98.IniLib
     /// <returns>A List of strings</returns>
     public List<string> ItemList( )
     {
-      var li = new List<string>();
-      foreach ( var item in _catalog ) {
-        if ( item.Value.Valid )
+      var li = new List<string>( );
+      foreach (var item in _catalog) {
+        if (item.Value.Valid)
           li.Add( item.Value.ToString( ) );
       }
       return li;
@@ -90,10 +90,22 @@ namespace dNetBm98.IniLib
     /// Write all items
     /// </summary>
     /// <param name="streamWriter">A prepared streamwriter</param>
-    public void WriteAll( StreamWriter streamWriter )
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void WriteAll( StreamWriter streamWriter, bool unQuote )
     {
-      foreach ( var item in _catalog.Values ) {
-        item.Write( streamWriter );
+      foreach (var item in _catalog.Values) {
+        item.Write( streamWriter, unQuote );
+      }
+    }
+    /// <summary>
+    /// Write all items
+    /// </summary>
+    /// <param name="stringBuilder">A prepared StringBuilder</param>
+    /// <param name="unQuote">True to unquote values when writing</param>
+    public void WriteAll( StringBuilder stringBuilder, bool unQuote )
+    {
+      foreach (var item in _catalog.Values) {
+        item.Write( stringBuilder, unQuote );
       }
     }
 

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dNetBm98
 {
   /// <summary>
-  /// Detects a value for the given type which is _outside_ given limits
-  /// Must provide a Type which implement IComparable(TRef)
+  /// Detects a value for the given Enum which is _outside_ given limits
   /// 
   ///   triggers a predefined action if one is provided
   /// </summary>

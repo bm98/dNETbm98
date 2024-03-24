@@ -99,15 +99,30 @@ namespace dNetBm98
     public static Point Add( this Point _p, Point _other ) => new Point( _p.X + _other.X, _p.Y + _other.Y );
 
     /// <summary>
+    /// Returns a Point containing the result of the Addition from this Point + dx,dy 
+    /// </summary>
+    public static Point Add( this Point _p, int dx, int dy ) => new Point( _p.X + dx, _p.Y + dy );
+
+    /// <summary>
     /// Add the other Point to this Point
     /// </summary>
     public static void Plus( this ref Point _p, Point _other ) { _p.X += _other.X; _p.Y += _other.Y; }
+
+    /// <summary>
+    /// Add dx,dy to this Point
+    /// </summary>
+    public static void Plus( this ref Point _p, int dx, int dy ) { _p.X += dx; _p.Y += dy; }
 
 
     /// <summary>
     /// Returns a PointF containing the result of the Addition from this PointF + other PointF
     /// </summary>
     public static PointF Add( this PointF _p, PointF _other ) => new PointF( _p.X + _other.X, _p.Y + _other.Y );
+
+    /// <summary>
+    /// Returns a PointF containing the result of the Addition from this PointF + dx,dy
+    /// </summary>
+    public static PointF Add( this PointF _p, double dx, double dy ) => new PointF( _p.X + (float)dx, _p.Y + (float)dy );
 
     /// <summary>
     /// Add the other PointF to this PointF
@@ -117,6 +132,11 @@ namespace dNetBm98
     /// Add the other Point to this PointF
     /// </summary>
     public static void Plus( this ref PointF _p, Point _other ) { _p.X += _other.X; _p.Y += _other.Y; }
+
+    /// <summary>
+    /// Add the other Point to this PointF
+    /// </summary>
+    public static void Plus( this ref PointF _p, double dx, double dy ) { _p.X += (float)dx; _p.Y += (float)dy; }
 
 
 
@@ -176,19 +196,41 @@ namespace dNetBm98
     /// <summary>
     /// Returns a new Point scaled by the given Size in X and Y (rounds)
     /// </summary>
-    public static Point Scale( this Point _p, Size size ) { return new Point( (int)(_p.X * size.Width), (int)(_p.Y * size.Height) ); }
+    public static Point Scale( this Point _p, Size size ) => new Point( (int)(_p.X * size.Width), (int)(_p.Y * size.Height) );
     /// <summary>
     /// Returns a new Point scaled by the given SizeF in X and Y (rounds)
     /// </summary>
-    public static Point Scale( this Point _p, SizeF size ) { return new Point( (int)(_p.X * size.Width), (int)(_p.Y * size.Height) ); }
+    public static Point Scale( this Point _p, SizeF size ) => new Point( (int)(_p.X * size.Width), (int)(_p.Y * size.Height) );
     /// <summary>
     /// Returns a new PointF scaled by the given Size in X and Y
     /// </summary>
-    public static PointF Scale( this PointF _p, Size size ) { return new PointF( _p.X * size.Width, _p.Y * size.Height ); }
+    public static PointF Scale( this PointF _p, Size size ) => new PointF( _p.X * size.Width, _p.Y * size.Height );
     /// <summary>
     /// Returns a new PointF scaled by the given SizeF in X and Y
     /// </summary>
-    public static PointF Scale( this PointF _p, SizeF size ) { return new PointF( _p.X * size.Width, _p.Y * size.Height ); }
+    public static PointF Scale( this PointF _p, SizeF size ) => new PointF( _p.X * size.Width, _p.Y * size.Height );
+
+    /// <summary>
+    /// Return the point between this and the other point
+    /// </summary>
+    /// <returns>A Mid Point</returns>
+    public static Point MidPointOf( Point p1, Point p2 ) => new Point( p1.X + (p2.X - p1.X) / 2, p1.Y + (p2.Y - p1.Y) / 2 );
+    /// <summary>
+    /// Return the point between this and the other point
+    /// </summary>
+    /// <returns>A Mid Point</returns>
+    public static Point MidPoint( this Point _p, Point other ) => MidPointOf( _p, other );
+
+    /// <summary>
+    /// Return the point between this and the other point
+    /// </summary>
+    /// <returns>A Mid Point</returns>
+    public static PointF MidPointOf( PointF p1, PointF p2 ) => new PointF( p1.X + (p2.X - p1.X) / 2f, p1.Y + (p2.Y - p1.Y) / 2f );
+    /// <summary>
+    /// Return the point between this and the other point
+    /// </summary>
+    /// <returns>A Mid Point</returns>
+    public static PointF MidPoint( this PointF _p, PointF other ) => MidPointOf( _p, other );
   }
 }
 
