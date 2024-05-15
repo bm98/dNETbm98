@@ -2,16 +2,27 @@
 
 ## Limited Tools Library for .Net (mostly WinForms)
 
-### Extensions for Math (Clip, Even, Odd)
+### Extensions for Math (Clip, Even, Odd, Round)
 
 ### Extensions for Point, Size, Rect (many)
 
 ### Extensions for Color (Dimmed color)
 
-### Invoker Helper 
-
 ### Unit Conversions (many)
 
+### Invoker Helper 
+
+### Window focus Helper
+
+### Color Models and conversions (HSB, HSL, CMYK, RGB)
+
+### Endianess Swap for (u) long, int, short
+
+### CSV Reader
+
+### INI Reader (contract support)
+
+### Average, Histogram primitives
 
 
 ---

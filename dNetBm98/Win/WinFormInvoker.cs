@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace dNetBm98
+namespace dNetBm98.Win
 {
   /// <summary>
   /// Handles Events in WinForms and invokes a delegate if required

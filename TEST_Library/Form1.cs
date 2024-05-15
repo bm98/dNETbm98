@@ -1,7 +1,4 @@
-﻿using dNetBm98;
-using dNetBm98.IniLib;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using dNetBm98;
+using dNetBm98.Job;
+using dNetBm98.Win;
+using dNetBm98.IniLib;
+using System.Threading;
+
 
 namespace TEST_Library
 {
@@ -123,6 +127,71 @@ namespace TEST_Library
       MSINI.WriteFile( );
 
       RTB.Text = $"{tFile} written";
+
+    }
+
+
+    private WinKbdSender KBD;
+    private void btSendKeyA_Click( object sender, EventArgs e )
+    {
+      KBD?.Dispose( );
+
+      KBD = new WinKbdSender( );
+
+      KBD.AddStroke( new WinKbdSender.KbdStroke( Keys.A, 5000 ) );
+      KBD.AddStroke( new WinKbdSender.KbdStroke( Keys.B, 100 ) );
+
+
+      RTB.Text += $"Send AB - RunStrokes starts with blocking: {cbxBlocking.Checked}\n";
+      var res = KBD.RunStrokes( "new 1", cbxBlocking.Checked );
+      RTB.Text += "RunStrokes returned\n";
+
+      if (!res) {
+        RTB.Text += "RunStrokes Failed\n";
+      }
+    }
+
+    private void btSendKeyCV_Click( object sender, EventArgs e )
+    {
+      KBD?.Dispose( );
+
+      KBD = new WinKbdSender( );
+      var stroke = new WinKbdSender.KbdStroke( Keys.V, 100 );
+      stroke.AddModifier( Keys.LControlKey );
+      KBD.AddStroke( stroke );
+
+      RTB.Text += $"Send AB - RunStrokes starts with blocking: {cbxBlocking.Checked}\n";
+      var res = KBD.RunStrokes( "new 1", cbxBlocking.Checked );
+      RTB.Text += "RunStrokes returned\n";
+
+      if (!res) {
+        RTB.Text += "RunStrokes Failed\n";
+      }
+    }
+
+    private JobRunner JR = null;
+    private WinFormInvoker _invoker;
+    private void JOB( )
+    {
+      _invoker.HandleEvent( ( ) => { RTB.Text += $"Job Done on {DateTime.Now:O}\n"; } );
+
+    }
+
+    private void btJobRunner_Click( object sender, EventArgs e )
+    {
+      if (JR == null) JR = new JobRunner( );
+      if (_invoker == null) _invoker = new WinFormInvoker( RTB );
+
+
+
+      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
+      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
+      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
+      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
+      //      Thread.Sleep( 5000 );
+      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
+      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
+      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
 
     }
   }

@@ -1,15 +1,18 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace dNetBm98
 {
   /// <summary>
-  /// Detects a value for the given type which is _outside_ given limits
+  /// Detects a value for the given type which is _inside_ given limits
   /// Must provide a Type which implement IComparable(TRef)
   /// 
   ///   triggers a predefined action if one is provided
   /// </summary>
-  public class OutsideLimitDetector<T> where T : IComparable<T>
+  public class InsideLimitDetector<T> where T : IComparable<T>
   {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     protected T _currentValue = default;
@@ -24,25 +27,25 @@ namespace dNetBm98
     /// <summary>
     /// cTor: empty - not for public
     /// </summary>
-    protected OutsideLimitDetector( ) { }
+    protected InsideLimitDetector( ) { }
 
     /// <summary>
-    /// cTor: Create an OutsideLimitDetector
-    ///   The detector will fire the Action for any value update which is outside the limits
-    ///   If the value gets into the limits but was not Read before; the trigger state remains set until Read
+    /// cTor: Create an InsideLimitDetector
+    ///   The detector will fire the Action for any value update which is inside the limits
+    ///   If the value gets outside limits but was not Read before; the trigger state remains set until Read
     ///   Using an action will clear the detection state when fired !!!
     /// </summary>
-    /// <param name="lowerLimit">The lower limit of the detector (below)</param>
-    /// <param name="higherLimit">The higher limit of the detector (above)</param>
+    /// <param name="lowerLimit">The lower limit of the detector (at or above)</param>
+    /// <param name="upperLimit">The upper limit of the detector(at or below)</param>
     /// <param name="value">The start Value</param>
     /// <param name="limitAction">An action to perfom if a detection fires(retuns the current value)</param>
-    public OutsideLimitDetector( T lowerLimit, T higherLimit, T value = default, Action<T> limitAction = null )
+    public InsideLimitDetector( T lowerLimit, T upperLimit, T value = default, Action<T> limitAction = null )
     {
       // sanity 
-      if (lowerLimit.CompareTo( higherLimit ) > 0) throw new ArgumentException( "Lower limit must be < higher limit" );
+      if (lowerLimit.CompareTo( upperLimit ) > 0) throw new ArgumentException( "Lower limit must be < higher limit" );
 
       _limitLow = lowerLimit;
-      _limitHigh = higherLimit;
+      _limitHigh = upperLimit;
       _currentValue = value;
       _prevValue = value;
       _limitDetected = false;
@@ -75,11 +78,11 @@ namespace dNetBm98
     public bool LimitDetected => _limitDetected;
 
     /// <summary>
-    /// True if value is outside limits not including limits
+    /// True if value is inside limits  Incl. limits
     /// </summary>
-    protected virtual bool OutsideLimit( T value )
+    protected virtual bool InsideLimit( T value )
     {
-      return (value.CompareTo( _limitHigh ) > 0) || (value.CompareTo( _limitLow ) < 0);
+      return (value.CompareTo( _limitLow ) >= 0) && (value.CompareTo( _limitHigh ) <= 0);
     }
 
     /// <summary>
@@ -105,24 +108,26 @@ namespace dNetBm98
 
     /// <summary>
     /// Read and Clear the DetectionState
+    /// True when triggered and still within limits
     /// </summary>
-    /// <returns>True if changed and the value is outside limits</returns>
-    public bool Read_IsOutside( )
+    /// <returns>True if triggered and the last value is inside limits</returns>
+    public bool Read_IsInside( )
     {
       var ret = _limitDetected;
       _limitDetected = false;
-      return ret && OutsideLimit( _currentValue );
+      return ret && InsideLimit( _currentValue );
     }
 
     /// <summary>
     /// Read and Clear the DetectionState
+    /// True when triggered and not longer within limits
     /// </summary>
-    /// <returns>True if changed and the value is NOT outside limits</returns>
-    public bool Read_IsNotOutside( )
+    /// <returns>True if triggered and the last value is NOT inside limits</returns>
+    public bool Read_IsNotInside( )
     {
       var ret = _limitDetected;
       _limitDetected = false;
-      return ret && !OutsideLimit( _currentValue );
+      return ret && !InsideLimit( _currentValue );
     }
 
     /// <summary>
@@ -130,7 +135,7 @@ namespace dNetBm98
     ///  returns the current value
     /// </summary>
     /// <param name="currentValue">Out: Current Value</param>
-    /// <returns>True if changed</returns>
+    /// <returns>True if triggered</returns>
     public bool Read( out T currentValue )
     {
       var ret = _limitDetected;
@@ -140,17 +145,17 @@ namespace dNetBm98
     }
 
     /// <summary>
-    /// Update the Value and detect changes
+    /// Update the Value and trigger if needed
     /// Triggers the ChangeAction if one is defined
     /// </summary>
     /// <param name="value">New Value</param>
     public virtual void Update( T value )
     {
       _prevValue = _currentValue;
-      var triggered = OutsideLimit( value );
+      bool triggered = InsideLimit( value );
       _currentValue = value;
       _limitDetected |= triggered; // stays on if previously detected but no longer triggered
-      // Trigger the action if the new value is ourside limits
+      // Trigger the action if the new value is within limits
       if (triggered) {
         _action?.Invoke( ReadValue( ) );
       }
@@ -171,15 +176,15 @@ namespace dNetBm98
     /// <summary>
     /// Update the Limits without triggering an event
     /// </summary>
-    /// <param name="lowerLimit">The lower limit of the detector</param>
-    /// <param name="higherLimit">The higher limit of the detector</param>
-    public void SetLimits( T lowerLimit, T higherLimit )
+    /// <param name="lowerLimit">The lower limit of the detector (at or above)</param>
+    /// <param name="upperLimit">The higher limit of the detector(at or below)</param>
+    public void SetLimits( T lowerLimit, T upperLimit )
     {
       // sanity 
-      if (lowerLimit.CompareTo( higherLimit ) > 0) throw new ArgumentException("Lower limit must be < higher limit" );
+      if (lowerLimit.CompareTo( upperLimit ) > 0) throw new ArgumentException( "Lower limit must be < higher limit" );
 
       _limitLow = lowerLimit;
-      _limitHigh = higherLimit;
+      _limitHigh = upperLimit;
     }
 
   }

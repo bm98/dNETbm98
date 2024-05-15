@@ -40,6 +40,10 @@
       this.txTAS = new System.Windows.Forms.TextBox();
       this.btReadEnc = new System.Windows.Forms.Button();
       this.btWriteEnc = new System.Windows.Forms.Button();
+      this.btSendKeyA = new System.Windows.Forms.Button();
+      this.btSendKeyCV = new System.Windows.Forms.Button();
+      this.btJobRunner = new System.Windows.Forms.Button();
+      this.cbxBlocking = new System.Windows.Forms.CheckBox();
       this.SuspendLayout();
       // 
       // button1
@@ -163,11 +167,55 @@
       this.btWriteEnc.UseVisualStyleBackColor = true;
       this.btWriteEnc.Click += new System.EventHandler(this.btWriteEnc_Click);
       // 
+      // btSendKeyA
+      // 
+      this.btSendKeyA.Location = new System.Drawing.Point(463, 325);
+      this.btSendKeyA.Name = "btSendKeyA";
+      this.btSendKeyA.Size = new System.Drawing.Size(94, 42);
+      this.btSendKeyA.TabIndex = 13;
+      this.btSendKeyA.Text = "Send Keys AB";
+      this.btSendKeyA.UseVisualStyleBackColor = true;
+      this.btSendKeyA.Click += new System.EventHandler(this.btSendKeyA_Click);
+      // 
+      // btSendKeyCV
+      // 
+      this.btSendKeyCV.Location = new System.Drawing.Point(563, 325);
+      this.btSendKeyCV.Name = "btSendKeyCV";
+      this.btSendKeyCV.Size = new System.Drawing.Size(94, 42);
+      this.btSendKeyCV.TabIndex = 14;
+      this.btSendKeyCV.Text = "Send Keys CtrlV";
+      this.btSendKeyCV.UseVisualStyleBackColor = true;
+      this.btSendKeyCV.Click += new System.EventHandler(this.btSendKeyCV_Click);
+      // 
+      // btJobRunner
+      // 
+      this.btJobRunner.Location = new System.Drawing.Point(463, 373);
+      this.btJobRunner.Name = "btJobRunner";
+      this.btJobRunner.Size = new System.Drawing.Size(94, 42);
+      this.btJobRunner.TabIndex = 13;
+      this.btJobRunner.Text = "JobRunner";
+      this.btJobRunner.UseVisualStyleBackColor = true;
+      this.btJobRunner.Click += new System.EventHandler(this.btJobRunner_Click);
+      // 
+      // cbxBlocking
+      // 
+      this.cbxBlocking.AutoSize = true;
+      this.cbxBlocking.Location = new System.Drawing.Point(685, 338);
+      this.cbxBlocking.Name = "cbxBlocking";
+      this.cbxBlocking.Size = new System.Drawing.Size(66, 17);
+      this.cbxBlocking.TabIndex = 15;
+      this.cbxBlocking.Text = "blocking";
+      this.cbxBlocking.UseVisualStyleBackColor = true;
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(800, 450);
+      this.Controls.Add(this.cbxBlocking);
+      this.Controls.Add(this.btSendKeyCV);
+      this.Controls.Add(this.btJobRunner);
+      this.Controls.Add(this.btSendKeyA);
       this.Controls.Add(this.btWriteEnc);
       this.Controls.Add(this.btReadEnc);
       this.Controls.Add(this.label3);
@@ -204,6 +252,10 @@
     private System.Windows.Forms.TextBox txTAS;
     private System.Windows.Forms.Button btReadEnc;
     private System.Windows.Forms.Button btWriteEnc;
+    private System.Windows.Forms.Button btSendKeyA;
+    private System.Windows.Forms.Button btSendKeyCV;
+    private System.Windows.Forms.Button btJobRunner;
+    private System.Windows.Forms.CheckBox cbxBlocking;
   }
 }
 

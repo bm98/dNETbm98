@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IniTestClasses.cs" />
@@ -50,6 +51,8 @@
     <Compile Include="T_Colors.cs" />
     <Compile Include="T_Metrics.cs" />
     <Compile Include="T_XMath.cs" />
+    <Compile Include="T_SlopeDet.cs" />
+    <Compile Include="T_Win.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
