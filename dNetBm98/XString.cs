@@ -19,14 +19,38 @@ namespace dNetBm98
     /// <param name="s">The String</param>
     /// <param name="encoding">Encoding of the stream</param>
     /// <returns>An open stream</returns>
-    public static Stream StreamFromString( string s, Encoding encoding )
+    public static Stream AsStream( this string s, Encoding encoding )
     {
       var stream = new MemoryStream( );
-      var writer = new StreamWriter( stream,encoding );
+      var writer = new StreamWriter( stream, encoding );
       writer.Write( s );
       writer.Flush( );
       stream.Position = 0;
       return stream;
+    }
+
+    /// <summary>
+    /// Returns a Stream from a String
+    /// </summary>
+    /// <param name="s">The String</param>
+    /// <param name="encoding">Encoding of the stream</param>
+    /// <returns>An open stream</returns>
+    public static Stream StreamFromString( string s, Encoding encoding ) => s.AsStream( encoding );
+
+
+    /// <summary>
+    /// Returns a String from a Stream
+    /// </summary>
+    /// <param name="s">The Stream</param>
+    /// <param name="encoding">Encoding of the stream</param>
+    /// <returns>An string</returns>
+    public static string AsString( this Stream s, Encoding encoding )
+    {
+      StringBuilder sb = new StringBuilder( );
+      using (var sw = new StreamReader( s, encoding, true )) {
+        sb.Append( sw.ReadToEnd( ) );
+      }
+      return sb.ToString( );
     }
 
     /// <summary>
@@ -35,14 +59,36 @@ namespace dNetBm98
     /// <param name="s">The Stream</param>
     /// <param name="encoding">Encoding of the stream</param>
     /// <returns>An string</returns>
-    public static string StringFromStream( Stream s, Encoding encoding )
+    public static string StringFromStream( Stream s, Encoding encoding ) => s.AsString( encoding );
+
+
+
+    /// <summary>
+    /// Returns the left portion of a string up to n characters
+    /// </summary>
+    /// <param name="str">A string</param>
+    /// <param name="n">Max number of chars to return</param>
+    /// <returns>A string</returns>
+    /// <exception cref="ArgumentOutOfRangeException">for n less than 1</exception>
+    public static string LeftString( this string str, int n )
     {
-      StringBuilder sb = new StringBuilder( );
-      using (var sw = new StreamReader( s, encoding, true )) {
-        sb.Append( sw.ReadToEnd( ) );
-      }
-      return sb.ToString( );
+      // sanity
+      if (n < 1) throw new ArgumentOutOfRangeException( "n cannot be <1" );
+      if (string.IsNullOrEmpty( str )) return str;
+
+      if (str.Length > n) return str.Substring( 0, n );
+      return str;
     }
+
+    /// <summary>
+    /// Returns the left portion of a string up to n characters
+    /// </summary>
+    /// <param name="str">A string</param>
+    /// <param name="n">Max number of chars to return</param>
+    /// <returns>A string</returns>
+    /// <exception cref="ArgumentOutOfRangeException">for n less than 1</exception>
+    public static string LeftStringOf( string str, int n ) => str.LeftString( n );
+
 
   }
 }

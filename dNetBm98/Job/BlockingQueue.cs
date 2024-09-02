@@ -17,6 +17,8 @@ namespace dNetBm98.Job
   {
 
     private readonly Queue<T> _queue;
+    private object _queueLock = new object( );
+
     private readonly SemaphoreSlim _guard;
 
     /// <summary>
@@ -26,6 +28,21 @@ namespace dNetBm98.Job
     {
       _queue = new Queue<T>( );
       _guard = new SemaphoreSlim( 0 );
+    }
+
+    /// <summary>
+    /// Number of items in the queue
+    /// </summary>
+    public int Count => _queue.Count;
+
+    /// <summary>
+    /// Clear the queue
+    /// </summary>
+    public void Clear( )
+    {
+      lock (_queueLock) {
+        _queue.Clear( );
+      }
     }
 
     /// <summary>
@@ -41,7 +58,7 @@ namespace dNetBm98.Job
       bool waitResult = _guard.Wait( timeout_ms );
       if (!waitResult) return false; // timed out
 
-      lock (_queue) {
+      lock (_queueLock) {
         item = _queue.Dequeue( );
       }
       return true;
@@ -61,7 +78,7 @@ namespace dNetBm98.Job
         bool waitResult = _guard.Wait( timeout_ms, cancellationToken );
         if (!waitResult) return false; // timed out
 
-        lock (_queue) {
+        lock (_queueLock) {
           item = _queue.Dequeue( );
         }
         return true;
@@ -77,7 +94,7 @@ namespace dNetBm98.Job
     /// <param name="item"></param>
     public void Enqueue( T item )
     {
-      lock (_queue) {
+      lock (_queueLock) {
         _queue.Enqueue( item );
       }
       _guard.Release( ); // inc sema count

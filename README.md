@@ -8,6 +8,10 @@
 
 ### Extensions for Color (Dimmed color)
 
+### Extensions for String (as Stream and vica versa, LeftString)
+
+### Octal Value Item
+
 ### Unit Conversions (many)
 
 ### Invoker Helper 
@@ -24,10 +28,11 @@
 
 ### Average, Histogram primitives
 
+### Slope and Limit detectors
 
 ---
 
-.NET Framework 4.7.2 Library DLL
+.NET Framework 4.8 Library DLL
 
 Built with VisualStudio 2022 Community free version
 

@@ -53,6 +53,7 @@
     <Compile Include="T_XMath.cs" />
     <Compile Include="T_SlopeDet.cs" />
     <Compile Include="T_Win.cs" />
+    <Compile Include="T_Octal.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">

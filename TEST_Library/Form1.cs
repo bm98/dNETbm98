@@ -171,28 +171,52 @@ namespace TEST_Library
 
     private JobRunner JR = null;
     private WinFormInvoker _invoker;
-    private void JOB( )
-    {
-      _invoker.HandleEvent( ( ) => { RTB.Text += $"Job Done on {DateTime.Now:O}\n"; } );
+    int num = 1;
 
+    private void JOB( string jobID )
+    {
+      _invoker.HandleEvent( ( ) => { RTB.Text += $"Job <{jobID}> Done on {DateTime.Now:O}\n"; } );
+
+    }
+    private void JOB_Fail( string jobID )
+    {
+      _invoker.HandleEvent( ( ) => { RTB.Text += $"FAIL Job <{jobID}> Done on {DateTime.Now:O}\n"; } );
+      throw new Exception( );
     }
 
     private void btJobRunner_Click( object sender, EventArgs e )
     {
-      if (JR == null) JR = new JobRunner( );
+      timer1.Interval= 5000;
+      timer1.Start( );
+      num = 1;
+      if (JR == null) JR = new JobRunner(5 );
       if (_invoker == null) _invoker = new WinFormInvoker( RTB );
 
-
-
-      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
-      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
-      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
-      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
-      //      Thread.Sleep( 5000 );
-      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
-      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
-      JR.AddJob( new JobObj( JOB, $"Job {DateTime.Now:O}" ) );
-
+      JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
+      JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
+      JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
+      JR.AddJob( new JobObj<string>( JOB_Fail, $"{num}", $"Job {num}" ) ); num++;
+      JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
     }
+
+    private void AddMoreJobs( )
+    {
+      JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
+      JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
+      JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
+    }
+    private void timer1_Tick( object sender, EventArgs e )
+    {
+      AddMoreJobs( );
+      timer1.Stop();
+    }
+
+    private void btJobRunnerDispose_Click( object sender, EventArgs e )
+    {
+      JR?.Dispose();
+      JR = null;
+    }
+
+
   }
 }

@@ -1,5 +1,5 @@
-dNetBm98 V 1.0 - Build 1
-(c) M. Burri - 13-Feb-2023
+dNetBm98 V 1.7 - Build 12
+(c) M. Burri - 03-Sep-2024
 
 Contains files:
 
@@ -10,9 +10,10 @@ For Updates and information visit:
 https://github.com/bm98/dNetBm98
 
 
-Scanned for viruses before packing... 
-github@burri-web.org
-
 Changelog:
+
+... see Github commit log
+
+...
 
 V 1.0 initial 

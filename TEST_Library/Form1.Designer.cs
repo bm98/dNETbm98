@@ -27,6 +27,7 @@
     /// </summary>
     private void InitializeComponent( )
     {
+      this.components = new System.ComponentModel.Container();
       this.button1 = new System.Windows.Forms.Button();
       this.RTB = new System.Windows.Forms.RichTextBox();
       this.lblFocus = new System.Windows.Forms.Label();
@@ -44,6 +45,8 @@
       this.btSendKeyCV = new System.Windows.Forms.Button();
       this.btJobRunner = new System.Windows.Forms.Button();
       this.cbxBlocking = new System.Windows.Forms.CheckBox();
+      this.timer1 = new System.Windows.Forms.Timer(this.components);
+      this.btJobRunnerDispose = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // button1
@@ -207,11 +210,26 @@
       this.cbxBlocking.Text = "blocking";
       this.cbxBlocking.UseVisualStyleBackColor = true;
       // 
+      // timer1
+      // 
+      this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+      // 
+      // btJobRunnerDispose
+      // 
+      this.btJobRunnerDispose.Location = new System.Drawing.Point(563, 373);
+      this.btJobRunnerDispose.Name = "btJobRunnerDispose";
+      this.btJobRunnerDispose.Size = new System.Drawing.Size(94, 42);
+      this.btJobRunnerDispose.TabIndex = 16;
+      this.btJobRunnerDispose.Text = "JobRunner Dispose";
+      this.btJobRunnerDispose.UseVisualStyleBackColor = true;
+      this.btJobRunnerDispose.Click += new System.EventHandler(this.btJobRunnerDispose_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(800, 450);
+      this.Controls.Add(this.btJobRunnerDispose);
       this.Controls.Add(this.cbxBlocking);
       this.Controls.Add(this.btSendKeyCV);
       this.Controls.Add(this.btJobRunner);
@@ -256,6 +274,8 @@
     private System.Windows.Forms.Button btSendKeyCV;
     private System.Windows.Forms.Button btJobRunner;
     private System.Windows.Forms.CheckBox cbxBlocking;
+    private System.Windows.Forms.Timer timer1;
+    private System.Windows.Forms.Button btJobRunnerDispose;
   }
 }
 
