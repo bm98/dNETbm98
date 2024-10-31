@@ -54,13 +54,14 @@
     <Compile Include="T_SlopeDet.cs" />
     <Compile Include="T_Win.cs" />
     <Compile Include="T_Octal.cs" />
+    <Compile Include="T_Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>3.1.1</Version>
+      <Version>3.6.1</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>3.1.1</Version>
+      <Version>3.6.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

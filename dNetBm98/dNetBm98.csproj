@@ -74,6 +74,16 @@
     <Compile Include="OutsideLimitDetector.cs" />
     <Compile Include="Job\BlockingQueue.cs" />
     <Compile Include="SlopeDetector.cs" />
+    <Compile Include="Timers\ClockedActionTimer.cs" />
+    <Compile Include="Timers\ClockedTimer.cs" />
+    <Compile Include="Timers\CompareActionTimer.cs" />
+    <Compile Include="Timers\CompareTimer.cs" />
+    <Compile Include="Timers\IntervalActionTimer.cs" />
+    <Compile Include="Timers\IntervalTimer.cs" />
+    <Compile Include="Timers\ITimer.cs" />
+    <Compile Include="Timers\ActionTimer.cs" />
+    <Compile Include="Timers\TimerBase.cs" />
+    <Compile Include="Timers\SimpleTimer.cs" />
     <Compile Include="Units.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Job\JobObj.cs" />
@@ -92,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.22621.2428</Version>
+      <Version>10.0.26100.1742</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

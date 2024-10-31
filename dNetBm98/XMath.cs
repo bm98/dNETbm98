@@ -185,6 +185,35 @@ namespace dNetBm98
 
     #endregion
 
+    #region Min/Max of comparable types
+
+    /// <summary>
+    /// Generic Minimum for comparable types
+    /// </summary>
+    /// <typeparam name="T">A comparable type</typeparam>
+    /// <param name="v1">Value1</param>
+    /// <param name="v2">Value2</param>
+    /// <returns>The lesser of the two values</returns>
+    public static T Min<T>( T v1, T v2 ) where T : IComparable<T>
+    {
+      if (v1.CompareTo( v2 ) < 0) return v1;
+      else return v2;
+    }
+    /// <summary>
+    /// Generic Maximum for comparable types
+    /// </summary>
+    /// <typeparam name="T">A comparable type</typeparam>
+    /// <param name="v1">Value1</param>
+    /// <param name="v2">Value2</param>
+    /// <returns>The larger of the two values</returns>
+    public static T Max<T>( T v1, T v2 ) where T : IComparable<T>
+    {
+      if (v1.CompareTo( v2 ) > 0) return v1;
+      else return v2;
+    }
+
+    #endregion
+
     #region Min/Max of many
 
     /// <summary>

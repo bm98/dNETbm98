@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using static System.Net.Mime.MediaTypeNames;
+
 namespace dNetBm98
 {
   /// <summary>
@@ -44,6 +46,32 @@ namespace dNetBm98
         }
       }
       return false;
+    }
+    /// <summary>
+    /// Checks if a Rectangle intersects with any screen
+    /// </summary>
+    /// <param name="rect">The Rectangle to check</param>
+    /// <returns>True if visible</returns>
+    public static bool IsOnScreen( Rectangle rect )
+    {
+      Screen[] screens = Screen.AllScreens;
+      foreach (Screen screen in screens) {
+        if (screen.WorkingArea.IntersectsWith( rect )) {
+          return true;
+        }
+      }
+      return false;
+    }
+    /// <summary>
+    /// Checks if a rectangle of boxSize with center at location intersects with any screen
+    /// </summary>
+    /// <param name="location">Center location of the rectangle to check</param>
+    /// <param name="boxSize">Box size with location as center point</param>
+    /// <returns>True if visible</returns>
+    public static bool IsOnScreen( Point location, Size boxSize )
+    {
+      Rectangle testR = new Rectangle( new Point( location.X - boxSize.Width / 2, location.Y - boxSize.Height / 2 ), boxSize );
+      return IsOnScreen( testR );
     }
 
     // readout letter from value 0..6 (+1 extra for number conversion issues)
