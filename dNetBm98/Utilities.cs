@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -111,7 +112,6 @@ namespace dNetBm98
       // no starting quote found
       return inp;
     }
-
 
     #region Endianess
 

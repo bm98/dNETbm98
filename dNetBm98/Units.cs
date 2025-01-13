@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -929,6 +930,7 @@ namespace dNetBm98
 
     #endregion
 
+
     /// <summary>
     /// Returns CAS (Calibrated Airspeed) from TAS (True Airspeed) in [kt]
     /// </summary>
@@ -1102,6 +1104,44 @@ namespace dNetBm98
     {
       var tas_kt = TAS_Kt_From_Mach( mach, alt_ft );
       return CAS_From_TAS( tas_kt, alt_ft );
+    }
+
+    /// <summary>
+    /// Convert from Mach at altitude to Groundspeed (kt)
+    /// </summary>
+    /// <param name="mach">Mach no</param>
+    /// <param name="alt_ft">Altitude [ft]</param>
+    /// <returns>GS Speed [kt]</returns>
+    public static double GS_From_Mach( double mach, double alt_ft = 30_000 )
+    {
+      // create a const model for an altitude (BasicOfH start i.e. SetAltRange)
+      var c = new SConst( alt_ft );
+      double a = c.Aof;
+
+      // GS = M * a where GS=GroundSpeed, M=machNo and S=SpeedOfSound at altitude
+
+      var gs_mps = mach * a;
+      return Kt_From_Mps( gs_mps );
+    }
+
+    /// <summary>
+    /// Convert from Mach at altitude to Groundspeed (kt)
+    /// </summary>
+    /// <param name="gs_kt">GS Speed [kt]</param>
+    /// <param name="alt_ft">Altitude [ft]</param>
+    /// <returns>Mach No (at altitude)</returns>
+    public static double Mach_From_GS( double gs_kt, double alt_ft = 30_000 )
+    {
+      // create a const model for an altitude (BasicOfH start i.e. SetAltRange)
+      var c = new SConst( alt_ft );
+      double a = c.Aof;
+      if (a == 0) { return double.NaN; } // sanity exit
+
+      var gs_mps = Mps_From_Kt( gs_kt );
+
+      // M = GS/ a where GS=GroundSpeed, M=machNo and S=SpeedOfSound at altitude
+
+      return gs_mps / a;
     }
 
     #endregion

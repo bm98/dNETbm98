@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace dNetBm98
@@ -12,6 +13,7 @@ namespace dNetBm98
   /// </summary>
   public static class XString
   {
+    #region String TO Stream 
 
     /// <summary>
     /// Returns a Stream from a String
@@ -37,6 +39,9 @@ namespace dNetBm98
     /// <returns>An open stream</returns>
     public static Stream StreamFromString( string s, Encoding encoding ) => s.AsStream( encoding );
 
+    #endregion
+
+    #region String FROM Stream 
 
     /// <summary>
     /// Returns a String from a Stream
@@ -61,6 +66,46 @@ namespace dNetBm98
     /// <returns>An string</returns>
     public static string StringFromStream( Stream s, Encoding encoding ) => s.AsString( encoding );
 
+    #endregion
+
+    #region String FROM File 
+
+    /// <summary>
+    /// Returns a String from a File
+    ///   retries for max 100ms if the file is unavailable
+    /// </summary>
+    /// <param name="fileName">The Filename</param>
+    /// <param name="encoding">Encoding of the stream</param>
+    /// <returns>An string can be empty on error</returns>
+    public static string StringFromFile( string fileName, Encoding encoding )
+    {
+      string retVal = "";
+      if (!File.Exists( fileName )) { return retVal; }
+
+      int retries = 10; // 100ms worst case
+      while (retries-- > 0) {
+        try {
+          using (var ts = File.Open( fileName, FileMode.Open, FileAccess.Read, FileShare.Read )) {
+            retVal = ts.AsString( encoding );
+          }
+          return retVal;
+        }
+        catch (IOException ioex) {
+          _ = ioex; // for the compiler..
+          // retry after a short wait
+          Thread.Sleep( 10 ); // allow the others fileIO to be completed
+        }
+        catch (Exception ex) {
+          _ = ex; // for the compiler..
+          // not an IO exception - just fail
+          return retVal;
+        }
+      }
+
+      return retVal;
+    }
+
+    #endregion
 
 
     /// <summary>
