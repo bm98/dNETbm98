@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace dNetBm98
 {
@@ -231,6 +233,47 @@ namespace dNetBm98
     /// </summary>
     /// <returns>A Mid Point</returns>
     public static PointF MidPoint( this PointF _p, PointF other ) => MidPointOf( _p, other );
+
+    #region Serialization Support
+
+    /// <summary>
+    /// As Serialized string (culture invariant) ({X=1,Y=2})
+    /// </summary>
+    /// <param name="p">A Point</param>
+    /// <returns>A string</returns>
+    public static string AsSerString( this Point p )
+    {
+      return string.Format( CultureInfo.InvariantCulture, "{{X={0},Y={1}}}", p.X, p.Y );
+    }
+    /// <summary>
+    /// As Serialized string (culture invariant) ({X=1.1,Y=2.0})
+    /// </summary>
+    /// <param name="p">A PointF</param>
+    /// <returns>A string</returns>
+    public static string AsSerString( this PointF p )
+    {
+      return string.Format( CultureInfo.InvariantCulture, "{{X={0},Y={1}}}", p.X, p.Y );
+    }
+
+    private static Regex rxPtf = new Regex( @"^\{X=(?<x>[+-]?\d+([.,]\d+)?),Y=(?<y>[+-]?\d+([.,]\d+)?)\}$", RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+    /// <summary>
+    /// Convert a point from ToSerString() back to a point ({X=1,Y=2})
+    /// </summary>
+    /// <param name="ps">A Point.ToSerString() string</param>
+    /// <returns>A Point</returns>
+    public static PointF PointFFromSerString( string ps )
+    {
+      Match match = rxPtf.Match( ps );
+      if (match.Success) {
+        float x = float.Parse( match.Groups["x"].Value );
+        float y = float.Parse( match.Groups["y"].Value );
+        return new PointF( x, y );
+      }
+      return new PointF( 0, 0 );
+    }
+
+    #endregion
+
   }
 }
 

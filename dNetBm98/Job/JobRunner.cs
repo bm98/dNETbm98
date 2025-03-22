@@ -112,7 +112,7 @@ namespace dNetBm98.Job
       _jobQueue.Enqueue( job );
 
       // Monitor Size for now TODO remove or handle overloads
-      if (_jobQueue.Count > 10) {
+      if (_jobQueue.Count > 250) {
         Console.WriteLine( $"JobRunnerQueue Size {_jobQueue.Count}" );
       }
     }

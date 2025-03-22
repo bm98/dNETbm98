@@ -47,6 +47,7 @@
       this.cbxBlocking = new System.Windows.Forms.CheckBox();
       this.timer1 = new System.Windows.Forms.Timer(this.components);
       this.btJobRunnerDispose = new System.Windows.Forms.Button();
+      this.btTool = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // button1
@@ -224,11 +225,23 @@
       this.btJobRunnerDispose.UseVisualStyleBackColor = true;
       this.btJobRunnerDispose.Click += new System.EventHandler(this.btJobRunnerDispose_Click);
       // 
+      // btTool
+      // 
+      this.btTool.Location = new System.Drawing.Point(685, 192);
+      this.btTool.Name = "btTool";
+      this.btTool.Padding = new System.Windows.Forms.Padding(1, 2, 3, 4);
+      this.btTool.Size = new System.Drawing.Size(94, 30);
+      this.btTool.TabIndex = 17;
+      this.btTool.Text = "TOOL";
+      this.btTool.UseVisualStyleBackColor = true;
+      this.btTool.Click += new System.EventHandler(this.btTool_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(800, 450);
+      this.Controls.Add(this.btTool);
       this.Controls.Add(this.btJobRunnerDispose);
       this.Controls.Add(this.cbxBlocking);
       this.Controls.Add(this.btSendKeyCV);
@@ -276,6 +289,7 @@
     private System.Windows.Forms.CheckBox cbxBlocking;
     private System.Windows.Forms.Timer timer1;
     private System.Windows.Forms.Button btJobRunnerDispose;
+    private System.Windows.Forms.Button btTool;
   }
 }
 

@@ -13,7 +13,6 @@ using dNetBm98;
 using dNetBm98.Job;
 using dNetBm98.Win;
 using dNetBm98.IniLib;
-using System.Threading;
 
 
 namespace TEST_Library
@@ -186,10 +185,10 @@ namespace TEST_Library
 
     private void btJobRunner_Click( object sender, EventArgs e )
     {
-      timer1.Interval= 5000;
+      timer1.Interval = 5000;
       timer1.Start( );
       num = 1;
-      if (JR == null) JR = new JobRunner(5 );
+      if (JR == null) JR = new JobRunner( 5 );
       if (_invoker == null) _invoker = new WinFormInvoker( RTB );
 
       JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;
@@ -208,15 +207,22 @@ namespace TEST_Library
     private void timer1_Tick( object sender, EventArgs e )
     {
       AddMoreJobs( );
-      timer1.Stop();
+      timer1.Stop( );
     }
 
     private void btJobRunnerDispose_Click( object sender, EventArgs e )
     {
-      JR?.Dispose();
+      JR?.Dispose( );
       JR = null;
     }
 
+    private void btTool_Click( object sender, EventArgs e )
+    {
+      var p = new Padding( 1, 2, 3, 4 );
+      string ps = p.AsSerString( );
 
+      Padding px = Utilities.PaddingFromSerString( ps );
+
+    }
   }
 }

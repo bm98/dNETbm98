@@ -107,6 +107,12 @@ namespace dNetBm98
 
     #endregion
 
+    /// <summary>
+    /// True when the argument is NOT empty or whitespace
+    /// </summary>
+    /// <param name="s">A string</param>
+    /// <returns>True when NOT empty</returns>
+    public static bool NotEmpty( string s ) => !string.IsNullOrWhiteSpace( s );
 
     /// <summary>
     /// Returns the left portion of a string up to n characters

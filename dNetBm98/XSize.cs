@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace dNetBm98
 {
@@ -112,6 +114,47 @@ namespace dNetBm98
     /// Returns the Center PointF of the SizeF
     /// </summary>
     public static PointF Center( this SizeF _s ) => new PointF( _s.Width / 2f, _s.Height / 2f );
+
+    #region Serialization Support
+
+    /// <summary>
+    /// As Serialized string (culture invariant) ({W=1,H=2})
+    /// </summary>
+    /// <param name="s">A Size</param>
+    /// <returns>A string</returns>
+    public static string AsSerString( this Size s )
+    {
+      return string.Format( CultureInfo.InvariantCulture, "{{W={0},H={1}}}", s.Width, s.Height );
+    }
+    /// <summary>
+    /// As Serialized string (culture invariant) ({W=1.1,H=2.0})
+    /// </summary>
+    /// <param name="s">A SizeF</param>
+    /// <returns>A string</returns>
+    public static string AsSerString( this SizeF s )
+    {
+      return string.Format( CultureInfo.InvariantCulture, "{{W={0},H={1}}}", s.Width, s.Height );
+    }
+
+    private static Regex rxSzf = new Regex( @"^\{W=(?<x>[+-]?\d+([.,]\d+)?),H=(?<y>[+-]?\d+([.,]\d+)?)\}$", RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+    /// <summary>
+    /// Convert a point from ToSerString() back to a point ({X=1,Y=2})
+    /// </summary>
+    /// <param name="ss">A Size.ToSerString() string</param>
+    /// <returns>A Point</returns>
+    public static SizeF SizeFFromSerString( string ss )
+    {
+      Match match = rxSzf.Match( ss );
+      if (match.Success) {
+        float x = float.Parse( match.Groups["x"].Value );
+        float y = float.Parse( match.Groups["y"].Value );
+        return new SizeF( x, y );
+      }
+      return new SizeF( 0, 0 );
+    }
+
+    #endregion
+
 
   }
 

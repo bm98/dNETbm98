@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -112,6 +114,55 @@ namespace dNetBm98
       // no starting quote found
       return inp;
     }
+
+    /// <summary>
+    /// Clean Windows Filename
+    /// </summary>
+    /// <param name="name">A raw filename</param>
+    /// <returns>A Windows Compliant Filename</returns>
+    public static string MakeValidFileName( string name )
+    {
+      // Thank you: https://stackoverflow.com/questions/309485/c-sharp-sanitize-file-name
+
+      string invalidChars = Regex.Escape( new string( Path.GetInvalidFileNameChars( ) ) );
+      string invalidRegStr = string.Format( @"([{0}]*\.+$)|([{0}]+)", invalidChars );
+
+      return Regex.Replace( name, invalidRegStr, "_" );
+    }
+
+    #region Serialization Support
+
+    /// <summary>
+    /// As Serialized string (culture invariant) ({X=1,Y=2})
+    /// </summary>
+    /// <param name="p">A Point</param>
+    /// <returns>A string</returns>
+    public static string AsSerString( this Padding p )
+    {
+      return string.Format( CultureInfo.InvariantCulture, "{{L={0},T={1},R={2},B={3}}}", p.Left, p.Top, p.Right, p.Bottom );
+    }
+
+    private static Regex rxSz = new Regex( @"^\{L=(?<l>[+-]?\d+),T=(?<t>[+-]?\d+),R=(?<r>[+-]?\d+),B=(?<b>[+-]?\d+)\}$", RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+    /// <summary>
+    /// Convert a point from ToSerString() back to a point ({X=1,Y=2})
+    /// </summary>
+    /// <param name="ss">A Size.ToSerString() string</param>
+    /// <returns>A Point</returns>
+    public static Padding PaddingFromSerString( string ss )
+    {
+      Match match = rxSz.Match( ss );
+      if (match.Success) {
+        int l = int.Parse( match.Groups["l"].Value );
+        int t = int.Parse( match.Groups["t"].Value );
+        int r = int.Parse( match.Groups["r"].Value );
+        int b = int.Parse( match.Groups["b"].Value );
+        return new Padding( l, t, r, b );
+      }
+      return new Padding( 0, 0, 0, 0 );
+    }
+
+    #endregion
+
 
     #region Endianess
 
