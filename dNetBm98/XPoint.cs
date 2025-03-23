@@ -237,7 +237,8 @@ namespace dNetBm98
     #region Serialization Support
 
     /// <summary>
-    /// As Serialized string (culture invariant) ({X=1,Y=2})
+    /// As Serialized string ({X=1,Y=2})
+    ///  culture invariant
     /// </summary>
     /// <param name="p">A Point</param>
     /// <returns>A string</returns>
@@ -246,7 +247,8 @@ namespace dNetBm98
       return string.Format( CultureInfo.InvariantCulture, "{{X={0},Y={1}}}", p.X, p.Y );
     }
     /// <summary>
-    /// As Serialized string (culture invariant) ({X=1.1,Y=2.0})
+    /// As Serialized string ({X=1.1,Y=2.0})
+    ///  culture invariant: uses decimal point
     /// </summary>
     /// <param name="p">A PointF</param>
     /// <returns>A string</returns>
@@ -255,20 +257,51 @@ namespace dNetBm98
       return string.Format( CultureInfo.InvariantCulture, "{{X={0},Y={1}}}", p.X, p.Y );
     }
 
-    private static Regex rxPtf = new Regex( @"^\{X=(?<x>[+-]?\d+([.,]\d+)?),Y=(?<y>[+-]?\d+([.,]\d+)?)\}$", RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+    private static Regex rxPtf = new Regex( @"^\{\s*X=(?<x>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*,\s*Y=(?<y>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*\}$",
+          RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+
     /// <summary>
-    /// Convert a point from ToSerString() back to a point ({X=1,Y=2})
+    /// Convert a Point from ToSerString() back to a Point ({X=1,Y=2})
+    ///  culture invariant: uses decimal point
+    ///  
     /// </summary>
     /// <param name="ps">A Point.ToSerString() string</param>
     /// <returns>A Point</returns>
+    public static Point PointFromSerString( string ps )
+    {
+      // never fail
+      try {
+        Match match = rxPtf.Match( ps.Trim( ) );
+        if (match.Success) {
+          int x = (int)Math.Round( float.Parse( match.Groups["x"].Value, CultureInfo.InvariantCulture ) );
+          int y = (int)Math.Round( float.Parse( match.Groups["y"].Value, CultureInfo.InvariantCulture ) );
+          return new Point( x, y );
+        }
+      }
+      catch { }
+
+      return new Point( 0, 0 );
+    }
+
+    /// <summary>
+    /// Convert a PointF from ToSerString() back to a PointF ({X=1,Y=2})
+    ///  culture invariant: uses decimal point
+    /// </summary>
+    /// <param name="ps">A Point.ToSerString() string</param>
+    /// <returns>A PointF</returns>
     public static PointF PointFFromSerString( string ps )
     {
-      Match match = rxPtf.Match( ps );
-      if (match.Success) {
-        float x = float.Parse( match.Groups["x"].Value );
-        float y = float.Parse( match.Groups["y"].Value );
-        return new PointF( x, y );
+      // never fail
+      try {
+        Match match = rxPtf.Match( ps.Trim() );
+        if (match.Success) {
+          float x = float.Parse( match.Groups["x"].Value, CultureInfo.InvariantCulture );
+          float y = float.Parse( match.Groups["y"].Value, CultureInfo.InvariantCulture );
+          return new PointF( x, y );
+        }
       }
+      catch { }
+
       return new PointF( 0, 0 );
     }
 

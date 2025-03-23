@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace dNetBm98
 {
@@ -89,6 +92,83 @@ namespace dNetBm98
     /// Adjusts the location of this rectangle by the specified amount in inverse direction.
     /// </summary>
     public static void OffsetNegative( this Rectangle _r, Point pos ) => _r.Offset( -pos.X, -pos.Y );
+
+    #region Serialization Support
+
+    /// <summary>
+    /// As Serialized string ({X=1,Y=2,W=3,H=4})
+    ///  culture invariant
+    /// </summary>
+    /// <param name="r">A Rectangle</param>
+    /// <returns>A string</returns>
+    public static string AsSerString( this Rectangle r )
+    {
+      return string.Format( CultureInfo.InvariantCulture, "{{X={0},Y={1},W={2},H={3}}}", r.X, r.Y, r.Width, r.Height );
+    }
+    /// <summary>
+    /// As Serialized string ({X=1,Y=2,W=3,H=4})
+    ///  culture invariant
+    /// </summary>
+    /// <param name="r">A RectangleF</param>
+    /// <returns>A string</returns>
+    public static string AsSerString( this RectangleF r )
+    {
+      return string.Format( CultureInfo.InvariantCulture, "{{X={0},Y={1},W={2},H={3}}}", r.X, r.Y, r.Width, r.Height );
+    }
+
+    private static Regex rxRz = new Regex( @"^\{\s*X=(?<x>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*,\s*Y=(?<y>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*,\s*W=(?<w>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*,\s*H=(?<h>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*\}$",
+          RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+
+    /// <summary>
+    /// Convert a Rectangle from ToSerString() back to a Rectangle ({L=1,T=2,R=3,B=4})
+    ///  culture invariant
+    /// </summary>
+    /// <param name="ss">A Rectangle.ToSerString() string</param>
+    /// <returns>A Rectangle</returns>
+    public static Rectangle RectangleFromSerString( string ss )
+    {
+      // never fail
+      try {
+        Match match = rxRz.Match( ss.Trim( ) );
+        if (match.Success) {
+          int x = (int)Math.Round( float.Parse( match.Groups["x"].Value, CultureInfo.InvariantCulture ) );
+          int y = (int)Math.Round( float.Parse( match.Groups["y"].Value, CultureInfo.InvariantCulture ) );
+          int w = (int)Math.Round( float.Parse( match.Groups["w"].Value, CultureInfo.InvariantCulture ) );
+          int h = (int)Math.Round( float.Parse( match.Groups["h"].Value, CultureInfo.InvariantCulture ) );
+          return new Rectangle( x, y, w, h );
+        }
+      }
+      catch { }
+
+      return new Rectangle( 0, 0, 0, 0 );
+    }
+
+    /// <summary>
+    /// Convert a RectangleF from ToSerString() back to a RectangleF ({L=1,T=2,R=3,B=4})
+    ///  culture invariant
+    /// </summary>
+    /// <param name="ss">A RectangleF.ToSerString() string</param>
+    /// <returns>A RectangleF</returns>
+    public static RectangleF RectangleFFromSerString( string ss )
+    {
+      // never fail
+      try {
+        Match match = rxRz.Match( ss.Trim( ) );
+        if (match.Success) {
+          float x = float.Parse( match.Groups["x"].Value, CultureInfo.InvariantCulture );
+          float y = float.Parse( match.Groups["y"].Value, CultureInfo.InvariantCulture );
+          float w = float.Parse( match.Groups["w"].Value, CultureInfo.InvariantCulture );
+          float h = float.Parse( match.Groups["h"].Value, CultureInfo.InvariantCulture );
+          return new RectangleF( x, y, w, h );
+        }
+      }
+      catch { }
+
+      return new RectangleF( 0, 0, 0, 0 );
+    }
+
+    #endregion
+
 
   }
 }

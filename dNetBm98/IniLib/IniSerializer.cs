@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -287,8 +288,7 @@ namespace dNetBm98.IniLib
           else if (cArgs[a] is IniFileSection) {
             sectionAttr = (cArgs[a] as IniFileSection).Name;
           }
-          else if (cArgs[a] is IniFileIgnore) 
-            { continue; } // jump to next
+          else if (cArgs[a] is IniFileIgnore) { continue; } // jump to next
           else {
             // other attribute - we don't care
           }
@@ -308,35 +308,35 @@ namespace dNetBm98.IniLib
           }
           else if (prop.PropertyType == typeof( float )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (float.TryParse( strValue, out float dValue )) { prop.SetValue( ret, dValue ); }
+            if (float.TryParse( strValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( double )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (double.TryParse( strValue, out double dValue )) { prop.SetValue( ret, dValue ); }
+            if (double.TryParse( strValue, NumberStyles.Float, CultureInfo.InvariantCulture, out double dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( int )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (int.TryParse( strValue, out int dValue )) { prop.SetValue( ret, dValue ); }
+            if (int.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out int dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( uint )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (uint.TryParse( strValue, out uint dValue )) { prop.SetValue( ret, dValue ); }
+            if (uint.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( long )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (long.TryParse( strValue, out long dValue )) { prop.SetValue( ret, dValue ); }
+            if (long.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out long dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( ulong )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (ulong.TryParse( strValue, out ulong dValue )) { prop.SetValue( ret, dValue ); }
+            if (ulong.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulong dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( short )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (short.TryParse( strValue, out short dValue )) { prop.SetValue( ret, dValue ); }
+            if (short.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out short dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( ushort )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (ushort.TryParse( strValue, out ushort dValue )) { prop.SetValue( ret, dValue ); }
+            if (ushort.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out ushort dValue )) { prop.SetValue( ret, dValue ); }
           }
 
           else if (prop.PropertyType == typeof( Dictionary<string, string> )) {
@@ -406,8 +406,7 @@ namespace dNetBm98.IniLib
           else if (cArgs[a] is IniFileSection) {
             sectionAttr = (cArgs[a] as IniFileSection).Name;
           }
-          else if (cArgs[a] is IniFileIgnore)
-            { continue; } // jump to next
+          else if (cArgs[a] is IniFileIgnore) { continue; } // jump to next
           else {
             // other attribute - we don't care
           }
@@ -429,35 +428,35 @@ namespace dNetBm98.IniLib
               iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( float )) {
-            string v = ((float)prop.GetValue( graph )).ToString( "G9" );
+            string v = ((float)prop.GetValue( graph )).ToString( "G9", CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( double )) {
-            string v = ((double)prop.GetValue( graph )).ToString( "G17" );
+            string v = ((double)prop.GetValue( graph )).ToString( "G17", CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( int )) {
-            string v = ((int)prop.GetValue( graph )).ToString( );
+            string v = ((int)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( uint )) {
-            string v = ((uint)prop.GetValue( graph )).ToString( );
+            string v = ((uint)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( long )) {
-            string v = ((long)prop.GetValue( graph )).ToString( );
+            string v = ((long)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( ulong )) {
-            string v = ((ulong)prop.GetValue( graph )).ToString( );
+            string v = ((ulong)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( short )) {
-            string v = ((short)prop.GetValue( graph )).ToString( );
+            string v = ((short)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( ushort )) {
-            string v = ((ushort)prop.GetValue( graph )).ToString( );
+            string v = ((ushort)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
             iniFile.SetValue( svSection, svKey, v );
           }
 

@@ -118,7 +118,8 @@ namespace dNetBm98
     #region Serialization Support
 
     /// <summary>
-    /// As Serialized string (culture invariant) ({W=1,H=2})
+    /// As Serialized string ({W=1,H=2})
+    ///  culture invariant
     /// </summary>
     /// <param name="s">A Size</param>
     /// <returns>A string</returns>
@@ -127,7 +128,8 @@ namespace dNetBm98
       return string.Format( CultureInfo.InvariantCulture, "{{W={0},H={1}}}", s.Width, s.Height );
     }
     /// <summary>
-    /// As Serialized string (culture invariant) ({W=1.1,H=2.0})
+    /// As Serialized string ({W=1.1,H=2.0})
+    ///  culture invariant: uses decimal point
     /// </summary>
     /// <param name="s">A SizeF</param>
     /// <returns>A string</returns>
@@ -136,20 +138,50 @@ namespace dNetBm98
       return string.Format( CultureInfo.InvariantCulture, "{{W={0},H={1}}}", s.Width, s.Height );
     }
 
-    private static Regex rxSzf = new Regex( @"^\{W=(?<x>[+-]?\d+([.,]\d+)?),H=(?<y>[+-]?\d+([.,]\d+)?)\}$", RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+    private static Regex rxSzf = new Regex( @"^\{\s*W=(?<w>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*,\s*H=(?<h>[+-]?\d+([.]\d+)?(E[+-]\d+)?)\s*\}$",
+          RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+
     /// <summary>
-    /// Convert a point from ToSerString() back to a point ({X=1,Y=2})
+    /// Convert a Size from ToSerString() back to a Size ({X=1,Y=2})
+    ///  culture invariant: uses decimal point
     /// </summary>
     /// <param name="ss">A Size.ToSerString() string</param>
-    /// <returns>A Point</returns>
+    /// <returns>A Size</returns>
+    public static Size SizeFromSerString( string ss )
+    {
+      // never fail
+      try {
+        Match match = rxSzf.Match( ss.Trim( ) );
+        if (match.Success) {
+          int w = (int)Math.Round( float.Parse( match.Groups["w"].Value, CultureInfo.InvariantCulture ) );
+          int h = (int)Math.Round( float.Parse( match.Groups["h"].Value, CultureInfo.InvariantCulture ) );
+          return new Size( w, h );
+        }
+      }
+      catch { }
+
+      return new Size( 0, 0 );
+    }
+
+    /// <summary>
+    /// Convert a SizeF from ToSerString() back to a SizeF ({X=1,Y=2})
+    ///  culture invariant: uses decimal point
+    /// </summary>
+    /// <param name="ss">A SizeF.ToSerString() string</param>
+    /// <returns>A SizeF</returns>
     public static SizeF SizeFFromSerString( string ss )
     {
-      Match match = rxSzf.Match( ss );
-      if (match.Success) {
-        float x = float.Parse( match.Groups["x"].Value );
-        float y = float.Parse( match.Groups["y"].Value );
-        return new SizeF( x, y );
+      // never fail
+      try {
+        Match match = rxSzf.Match( ss.Trim( ) );
+        if (match.Success) {
+          float w = float.Parse( match.Groups["w"].Value, CultureInfo.InvariantCulture );
+          float h = float.Parse( match.Groups["h"].Value, CultureInfo.InvariantCulture );
+          return new SizeF( w, h );
+        }
       }
+      catch { }
+
       return new SizeF( 0, 0 );
     }
 

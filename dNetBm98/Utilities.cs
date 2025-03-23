@@ -133,31 +133,40 @@ namespace dNetBm98
     #region Serialization Support
 
     /// <summary>
-    /// As Serialized string (culture invariant) ({X=1,Y=2})
+    /// As Serialized string ({L=1,T=2,R=3,B=4})
+    ///  culture invariant
     /// </summary>
-    /// <param name="p">A Point</param>
+    /// <param name="p">A Padding</param>
     /// <returns>A string</returns>
     public static string AsSerString( this Padding p )
     {
       return string.Format( CultureInfo.InvariantCulture, "{{L={0},T={1},R={2},B={3}}}", p.Left, p.Top, p.Right, p.Bottom );
     }
 
-    private static Regex rxSz = new Regex( @"^\{L=(?<l>[+-]?\d+),T=(?<t>[+-]?\d+),R=(?<r>[+-]?\d+),B=(?<b>[+-]?\d+)\}$", RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+    private static Regex rxSz = new Regex( @"^\{\s*L=(?<l>[+-]?\d+)\s*,\s*T=(?<t>[+-]?\d+)\s*,\s*R=(?<r>[+-]?\d+)\s*,\s*B=(?<b>[+-]?\d+)\s*\}$",
+          RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.IgnoreCase );
+
     /// <summary>
-    /// Convert a point from ToSerString() back to a point ({X=1,Y=2})
+    /// Convert a Padding from ToSerString() back to a Padding ({L=1,T=2,R=3,B=4})
+    ///  culture invariant
     /// </summary>
-    /// <param name="ss">A Size.ToSerString() string</param>
-    /// <returns>A Point</returns>
+    /// <param name="ss">A Padding.ToSerString() string</param>
+    /// <returns>A Padding</returns>
     public static Padding PaddingFromSerString( string ss )
     {
-      Match match = rxSz.Match( ss );
-      if (match.Success) {
-        int l = int.Parse( match.Groups["l"].Value );
-        int t = int.Parse( match.Groups["t"].Value );
-        int r = int.Parse( match.Groups["r"].Value );
-        int b = int.Parse( match.Groups["b"].Value );
-        return new Padding( l, t, r, b );
+      // never fail
+      try {
+        Match match = rxSz.Match( ss.Trim( ) );
+        if (match.Success) {
+          int l = int.Parse( match.Groups["l"].Value, CultureInfo.InvariantCulture );
+          int t = int.Parse( match.Groups["t"].Value, CultureInfo.InvariantCulture );
+          int r = int.Parse( match.Groups["r"].Value, CultureInfo.InvariantCulture );
+          int b = int.Parse( match.Groups["b"].Value, CultureInfo.InvariantCulture );
+          return new Padding( l, t, r, b );
+        }
       }
+      catch { }
+
       return new Padding( 0, 0, 0, 0 );
     }
 
