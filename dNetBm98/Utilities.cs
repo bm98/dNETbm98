@@ -115,19 +115,51 @@ namespace dNetBm98
       return inp;
     }
 
+    // invalid device names (DOS times...)
+    private static Regex _rxDeviceNames = new Regex( @"(CON|PRN|AUX|NUL|COM\d?|LPT\d?)",
+                RegexOptions.Compiled | RegexOptions.IgnoreCase );
+    private static string _rxFnameReplace = null;
+
     /// <summary>
-    /// Clean Windows Filename
+    /// Validate a Windows Filename
+    ///  Note: the directory part is not checked
     /// </summary>
-    /// <param name="name">A raw filename</param>
+    /// <param name="fileName">A raw filename</param>
+    /// <returns>True when valid</returns>
+    public static bool IsValidFileName( string fileName )
+    {
+      string validFileName = MakeValidFileName( fileName );
+      return fileName == validFileName;
+    }
+
+    /// <summary>
+    /// Clean and return Windows Filename
+    ///  Note: the directory part is not checked and returned as given
+    /// </summary>
+    /// <param name="fileName">A raw filename</param>
     /// <returns>A Windows Compliant Filename</returns>
-    public static string MakeValidFileName( string name )
+    public static string MakeValidFileName( string fileName )
     {
       // Thank you: https://stackoverflow.com/questions/309485/c-sharp-sanitize-file-name
 
-      string invalidChars = Regex.Escape( new string( Path.GetInvalidFileNameChars( ) ) );
-      string invalidRegStr = string.Format( @"([{0}]*\.+$)|([{0}]+)", invalidChars );
-
-      return Regex.Replace( name, invalidRegStr, "_" );
+      if (_rxFnameReplace == null) {
+        // create when first used
+        char[] cc = Path.GetInvalidFileNameChars( );
+        cc = cc.Union( Path.GetInvalidPathChars( ) ).ToArray( );
+        string invalidChars = Regex.Escape( new string( cc ) );
+        _rxFnameReplace = string.Format( @"([{0}]*\.+$)|([{0}]+)", invalidChars );
+      }
+      // test and replace file name+ext for invalid chars
+      string fNameExt = Path.GetFileName( fileName );
+      fNameExt = Regex.Replace( fNameExt, _rxFnameReplace, "_" );
+      // test and replace the file name for Device names
+      string fName = Path.GetFileNameWithoutExtension( fNameExt );
+      if (_rxDeviceNames.Match( fName ).Success) {
+        fName += "$"; // patch by appending a $
+      }
+      // patch all together
+      string retName = Path.Combine( Path.GetDirectoryName( fileName ), fName + Path.GetExtension( fNameExt ) );
+      return retName;
     }
 
     #region Serialization Support
