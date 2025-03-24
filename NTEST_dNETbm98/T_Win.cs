@@ -56,6 +56,14 @@ namespace NTEST_dNETbm98
       Assert.IsTrue( IsValidFileName( fn ) );
       Assert.AreEqual( fn, MakeValidFileName( fn ) );
 
+      fn = @"BlaBla";
+      Assert.IsTrue( IsValidFileName( fn ) );
+      Assert.AreEqual( fn, MakeValidFileName( fn ) );
+
+      fn = @"C:\path\BlaBla";
+      Assert.IsTrue( IsValidFileName( fn ) );
+      Assert.AreEqual( fn, MakeValidFileName( fn ) );
+
       fn = @"C:\path\Bla.bla";
       Assert.IsTrue( IsValidFileName( fn ) );
       Assert.AreEqual( fn, MakeValidFileName( fn ) );
@@ -113,11 +121,24 @@ namespace NTEST_dNETbm98
       Assert.IsFalse( IsValidFileName( @"C:\Path\CON.ext" ) );
       Assert.AreEqual( @"C:\Path\CON$.ext", MakeValidFileName( @"C:\Path\CON.ext" ) );
 
+      Assert.AreEqual( @"NUL$.gz", MakeValidFileName( @"NUL.gz" ) );
+      Assert.AreEqual( @"NUL$.tar.gz", MakeValidFileName( @"NUL.tar.gz" ) );
+
+
       Assert.IsFalse( IsValidFileName( @"C:\Path\Invalid*Name.ext" ) );
       Assert.AreEqual( @"C:\Path\Invalid_Name.ext", MakeValidFileName( @"C:\Path\Invalid*Name.ext" ) );
 
       Assert.IsFalse( IsValidFileName( @"C:\Path\Valid$Name.Invalid*ext" ) );
       Assert.AreEqual( @"C:\Path\Valid$Name.Invalid_ext", MakeValidFileName( @"C:\Path\Valid$Name.Invalid*ext" ) );
+
+      Assert.IsFalse( IsValidFileName( @"File." ) );
+      Assert.AreEqual( @"File._", MakeValidFileName( @"File." ) );
+
+      Assert.IsFalse( IsValidFileName( @"File.ext " ) ); // ends with a blank
+      Assert.AreEqual( @"File.ext", MakeValidFileName( @"File.ext " ) );
+
+      Assert.IsFalse( IsValidFileName( @"D:\path\File.ext " ) ); // ends with a blank
+      Assert.AreEqual( @"D:\path\File.ext", MakeValidFileName( @"D:\path\File.ext " ) );
 
     }
 

@@ -116,7 +116,14 @@ namespace dNetBm98
     }
 
     // invalid device names (DOS times...)
-    private static Regex _rxDeviceNames = new Regex( @"(CON|PRN|AUX|NUL|COM\d?|LPT\d?)",
+    /*
+      CON, PRN, AUX, NUL, 
+      COM0, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9, COM¹, COM², COM³, 
+      LPT0, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, LPT9, LPT¹, LPT², and LPT³. 
+      Also avoid these names followed immediately by an extension; 
+      for example, NUL.txt and NUL.tar.gz are both equivalent to NUL. For more information     
+     */
+    private static Regex _rxDeviceNames = new Regex( @"(^(CON|PRN|AUX|NUL|COM(\d|¹|²|³)?|LPT(\d|¹|²|³)?)$)",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase );
     private static string _rxFnameReplace = null;
 
@@ -132,6 +139,30 @@ namespace dNetBm98
       return fileName == validFileName;
     }
 
+    // returns the filename before ANY extension (before first dot)
+    private static string GetFileNameWithoutAnyExtension( string fileName )
+    {
+      int dotPos = fileName.IndexOf( "." );
+      if (dotPos == -1) {
+        return fileName; // no dot
+      }
+      else {
+        return fileName.Substring( 0, dotPos );
+      }
+    }
+
+    // returns any extension (including first dot)
+    private static string GetAnyExtension( string fileName )
+    {
+      int dotPos = fileName.IndexOf( "." );
+      if (dotPos == -1) {
+        return ""; // no dot
+      }
+      else {
+        return fileName.Substring( dotPos );
+      }
+    }
+
     /// <summary>
     /// Clean and return Windows Filename
     ///  Note: the directory part is not checked and returned as given
@@ -145,21 +176,32 @@ namespace dNetBm98
       if (_rxFnameReplace == null) {
         // create when first used
         char[] cc = Path.GetInvalidFileNameChars( );
-        cc = cc.Union( Path.GetInvalidPathChars( ) ).ToArray( );
+        //cc = cc.Union( Path.GetInvalidPathChars( ) ).ToArray( );
         string invalidChars = Regex.Escape( new string( cc ) );
-        _rxFnameReplace = string.Format( @"([{0}]*\.+$)|([{0}]+)", invalidChars );
+        _rxFnameReplace = string.Format( @"([{0}]+)", invalidChars );
       }
       // test and replace file name+ext for invalid chars
       string fNameExt = Path.GetFileName( fileName );
-      fNameExt = Regex.Replace( fNameExt, _rxFnameReplace, "_" );
+      fNameExt = Regex.Replace( fNameExt, _rxFnameReplace, "_", RegexOptions.Singleline | RegexOptions.CultureInvariant );
+
       // test and replace the file name for Device names
-      string fName = Path.GetFileNameWithoutExtension( fNameExt );
+      string fName = GetFileNameWithoutAnyExtension( fNameExt );
       if (_rxDeviceNames.Match( fName ).Success) {
-        fName += "$"; // patch by appending a $
+        fName += "$"; // patch by appending a $ to the file (CON[.something.all] -> CON$[.something.all])
       }
+
       // patch all together
-      string retName = Path.Combine( Path.GetDirectoryName( fileName ), fName + Path.GetExtension( fNameExt ) );
-      return retName;
+      string retName = Path.Combine( Path.GetDirectoryName( fileName ), fName + GetAnyExtension( fNameExt ) );
+      // check for trailing dot
+      /*
+          Do not end a file or directory name with a space or a period. 
+          Although the underlying file system may support such names, the Windows shell and user interface does not. 
+          However, it is acceptable to specify a period as the first character of a name. For example, ".temp".       
+       */
+      if (retName.EndsWith( "." )) {
+        retName += "_"; // patch by appending a $ (bla. -> bla._)
+      }
+      return retName.Trim( ); // remove spaces around if there are
     }
 
     #region Serialization Support
