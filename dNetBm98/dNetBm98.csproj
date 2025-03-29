@@ -93,6 +93,7 @@
     <Compile Include="Win\WinUser.cs" />
     <Compile Include="Win\WinVirtualKeys.cs" />
     <Compile Include="XColor.cs" />
+    <Compile Include="XIO.cs" />
     <Compile Include="XMath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XPoint.cs" />

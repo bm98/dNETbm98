@@ -4,12 +4,12 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using static System.Net.Mime.MediaTypeNames;
 
 namespace dNetBm98
 {
@@ -203,6 +203,87 @@ namespace dNetBm98
       }
       return retName.Trim( ); // remove spaces around if there are
     }
+
+    #region Culture
+
+    /// <summary>
+    /// Modify and return a culture with (uniform) decimal points and semi as list seperator
+    /// </summary>
+    /// <param name="culture">Reference culture to modify</param>
+    /// <returns>Modified culture</returns>
+    public static CultureInfo SetUniformat( CultureInfo culture )
+    {
+      if (culture == null) return CultureInfo.InvariantCulture;
+      // change props prone to IO mismatches
+      culture.NumberFormat.NumberDecimalDigits = CultureInfo.InvariantCulture.NumberFormat.NumberDecimalDigits;
+      culture.NumberFormat.NumberDecimalSeparator = CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator;
+      culture.NumberFormat.NumberGroupSeparator = CultureInfo.InvariantCulture.NumberFormat.NumberGroupSeparator;
+      culture.NumberFormat.NumberGroupSizes = CultureInfo.InvariantCulture.NumberFormat.NumberGroupSizes;
+      culture.NumberFormat.NumberNegativePattern = CultureInfo.InvariantCulture.NumberFormat.NumberNegativePattern;
+
+      culture.NumberFormat.PercentSymbol = CultureInfo.InvariantCulture.NumberFormat.PercentSymbol;
+      culture.NumberFormat.PerMilleSymbol = CultureInfo.InvariantCulture.NumberFormat.PerMilleSymbol;
+      culture.NumberFormat.PercentDecimalDigits = CultureInfo.InvariantCulture.NumberFormat.PercentDecimalDigits;
+      culture.NumberFormat.PercentDecimalSeparator = CultureInfo.InvariantCulture.NumberFormat.PercentDecimalSeparator;
+      culture.NumberFormat.PercentGroupSeparator = CultureInfo.InvariantCulture.NumberFormat.PercentGroupSeparator;
+      culture.NumberFormat.PercentGroupSizes = CultureInfo.InvariantCulture.NumberFormat.PercentGroupSizes;
+      culture.NumberFormat.PercentPositivePattern = CultureInfo.InvariantCulture.NumberFormat.PercentPositivePattern;
+      culture.NumberFormat.PercentNegativePattern = CultureInfo.InvariantCulture.NumberFormat.PercentNegativePattern;
+
+      // change list separator to semi
+      culture.TextInfo.ListSeparator = ";"; // CultureInfo.InvariantCulture.TextInfo.ListSeparator; invariant is ",";
+      return culture;
+    }
+
+    /// <summary>
+    /// Set the Default Culture used for this application and also for threads created
+    /// </summary>
+    /// <param name="culture">CultureInfo to be used</param>
+    public static void SetApplicationDefaultCulture( CultureInfo culture )
+    {
+      CultureInfo.DefaultThreadCurrentCulture = culture;
+      CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+      Thread.CurrentThread.CurrentCulture = culture;
+      Thread.CurrentThread.CurrentUICulture = culture;
+    }
+
+    /// <summary>
+    /// Set the App Culture used modified to Uniform number and list format (invariant numbers and semi as list)
+    /// Starting from the given culture
+    /// </summary>
+    /// <param name="culture">CultureInfo to be used, if null, invariantCulture is used</param>
+    public static void SetApplicationUniformat( CultureInfo culture )
+    {
+      if (culture == null) {
+        culture = CultureInfo.InvariantCulture;
+      }
+      culture = SetUniformat( culture );
+
+      CultureInfo.DefaultThreadCurrentCulture = culture;
+      CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+      Thread.CurrentThread.CurrentCulture = culture;
+      Thread.CurrentThread.CurrentUICulture = culture;
+    }
+
+    /// <summary>
+    /// Set the Thread Culture used modified to Uniform number and list format (invariant numbers and semi as list)
+    /// Starting from the given culture
+    /// </summary>
+    /// <param name="culture">CultureInfo to be used, if null, invariantCulture is used</param>
+    public static void SetThreadUniformat( CultureInfo culture )
+    {
+      if (culture == null) {
+        culture = CultureInfo.InvariantCulture;
+      }
+      culture = SetUniformat( culture );
+
+      Thread.CurrentThread.CurrentCulture = culture;
+      Thread.CurrentThread.CurrentUICulture = culture;
+    }
+
+    #endregion
 
     #region Serialization Support
 

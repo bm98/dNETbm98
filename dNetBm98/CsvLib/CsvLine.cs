@@ -22,7 +22,7 @@ namespace dNetBm98.CsvLib
     public int LineNo { get => m_lineNo; }
 
     /// <summary>
-    /// Column Separator Charachter
+    /// Column Separator Character
     ///  defaults to the local List Separator
     /// </summary>
     public char Separator { get; set; }

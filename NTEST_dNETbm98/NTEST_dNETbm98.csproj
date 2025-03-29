@@ -56,6 +56,7 @@
     <Compile Include="T_Octal.cs" />
     <Compile Include="T_Timer.cs" />
     <Compile Include="T_Serializer.cs" />
+    <Compile Include="T_Global.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">

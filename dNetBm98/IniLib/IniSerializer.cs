@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using static dNetBm98.IniLib.MSiniFile;
+using static dNetBm98.XIO;
 
 namespace dNetBm98.IniLib
 {
@@ -308,35 +309,35 @@ namespace dNetBm98.IniLib
           }
           else if (prop.PropertyType == typeof( float )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (float.TryParse( strValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out float dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( double )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (double.TryParse( strValue, NumberStyles.Float, CultureInfo.InvariantCulture, out double dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out double dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( int )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (int.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out int dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out int dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( uint )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (uint.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out uint dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( long )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (long.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out long dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out long dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( ulong )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (ulong.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulong dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out ulong dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( short )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (short.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out short dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out short dValue )) { prop.SetValue( ret, dValue ); }
           }
           else if (prop.PropertyType == typeof( ushort )) {
             var strValue = iniFile.ItemValue( svSection, svKey, true );
-            if (ushort.TryParse( strValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out ushort dValue )) { prop.SetValue( ret, dValue ); }
+            if (XIO.TryParseX( strValue, out ushort dValue )) { prop.SetValue( ret, dValue ); }
           }
 
           else if (prop.PropertyType == typeof( Dictionary<string, string> )) {
@@ -428,35 +429,35 @@ namespace dNetBm98.IniLib
               iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( float )) {
-            string v = ((float)prop.GetValue( graph )).ToString( "G9", CultureInfo.InvariantCulture );
+            string v = ((float)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( double )) {
-            string v = ((double)prop.GetValue( graph )).ToString( "G17", CultureInfo.InvariantCulture );
+            string v = ((double)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( int )) {
-            string v = ((int)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
+            string v = ((int)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( uint )) {
-            string v = ((uint)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
+            string v = ((uint)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( long )) {
-            string v = ((long)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
+            string v = ((long)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( ulong )) {
-            string v = ((ulong)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
+            string v = ((ulong)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( short )) {
-            string v = ((short)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
+            string v = ((short)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
           else if (prop.PropertyType == typeof( ushort )) {
-            string v = ((ushort)prop.GetValue( graph )).ToString( CultureInfo.InvariantCulture );
+            string v = ((ushort)prop.GetValue( graph )).ToStringX( );
             iniFile.SetValue( svSection, svKey, v );
           }
 
