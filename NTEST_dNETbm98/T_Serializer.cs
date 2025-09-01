@@ -5,6 +5,7 @@ using System.Drawing;
 
 using dNetBm98;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace NTEST_dNETbm98
 {
@@ -15,7 +16,19 @@ namespace NTEST_dNETbm98
   [TestClass]
   public class T_Serializer
   {
+    // set on init
+    private static CultureInfo _localCulture = CultureInfo.CurrentCulture;
+    // test culture which does have a number format which is not using decimal points
+    private void SetTestCulture( )
+    {
+      CultureInfo.CurrentCulture = new CultureInfo( "it_it" ); // uses comma as decimal point
+    }
 
+    // test culture which does have a number format which is not using decimal points
+    private void ResetCulture( )
+    {
+      CultureInfo.CurrentCulture = new CultureInfo( _localCulture.LCID ); // uses comma as decimal point
+    }
 
     [TestMethod]
     public void Test_XPoint( )
@@ -209,6 +222,45 @@ namespace NTEST_dNETbm98
       Assert.AreEqual( new Padding( ), Utilities.PaddingFromSerString( "{L=1,T=2,R=- 1,B=2}" ) );// invalid negative must return Padding(0,0,0,0)
     }
 
+    /// <summary>
+    /// Test if it works with a culture using , as decimal separator
+    /// </summary>
+    [TestMethod]
+    public void Test_Global( )
+    {
+      T_GlobalTools.SetTestCulture( );
 
+      PointF p = new PointF( );
+      PointF px = new PointF( );
+      string str = "";
+
+      p = new PointF( 1.125f, 2.874f );
+      str = p.AsSerString( );
+      Assert.AreEqual( "{X=1.125,Y=2.874}", str );
+      px = XPoint.PointFFromSerString( str );
+      Assert.AreEqual( p, px );
+
+      SizeF s = new SizeF( );
+      SizeF sx = new SizeF( );
+
+      s = new SizeF( 1.125f, 2.874f );
+      str = s.AsSerString( );
+      Assert.AreEqual( "{W=1.125,H=2.874}", str );
+      sx = XSize.SizeFFromSerString( str );
+      Assert.AreEqual( s, sx );
+
+
+      RectangleF r = new RectangleF( );
+      RectangleF rx = new RectangleF( );
+
+      r = new RectangleF( 1.125f, 2.874f, 10.9f, 20.2f );
+      str = r.AsSerString( );
+      Assert.AreEqual( "{X=1.125,Y=2.874,W=10.9,H=20.2}", str );
+      rx = XRect.RectangleFFromSerString( str );
+      Assert.AreEqual( r, rx );
+
+
+      T_GlobalTools.ResetCulture( );
+    }
   }
 }

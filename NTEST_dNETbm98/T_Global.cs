@@ -9,22 +9,34 @@ using static dNetBm98.XIO;
 
 namespace NTEST_dNETbm98
 {
+  public static class T_GlobalTools
+  {
+    // set on init
+    private static CultureInfo _localCulture = CultureInfo.CurrentCulture;
+    // test culture which does have a number format which is not using decimal points
+    public static void SetTestCulture( )
+    {
+      CultureInfo.CurrentCulture = new CultureInfo( "it_it" ); // uses comma as decimal point
+    }
+
+    // test culture which does have a number format which is not using decimal points
+    public static void ResetCulture( )
+    {
+      CultureInfo.CurrentCulture = new CultureInfo( _localCulture.LCID ); // uses comma as decimal point
+    }
+  }
+
   /// <summary>
   /// Test Globalization (invariant culture) support
   /// </summary>
   [TestClass]
   public class T_Global
   {
-    // test culture which does have a number format which is not using decimal points
-    private void SetTestCulture( )
-    {
-      CultureInfo.CurrentCulture = new CultureInfo( "it_it" ); // uses comma as decimal point
-    }
 
     [TestMethod]
     public void Test_CultureSetup( )
     {
-      SetTestCulture( );
+      T_GlobalTools.SetTestCulture( );
 
       double d = 1.1;
 
@@ -42,6 +54,8 @@ namespace NTEST_dNETbm98
       Assert.AreEqual( ".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator );
       Assert.AreEqual( "1.1", d.ToString( ) ); // test if dot is used by .net
 
+
+      T_GlobalTools.ResetCulture( );
     }
 
     /// <summary>
@@ -50,7 +64,7 @@ namespace NTEST_dNETbm98
     [TestMethod]
     public void Test_BasicNumbers( )
     {
-      SetTestCulture( ); // change to non decimal point culture
+      T_GlobalTools.SetTestCulture( ); // change to non decimal point culture
 
       Assert.AreEqual( "1,1", (1.1).ToString( ) ); // test if comma is used by .net default formatters
 
@@ -149,6 +163,7 @@ namespace NTEST_dNETbm98
       Assert.AreEqual( true, TryParseX( "-1123", out l ) ); Assert.AreEqual( (long)-1123, l );
 
 
+      T_GlobalTools.ResetCulture( );
     }
 
 

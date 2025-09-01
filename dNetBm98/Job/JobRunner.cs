@@ -17,6 +17,8 @@ namespace dNetBm98.Job
   public class JobRunner : IDisposable
   {
     private const int c_Timeout_ms = 1000;
+    // max for parallel executing jobs
+    private const int c_maxParallel = 50;
 
     private readonly BlockingQueue<JobObjBase> _jobQueue = null;
     private readonly Task[] _task = null;
@@ -24,15 +26,18 @@ namespace dNetBm98.Job
     private readonly CancellationToken _token;
 
     private bool _isRunning = false;
+    private int _monitorLowerLimit;
 
     /// <summary>
     /// cTor:
     /// </summary>
-    /// <param name="numThreads">Number of parallel threads to run (default=1, max=10)</param>
-    public JobRunner( int numThreads = 1 )
+    /// <param name="numThreads">Number of parallel threads to run (default=1, max=50)</param>
+    /// <param name="monitorLimit">Monitoring limit (above we complain through Console)</param>
+    public JobRunner( int numThreads = 1 ,int monitorLimit=250)
     {
       // sanity
-      int nThreads = numThreads > 0 ? numThreads : (numThreads <= 10) ? numThreads : 1;
+      int nThreads = numThreads > 0 ? numThreads : (numThreads <= c_maxParallel) ? numThreads : 1;
+      _monitorLowerLimit= monitorLimit;
 
       _task = new Task[nThreads];
       _jobQueue = new BlockingQueue<JobObjBase>( );
@@ -41,6 +46,11 @@ namespace dNetBm98.Job
       _token = _cancellationTokenSource.Token;
       _token.ThrowIfCancellationRequested( );
     }
+
+    /// <summary>
+    /// Number of items in the job queue
+    /// </summary>
+    public int JobQueueCount=> _jobQueue.Count;
 
     // start or restart the task if it is not yet created or terminated
     // the task will run until disposed
@@ -112,7 +122,7 @@ namespace dNetBm98.Job
       _jobQueue.Enqueue( job );
 
       // Monitor Size for now TODO remove or handle overloads
-      if (_jobQueue.Count > 250) {
+      if (_jobQueue.Count > _monitorLowerLimit) {
         Console.WriteLine( $"JobRunnerQueue Size {_jobQueue.Count}" );
       }
     }
