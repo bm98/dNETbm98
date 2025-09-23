@@ -8,7 +8,9 @@ namespace dNetBm98
   public static class XMath
   {
     private const double R2D = 180.0 / Math.PI;
+    private const decimal R2Dm = 180.0m / (decimal)Math.PI;
     private const double D2R = Math.PI / 180.0;
+    private const decimal D2Rm = (decimal)Math.PI / 180.0m;
 
     #region Rounding
 
@@ -34,9 +36,48 @@ namespace dNetBm98
     }
 
 
+    /// <summary>
+    /// Rounds to the quant given
+    /// i.e. RoundInt( 12345, 100) = 12300
+    /// </summary>
+    public static int AsRoundInt( this decimal x, int quant ) => (quant > 0) ? (int)Math.Round( x / quant ) * quant : int.MinValue;
+    /// <summary>
+    /// Rounds to the quant given
+    /// i.e. RoundInt( 12345, 100) = 12300
+    /// </summary>
+    public static int RoundInt( decimal x, int quant ) => x.AsRoundInt( quant );
+
+    /// <summary>
+    /// Returns a Rounded Up integer
+    /// </summary>
+    /// <param name="value">double value to be rounded to an integer</param>
+    /// <returns>An Int</returns>
+    public static int RoundUp( decimal value )
+    {
+      return (int)Math.Round( value, mode: MidpointRounding.AwayFromZero );
+    }
+
+
     #endregion
 
     #region Comparing values to be within an Epsilon
+
+    /// <summary>
+    /// Returns wether or not 2 values are closer together than epsilon
+    /// </summary>
+    /// <param name="v1">Value 1</param>
+    /// <param name="v2">Value 2</param>
+    /// <param name="epsilon">Closeness value (> double.Epsilon)</param>
+    /// <returns>True if the the values are closer together than epsilon</returns>
+    public static bool AboutEqual( decimal v1, decimal v2, decimal epsilon )
+    {
+      // sanity
+      if (epsilon <= 1e-27m) throw new ArgumentException( "Epsilon minimum is 1e-27m" );
+
+      if (v1.Equals( v2 )) return true; // trivial
+
+      return Math.Abs( v1 - v2 ) < epsilon;
+    }
 
     /// <summary>
     /// Returns wether or not 2 values are closer together than epsilon
@@ -121,6 +162,17 @@ namespace dNetBm98
 
     #region Clip (MinMax)
 
+    // decimal
+
+    /// <summary>
+    /// Returns MinMax value of the argument and the borders (inclusive)
+    /// </summary>
+    public static decimal Clip( this decimal _dec, decimal min, decimal max ) => Math.Max( Math.Min( _dec, max ), min );
+    /// <summary>
+    /// Clips the variable by the Min, Max argument
+    /// </summary>
+    public static decimal Clip( this ref decimal _dec, decimal mMin, decimal mMax ) => _dec = _dec.Clip( min: mMin, max: mMax );
+
     // double
 
     /// <summary>
@@ -172,17 +224,6 @@ namespace dNetBm98
     /// </summary>
     public static int Clip( this ref int _i, int lMin, int lMax ) => _i = _i.Clip( min: lMin, max: lMax );
 
-    // decimal
-
-    /// <summary>
-    /// Returns MinMax value of the argument and the borders (inclusive)
-    /// </summary>
-    public static decimal Clip( this decimal _dec, decimal min, decimal max ) => Math.Max( Math.Min( _dec, max ), min );
-    /// <summary>
-    /// Clips the variable by the Min, Max argument
-    /// </summary>
-    public static decimal Clip( this ref decimal _dec, decimal mMin, decimal mMax ) => _dec = _dec.Clip( min: mMin, max: mMax );
-
     #endregion
 
     #region Min/Max of comparable types
@@ -219,6 +260,18 @@ namespace dNetBm98
     /// <summary>
     /// Returns Max of the arguments
     /// </summary>
+    public static decimal Max( decimal val1, decimal val2, decimal val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static double Max( double val1, double val2, double val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
+    public static float Max( float val1, float val2, float val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
+    /// <summary>
+    /// Returns Max of the arguments
+    /// </summary>
     public static long Max( long val1, long val2, long val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
     /// <summary>
     /// Returns Max of the arguments
@@ -228,16 +281,20 @@ namespace dNetBm98
     /// Returns Max of the arguments
     /// </summary>
     public static short Max( short val1, short val2, short val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
-    /// <summary>
-    /// Returns Max of the arguments
-    /// </summary>
-    public static double Max( double val1, double val2, double val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
-    /// <summary>
-    /// Returns Max of the arguments
-    /// </summary>
-    public static float Max( float val1, float val2, float val3 ) => Math.Max( val1, Math.Max( val2, val3 ) );
 
 
+    /// <summary>
+    /// Returns Min of the arguments
+    /// </summary>
+    public static decimal Min( decimal val1, decimal val2, decimal val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
+    /// <summary>
+    /// Returns Min of the arguments
+    /// </summary>
+    public static double Min( double val1, double val2, double val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
+    /// <summary>
+    /// Returns Min of the arguments
+    /// </summary>
+    public static float Min( float val1, float val2, float val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
     /// <summary>
     /// Returns Min of the arguments
     /// </summary>
@@ -250,14 +307,6 @@ namespace dNetBm98
     /// Returns Max of the arguments
     /// </summary>
     public static short Min( short val1, short val2, short val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
-    /// <summary>
-    /// Returns Min of the arguments
-    /// </summary>
-    public static double Min( double val1, double val2, double val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
-    /// <summary>
-    /// Returns Min of the arguments
-    /// </summary>
-    public static float Min( float val1, float val2, float val3 ) => Math.Min( val1, Math.Min( val2, val3 ) );
 
     #endregion
 
@@ -266,8 +315,16 @@ namespace dNetBm98
     /// <summary>
     /// Returns the angle in radians
     /// </summary>
-    public static double ToRadians( this double angleInDegree ) => angleInDegree * D2R;
+    public static decimal ToRadians( this decimal angleInDegree ) => angleInDegree * D2Rm;
+    /// <summary>
+    /// Returns the angle in Degrees
+    /// </summary>
+    public static decimal ToDegrees( this decimal angleInRadians ) => angleInRadians * R2Dm;
 
+    /// <summary>
+    /// Returns the angle in radians
+    /// </summary>
+    public static double ToRadians( this double angleInDegree ) => angleInDegree * D2R;
     /// <summary>
     /// Returns the angle in Degrees
     /// </summary>

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
-using System.Drawing.Text;
-using System.Collections.Concurrent;
 
 namespace dNetBm98.Job
 {
@@ -25,22 +20,41 @@ namespace dNetBm98.Job
     private readonly CancellationTokenSource _cancellationTokenSource = null;
     private readonly CancellationToken _token;
 
+    private bool _usingThreadPool = false;
     private bool _isRunning = false;
     private int _monitorLowerLimit;
 
+    private int _maxTPWorkerThreads = 0;
+    private int _maxTPIOThreads = 0;
+
     /// <summary>
-    /// cTor:
+    /// cTor: Using the ThreadPool with default properties and algorithms
+    /// </summary>
+    public JobRunner( )
+    {
+      _usingThreadPool = true;
+    }
+
+    /// <summary>
+    /// cTor:  Using our own Threading and Pooling
     /// </summary>
     /// <param name="numThreads">Number of parallel threads to run (default=1, max=50)</param>
     /// <param name="monitorLimit">Monitoring limit (above we complain through Console)</param>
-    public JobRunner( int numThreads = 1 ,int monitorLimit=250)
+    public JobRunner( int numThreads = 1, int monitorLimit = 250 )
     {
       // sanity
       int nThreads = numThreads > 0 ? numThreads : (numThreads <= c_maxParallel) ? numThreads : 1;
-      _monitorLowerLimit= monitorLimit;
+      _monitorLowerLimit = monitorLimit;
+      _usingThreadPool = false;
 
-      _task = new Task[nThreads];
-      _jobQueue = new BlockingQueue<JobObjBase>( );
+      if (_usingThreadPool) {
+        ThreadPool.GetMaxThreads( out _maxTPWorkerThreads, out _maxTPIOThreads );
+      }
+      else {
+        // using our queue
+        _task = new Task[nThreads];
+        _jobQueue = new BlockingQueue<JobObjBase>( );
+      }
 
       _cancellationTokenSource = new CancellationTokenSource( );
       _token = _cancellationTokenSource.Token;
@@ -48,28 +62,47 @@ namespace dNetBm98.Job
     }
 
     /// <summary>
-    /// Number of items in the job queue
+    /// Number of items in the job queue pending execution
+    ///  only when not using ThreadPool else -1 (unknown)
     /// </summary>
-    public int JobQueueCount=> _jobQueue.Count;
+    public int JobQueueCount {
+      get {
+        if (_usingThreadPool) {
+          return -1;
+        }
+        else {
+          return _jobQueue.Count;
+        }
+      }
+    }
 
     // start or restart the task if it is not yet created or terminated
     // the task will run until disposed
     private void StartJobRunner( )
     {
-      if (_task[0] == null) {
-        // lazy start
-        for (int i = 0; i < _task.Length; i++) {
-          _task[i] = Task.Run( ( ) => { JobRunnerTask( i ); }, _token );
-        }
+      if (_usingThreadPool) {
+        // ThreadPool is per process and always running
         _isRunning = true;
       }
-      if (_isRunning) {
-        for (int i = 0; i < _task.Length; i++) {
-          if (_task[i].IsFaulted) {
-            // restart if no longer running
-            _task[i].Dispose( );
+
+      else {
+        // our own pooling
+        if (_task[0] == null) {
+          // lazy start
+          for (int i = 0; i < _task.Length; i++) {
             _task[i] = Task.Run( ( ) => { JobRunnerTask( i ); }, _token );
-            Console.WriteLine( $"JobRunner:  task[{i}] RESTARTED" );
+          }
+          _isRunning = true;
+        }
+
+        if (_isRunning) {
+          for (int i = 0; i < _task.Length; i++) {
+            if (_task[i].IsFaulted) {
+              // restart if no longer running
+              _task[i].Dispose( );
+              _task[i] = Task.Run( ( ) => { JobRunnerTask( i ); }, _token );
+              Console.WriteLine( $"JobRunner:  task[{i}] RESTARTED" );
+            }
           }
         }
       }
@@ -119,12 +152,18 @@ namespace dNetBm98.Job
     {
       StartJobRunner( ); // latest to start the runner
 
-      _jobQueue.Enqueue( job );
-
-      // Monitor Size for now TODO remove or handle overloads
-      if (_jobQueue.Count > _monitorLowerLimit) {
-        Console.WriteLine( $"JobRunnerQueue Size {_jobQueue.Count}" );
+      if (_usingThreadPool) {
+        job.AddToThrearPool( );
       }
+      else {
+        _jobQueue.Enqueue( job );
+
+        // Monitor Size for now TODO remove or handle overloads
+        if (_jobQueue.Count > _monitorLowerLimit) {
+          Console.WriteLine( $"JobRunnerQueue Size {_jobQueue.Count}" );
+        }
+      }
+
     }
 
 

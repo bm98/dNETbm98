@@ -13,6 +13,7 @@ using dNetBm98;
 using dNetBm98.Job;
 using dNetBm98.Win;
 using dNetBm98.IniLib;
+using System.Threading;
 
 
 namespace TEST_Library
@@ -174,12 +175,12 @@ namespace TEST_Library
 
     private void JOB( string jobID )
     {
-      _invoker.HandleEvent( ( ) => { RTB.Text += $"Job <{jobID}> Done on {DateTime.Now:O}\n"; } );
-
+      _invoker.HandleEvent( ( ) => { RTB.Text += $"Job <{jobID}> Done on {DateTime.Now.Ticks}\n"; } );
+      Thread.Sleep( 1000 );
     }
     private void JOB_Fail( string jobID )
     {
-      _invoker.HandleEvent( ( ) => { RTB.Text += $"FAIL Job <{jobID}> Done on {DateTime.Now:O}\n"; } );
+      _invoker.HandleEvent( ( ) => { RTB.Text += $"FAIL Job <{jobID}> Done on {DateTime.Now.Ticks}\n"; } );
       throw new Exception( );
     }
 
@@ -188,7 +189,16 @@ namespace TEST_Library
       timer1.Interval = 5000;
       timer1.Start( );
       num = 1;
-      if (JR == null) JR = new JobRunner( 5 );
+      if (JR != null) {
+        JR.Dispose( );
+      }
+      if (cbxUseTP.Checked) {
+        JR = new JobRunner( );
+      }
+      else {
+        JR = new JobRunner( numThreads: 5, monitorLimit: 100 );
+      }
+
       if (_invoker == null) _invoker = new WinFormInvoker( RTB );
 
       JR.AddJob( new JobObj<string>( JOB, $"{num}", $"Job {num}" ) ); num++;

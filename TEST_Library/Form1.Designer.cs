@@ -48,6 +48,7 @@
       this.timer1 = new System.Windows.Forms.Timer(this.components);
       this.btJobRunnerDispose = new System.Windows.Forms.Button();
       this.btTool = new System.Windows.Forms.Button();
+      this.cbxUseTP = new System.Windows.Forms.CheckBox();
       this.SuspendLayout();
       // 
       // button1
@@ -236,11 +237,22 @@
       this.btTool.UseVisualStyleBackColor = true;
       this.btTool.Click += new System.EventHandler(this.btTool_Click);
       // 
+      // cbxUseTP
+      // 
+      this.cbxUseTP.AutoSize = true;
+      this.cbxUseTP.Location = new System.Drawing.Point(463, 421);
+      this.cbxUseTP.Name = "cbxUseTP";
+      this.cbxUseTP.Size = new System.Drawing.Size(103, 17);
+      this.cbxUseTP.TabIndex = 18;
+      this.cbxUseTP.Text = "Use ThreadPool";
+      this.cbxUseTP.UseVisualStyleBackColor = true;
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(800, 450);
+      this.Controls.Add(this.cbxUseTP);
       this.Controls.Add(this.btTool);
       this.Controls.Add(this.btJobRunnerDispose);
       this.Controls.Add(this.cbxBlocking);
@@ -290,6 +302,7 @@
     private System.Windows.Forms.Timer timer1;
     private System.Windows.Forms.Button btJobRunnerDispose;
     private System.Windows.Forms.Button btTool;
+    private System.Windows.Forms.CheckBox cbxUseTP;
   }
 }
 
