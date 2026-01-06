@@ -72,7 +72,7 @@ namespace NTEST_dNETbm98
       WaitUntilDone( testTime_sec );
 
       // check the outcome
-      Assert.AreEqual( true, _ended );
+      Assert.IsTrue(  _ended );
       Assert.AreEqual( _expected.Ticks, _effective.Ticks, c_DeltaTicks );
     }
 
@@ -90,7 +90,7 @@ namespace NTEST_dNETbm98
       WaitUntilDone( 1 );
 
       // check the outcome
-      Assert.AreEqual( true, _ended );
+      Assert.IsTrue(  _ended );
       Assert.AreEqual( _expected.Ticks, _effective.Ticks, c_DeltaTicks );
     }
 
@@ -108,7 +108,7 @@ namespace NTEST_dNETbm98
       WaitUntilDone( testTime_sec );
 
       // check the outcome
-      Assert.AreEqual( true, _ended );
+      Assert.IsTrue(  _ended );
       Assert.AreEqual( _expected.Ticks, _effective.Ticks, c_DeltaTicks );
     }
 
@@ -133,7 +133,7 @@ namespace NTEST_dNETbm98
       t.Reset( );
       WaitUntilDone( testTime_sec );
       // check the outcome
-      Assert.AreEqual( true, _ended );
+      Assert.IsTrue(  _ended );
       Assert.AreEqual( _expected.Ticks, _effective.Ticks, c_DeltaTicks );
     }
 
@@ -150,7 +150,7 @@ namespace NTEST_dNETbm98
 
       WaitUntilDone( testTime_sec );
       // check the outcome
-      Assert.AreEqual( true, _ended );
+      Assert.IsTrue(  _ended );
       Assert.AreEqual( _expected.Ticks, _effective.Ticks, c_DeltaTicks );
     }
 
@@ -167,7 +167,7 @@ namespace NTEST_dNETbm98
 
       WaitUntilDone( testTime_sec );
       // check the outcome
-      Assert.AreEqual( true, _ended );
+      Assert.IsTrue(  _ended );
       Assert.AreEqual( _expected.Ticks, _effective.Ticks, c_DeltaTicks );
     }
 
@@ -196,7 +196,7 @@ namespace NTEST_dNETbm98
       t.Reset( changeTrigger );
       WaitUntilDone( testTime_sec );
       // check the outcome
-      Assert.AreEqual( true, _ended );
+      Assert.IsTrue(  _ended );
       Assert.AreEqual( _expected.Ticks, _effective.Ticks, c_DeltaTicks );
     }
 

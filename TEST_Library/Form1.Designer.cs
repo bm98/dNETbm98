@@ -49,6 +49,7 @@
       this.btJobRunnerDispose = new System.Windows.Forms.Button();
       this.btTool = new System.Windows.Forms.Button();
       this.cbxUseTP = new System.Windows.Forms.CheckBox();
+      this.btOpenFolder = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // button1
@@ -247,11 +248,23 @@
       this.cbxUseTP.Text = "Use ThreadPool";
       this.cbxUseTP.UseVisualStyleBackColor = true;
       // 
+      // btOpenFolder
+      // 
+      this.btOpenFolder.Location = new System.Drawing.Point(685, 385);
+      this.btOpenFolder.Name = "btOpenFolder";
+      this.btOpenFolder.Padding = new System.Windows.Forms.Padding(1, 2, 3, 4);
+      this.btOpenFolder.Size = new System.Drawing.Size(94, 30);
+      this.btOpenFolder.TabIndex = 19;
+      this.btOpenFolder.Text = "OpenFolder";
+      this.btOpenFolder.UseVisualStyleBackColor = true;
+      this.btOpenFolder.Click += new System.EventHandler(this.btOpenFolder_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(800, 450);
+      this.Controls.Add(this.btOpenFolder);
       this.Controls.Add(this.cbxUseTP);
       this.Controls.Add(this.btTool);
       this.Controls.Add(this.btJobRunnerDispose);
@@ -303,6 +316,7 @@
     private System.Windows.Forms.Button btJobRunnerDispose;
     private System.Windows.Forms.Button btTool;
     private System.Windows.Forms.CheckBox cbxUseTP;
+    private System.Windows.Forms.Button btOpenFolder;
   }
 }
 

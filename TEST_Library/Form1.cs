@@ -234,5 +234,10 @@ namespace TEST_Library
       Padding px = Utilities.PaddingFromSerString( ps );
 
     }
+
+    private void btOpenFolder_Click( object sender, EventArgs e )
+    {
+      Utilities.OpenInExplorer( @"D:\WINTEMP\BMTEMP" );
+    }
   }
 }

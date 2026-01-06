@@ -51,7 +51,7 @@ namespace NTEST_dNETbm98
 
       var cx = new CsvFile( _testFile );
       Assert.IsNotNull( cx );
-      Assert.AreEqual( csv1.Count, cx.CsvContainer.Count );
+      Assert.HasCount( csv1.Count, cx.CsvContainer );
       Assert.AreEqual( 3, cx.CsvContainer.NumColumns );
 
       Assert.AreEqual( csv1[0], cx.CsvContainer[0].Line );
@@ -81,7 +81,7 @@ namespace NTEST_dNETbm98
 
       var cx = new CsvFile( _testFile );
       Assert.IsNotNull( cx );
-      Assert.AreEqual( csv2.Count, cx.CsvContainer.Count );
+      Assert.HasCount( csv2.Count, cx.CsvContainer );
       Assert.AreEqual( 3, cx.CsvContainer.NumColumns );
 
       Assert.AreEqual( csv2[0], cx.CsvContainer[0].Line );
@@ -106,7 +106,7 @@ namespace NTEST_dNETbm98
 
       var cx = new CsvFile( _testFile, separator: '|' );
       Assert.IsNotNull( cx );
-      Assert.AreEqual( csv3.Count, cx.CsvContainer.Count );
+      Assert.HasCount( csv3.Count, cx.CsvContainer );
       Assert.AreEqual( 3, cx.CsvContainer.NumColumns );
 
       Assert.AreEqual( csv3[0], cx.CsvContainer[0].Line );

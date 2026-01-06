@@ -139,28 +139,28 @@ namespace NTEST_dNETbm98
       Assert.AreEqual( (ulong)1123, ParseXul( "1123" ) );
 
       // Try Parse number types
-      Assert.AreEqual( true, TryParseX( "1.123", out m ) ); Assert.AreEqual( 1.123m, m );
-      Assert.AreEqual( true, TryParseX( "1.123", out d ) ); Assert.AreEqual( 1.123d, d );
-      Assert.AreEqual( true, TryParseX( "1.12", out f ) ); Assert.AreEqual( 1.12f, f );
+      Assert.IsTrue(  TryParseX( "1.123", out m ) ); Assert.AreEqual( 1.123m, m );
+      Assert.IsTrue(  TryParseX( "1.123", out d ) ); Assert.AreEqual( 1.123d, d );
+      Assert.IsTrue(  TryParseX( "1.12", out f ) ); Assert.AreEqual( 1.12f, f );
 
-      Assert.AreEqual( true, TryParseX( "123", out sb ) ); Assert.AreEqual( (sbyte)123, sb );
-      Assert.AreEqual( true, TryParseX( "1123", out s ) ); Assert.AreEqual( (short)1123, s );
-      Assert.AreEqual( true, TryParseX( "1123", out i ) ); Assert.AreEqual( (int)1123, i );
-      Assert.AreEqual( true, TryParseX( "1123", out l ) ); Assert.AreEqual( (long)1123, l );
+      Assert.IsTrue(  TryParseX( "123", out sb ) ); Assert.AreEqual( (sbyte)123, sb );
+      Assert.IsTrue(  TryParseX( "1123", out s ) ); Assert.AreEqual( (short)1123, s );
+      Assert.IsTrue(  TryParseX( "1123", out i ) ); Assert.AreEqual( (int)1123, i );
+      Assert.IsTrue(  TryParseX( "1123", out l ) ); Assert.AreEqual( (long)1123, l );
 
-      Assert.AreEqual( true, TryParseX( "123", out b ) ); Assert.AreEqual( (byte)123, b );
-      Assert.AreEqual( true, TryParseX( "1123", out us ) ); Assert.AreEqual( (ushort)1123, us );
-      Assert.AreEqual( true, TryParseX( "1123", out ui ) ); Assert.AreEqual( (uint)1123, ui );
-      Assert.AreEqual( true, TryParseX( "1123", out ul ) ); Assert.AreEqual( (ulong)1123, ul );
+      Assert.IsTrue(  TryParseX( "123", out b ) ); Assert.AreEqual( (byte)123, b );
+      Assert.IsTrue(  TryParseX( "1123", out us ) ); Assert.AreEqual( (ushort)1123, us );
+      Assert.IsTrue(  TryParseX( "1123", out ui ) ); Assert.AreEqual( (uint)1123, ui );
+      Assert.IsTrue(  TryParseX( "1123", out ul ) ); Assert.AreEqual( (ulong)1123, ul );
 
-      Assert.AreEqual( true, TryParseX( "-1.123", out m ) ); Assert.AreEqual( -1.123m, m );
-      Assert.AreEqual( true, TryParseX( "-1.123", out d ) ); Assert.AreEqual( -1.123d, d );
-      Assert.AreEqual( true, TryParseX( "-1.12", out f ) ); Assert.AreEqual( -1.12f, f );
+      Assert.IsTrue(  TryParseX( "-1.123", out m ) ); Assert.AreEqual( -1.123m, m );
+      Assert.IsTrue(  TryParseX( "-1.123", out d ) ); Assert.AreEqual( -1.123d, d );
+      Assert.IsTrue(  TryParseX( "-1.12", out f ) ); Assert.AreEqual( -1.12f, f );
 
-      Assert.AreEqual( true, TryParseX( "-123", out sb ) ); Assert.AreEqual( (sbyte)-123, sb );
-      Assert.AreEqual( true, TryParseX( "-1123", out s ) ); Assert.AreEqual( (short)-1123, s );
-      Assert.AreEqual( true, TryParseX( "-1123", out i ) ); Assert.AreEqual( (int)-1123, i );
-      Assert.AreEqual( true, TryParseX( "-1123", out l ) ); Assert.AreEqual( (long)-1123, l );
+      Assert.IsTrue(  TryParseX( "-123", out sb ) ); Assert.AreEqual( (sbyte)-123, sb );
+      Assert.IsTrue(  TryParseX( "-1123", out s ) ); Assert.AreEqual( (short)-1123, s );
+      Assert.IsTrue(  TryParseX( "-1123", out i ) ); Assert.AreEqual( (int)-1123, i );
+      Assert.IsTrue(  TryParseX( "-1123", out l ) ); Assert.AreEqual( (long)-1123, l );
 
 
       T_GlobalTools.ResetCulture( );

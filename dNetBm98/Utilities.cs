@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -115,6 +116,26 @@ namespace dNetBm98
       return inp;
     }
 
+    /// <summary>
+    /// Open a folder in Explorer
+    /// </summary>
+    /// <param name="folder"></param>
+    public static void OpenInExplorer( string folder )
+    {
+      string path = Path.GetFullPath( folder );
+      if (Directory.Exists( path )) {
+        // never fail
+        try {
+          //Process.Start( "explorer.exe", @"c:\temp" );
+
+          Process.Start( "explorer.exe", path + Path.DirectorySeparatorChar ); // make it C:\xy\ to avoid issues with starting apps
+        }
+        catch { }
+      }
+    }
+
+    #region Filenames
+
     // invalid device names (DOS times...)
     /*
       CON, PRN, AUX, NUL, 
@@ -126,6 +147,7 @@ namespace dNetBm98
     private static Regex _rxDeviceNames = new Regex( @"(^(CON|PRN|AUX|NUL|COM(\d|¹|²|³)?|LPT(\d|¹|²|³)?)$)",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase );
     private static string _rxFnameReplace = null;
+    private static string _rxDnameReplace = null;
 
     /// <summary>
     /// Validate a Windows Filename
@@ -203,6 +225,62 @@ namespace dNetBm98
       }
       return retName.Trim( ); // remove spaces around if there are
     }
+
+
+    /// <summary>
+    /// Validate a Windows Directiryname
+    ///  DON'T provide strings with multiple path entries...
+    /// </summary>
+    /// <param name="dirName">A raw directory</param>
+    /// <returns>True when valid</returns>
+    public static bool IsValidDirectoryName( string dirName )
+    {
+      string validDirName = MakeValidDirectoryName( dirName );
+      return dirName == validDirName;
+    }
+
+    /// <summary>
+    /// Clean and return Windows Directoryname
+    ///  DON'T provide strings with multiple path entries...
+    ///  unexpected results may happen
+    ///  
+    /// </summary>
+    /// <param name="dirName">A raw directory</param>
+    /// <returns>A Windows Compliant Directoryname</returns>
+    public static string MakeValidDirectoryName( string dirName )
+    {
+      // Thank you: https://stackoverflow.com/questions/309485/c-sharp-sanitize-file-name
+
+      if (_rxDnameReplace == null) {
+        // create when first used
+        char[] cc = Path.GetInvalidPathChars( );
+        string invalidChars = Regex.Escape( new string( cc ) );
+        _rxDnameReplace = string.Format( @"([{0}]+)", invalidChars );
+      }
+      // test and replace file name+ext for invalid chars
+      string dNameExt = Regex.Replace( dirName, _rxDnameReplace, "_", RegexOptions.Singleline | RegexOptions.CultureInvariant );
+
+      // test and replace the dir name for Device names
+      string dName = dNameExt;
+      if (_rxDeviceNames.Match( dName ).Success) {
+        dName += "$"; // patch by appending a $ to the file (CON[.something.all] -> CON$[.something.all])
+      }
+
+      // patch all together
+      string retName = dName;
+      // check for trailing dot
+      /*
+          Do not end a file or directory name with a space or a period. 
+          Although the underlying file system may support such names, the Windows shell and user interface does not. 
+          However, it is acceptable to specify a period as the first character of a name. For example, ".temp".       
+       */
+      if (retName.EndsWith( "." )) {
+        retName += "_"; // patch by appending a $ (bla. -> bla._)
+      }
+      return retName.Trim( ); // remove spaces around if there are
+    }
+
+    #endregion
 
     #region Culture
 
@@ -326,7 +404,6 @@ namespace dNetBm98
     }
 
     #endregion
-
 
     #region Endianess
 

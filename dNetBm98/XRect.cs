@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace dNetBm98
 {
   /// <summary>
-  /// Using a .Net System.Drawing.Point: and adding some methods
+  /// Using a .Net System.Drawing.Rectangle/RectangleF: and adding some methods
   /// </summary>
   public static class XRect
   {
@@ -63,6 +63,16 @@ namespace dNetBm98
         OffsetNegative    Adjusts the location of this rectangle by the specified amount in inverse direction.
 
      */
+
+    /// <summary>
+    /// Returns a RectangleF
+    /// </summary>
+    public static Rectangle ToRectangle( this RectangleF _r ) => new Rectangle( _r.Location.ToPoint( ), _r.Size.ToSize( ) );
+    /// <summary>
+    /// Returns a RectangleF
+    /// </summary>
+    public static RectangleF ToRectangleF( this Rectangle _r ) => new RectangleF( _r.Location, _r.Size );
+
     /// <summary>
     /// Return a Rectangle from left,top,right,bottom values
     /// </summary>
@@ -92,6 +102,17 @@ namespace dNetBm98
     /// Adjusts the location of this rectangle by the specified amount in inverse direction.
     /// </summary>
     public static void OffsetNegative( this Rectangle _r, Point pos ) => _r.Offset( -pos.X, -pos.Y );
+
+    /// <summary>
+    /// Returns an inflated Rectangle
+    /// </summary>
+    public static Rectangle Inflated( this Rectangle _r, int width, int height )
+      => new Rectangle( _r.Location, new Size( _r.Width + width, _r.Height + height ) );
+    /// <summary>
+    /// Returns an inflated Rectangle
+    /// </summary>
+    public static RectangleF Inflated( this RectangleF _r, int width, int height )
+      => new RectangleF( _r.Location, new SizeF( _r.Width + width, _r.Height + height ) );
 
     #region Serialization Support
 

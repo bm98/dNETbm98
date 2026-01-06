@@ -21,6 +21,7 @@ namespace NTEST_dNETbm98
       //
     }
 
+    /*
     private TestContext testContextInstance;
 
     /// <summary>
@@ -35,6 +36,8 @@ namespace NTEST_dNETbm98
         testContextInstance = value;
       }
     }
+    */
+
 
     #region Additional test attributes
     //
@@ -146,24 +149,24 @@ namespace NTEST_dNETbm98
     public void BasicErrorTests( )
     {
 
-      Assert.ThrowsException<ArgumentException>( ( ) => {
+      Assert.ThrowsExactly<ArgumentException>( ( ) => {
         Octal octTestUnder = new Octal( -1 );
       } );
 
-      Assert.ThrowsException<ArgumentException>( ( ) => {
+      Assert.ThrowsExactly<ArgumentException>( ( ) => {
         Octal octTestOver = new Octal( 11 );
       } );
 
       // testing with 4 digits now
       var octTest = new Octal( 4 );
 
-      Assert.ThrowsException<ArgumentException>( ( ) => { octTest.SetOct( -1 ); } );
-      Assert.ThrowsException<ArgumentException>( ( ) => { octTest.SetOct( 8 ); } );
+      Assert.ThrowsExactly<ArgumentException>( ( ) => { octTest.SetOct( -1 ); } );
+      Assert.ThrowsExactly<ArgumentException>( ( ) => { octTest.SetOct( 8 ); } );
 
-      Assert.ThrowsException<ArgumentException>( ( ) => { octTest.SetOct( 1284 ); } );
+      Assert.ThrowsExactly<ArgumentException>( ( ) => { octTest.SetOct( 1284 ); } );
 
-      Assert.ThrowsException<ArgumentException>( ( ) => { octTest.SetDec( -1 ); } );
-      Assert.ThrowsException<ArgumentException>( ( ) => { octTest.SetDec( 4096 ); } ); // 1_0000 Oct
+      Assert.ThrowsExactly<ArgumentException>( ( ) => { octTest.SetDec( -1 ); } );
+      Assert.ThrowsExactly<ArgumentException>( ( ) => { octTest.SetDec( 4096 ); } ); // 1_0000 Oct
 
     }
 

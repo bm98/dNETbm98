@@ -16,58 +16,58 @@ namespace NTEST_dNETbm98
 
       // Bidirectional
       _sDet.Update( 10 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       _sDet.Update( 99.9999f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from below
       _sDet.Update( 100f );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       _sDet.Update( 101f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from above
       _sDet.Update( 100f );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       // From Above
       _sDet.SetSlope( Slope.FromAbove );
       _sDet.OverrideValue( 0 );
 
       _sDet.Update( 10 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       _sDet.Update( 99.9999f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from below
       _sDet.Update( 100f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
 
       _sDet.Update( 101f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from above
       _sDet.Update( 100f );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       // From Below
       _sDet.SetSlope( Slope.FromBelow );
       _sDet.OverrideValue( 0 );
 
       _sDet.Update( 10 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       _sDet.Update( 99.9999f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from below
       _sDet.Update( 100f );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       _sDet.Update( 101f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from above
       _sDet.Update( 100f );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
 
 
 
@@ -80,58 +80,58 @@ namespace NTEST_dNETbm98
 
       // Bidirectional
       _sDet.Update( 10 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       _sDet.Update( 99 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from below
       _sDet.Update( 100 );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       _sDet.Update( 101 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from above
       _sDet.Update( 100 );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       // From Above
       _sDet.SetSlope( Slope.FromAbove );
       _sDet.OverrideValue( 0 );
 
       _sDet.Update( 10 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       _sDet.Update( 99 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from below
       _sDet.Update( 100 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
 
       _sDet.Update( 101 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from above
       _sDet.Update( 100 );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       // From Below
       _sDet.SetSlope( Slope.FromBelow );
       _sDet.OverrideValue( 0 );
 
       _sDet.Update( 10 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       _sDet.Update( 99 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from below
       _sDet.Update( 100 );
-      Assert.AreEqual( true, _sDet.Read( ) );
-      Assert.AreEqual( false, _sDet.Read( ) ); // must be reset now
+      Assert.IsTrue( _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) ); // must be reset now
 
       _sDet.Update( 101 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
       // from above
       _sDet.Update( 100 );
-      Assert.AreEqual( false, _sDet.Read( ) );
+      Assert.IsFalse( _sDet.Read( ) );
     }
 
 

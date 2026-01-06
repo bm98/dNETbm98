@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace dNetBm98
 {
   /// <summary>
-  /// Using a .Net System.Drawing.Point: and adding some methods
+  /// Using a .Net System.Drawing.Size/SizeF: and adding some methods
   /// </summary>
   public static class XSize
   {
@@ -44,6 +44,21 @@ namespace dNetBm98
         Multiply(Single)        Scale the Size with a factor
         Length                  Length (as Vector length)
      */
+
+
+
+    /// <summary>
+    /// Returns a Size
+    /// </summary>
+    /// <returns>A Size</returns>
+    public static Size ToSize( this SizeF _s ) => new Size( (int)_s.Width, (int)_s.Height );
+    /// <summary>
+    /// Returns a SizeF
+    /// </summary>
+    /// <returns>A Size</returns>
+    public static SizeF ToSizeF( this Size _s ) => new SizeF( _s.Width, _s.Height );
+
+
     /// <summary>
     /// Returns a Point item from the Size Values
     /// </summary>

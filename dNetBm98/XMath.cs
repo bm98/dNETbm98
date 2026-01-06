@@ -18,6 +18,18 @@ namespace dNetBm98
     /// Rounds to the quant given
     /// i.e. RoundInt( 12345, 100) = 12300
     /// </summary>
+    public static int AsRoundInt( this long x, int quant ) => (quant > 0) ? (int)Math.Round( (double)x / quant ) * quant : int.MinValue;
+    /// <summary>
+    /// Rounds to the quant given
+    /// i.e. RoundInt( 12345, 100) = 12300
+    /// </summary>
+    public static int RoundInt( long x, int quant ) => x.AsRoundInt( quant );
+
+
+    /// <summary>
+    /// Rounds to the quant given
+    /// i.e. RoundInt( 12345, 100) = 12300
+    /// </summary>
     public static int AsRoundInt( this double x, int quant ) => (quant > 0) ? (int)Math.Round( x / quant ) * quant : int.MinValue;
     /// <summary>
     /// Rounds to the quant given

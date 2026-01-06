@@ -49,11 +49,11 @@ namespace NTEST_dNETbm98
       var ini = GetIniFile_UTF8( false );
 
       Assert.IsNotNull( ini );
-      Assert.AreEqual( true, ini.IsValid );
+      Assert.IsTrue( ini.IsValid );
       Assert.AreEqual( 3, ini.SectionCatalog.Count );
 
       var s = ini.GetSection( "" ); // List of main items
-      Assert.AreEqual( 3, s.Count );
+      Assert.HasCount( 3, s );
       var sect = ini.SectionCatalog.GetSection( "" );
       Assert.AreEqual( 3, sect.Items.Count );
       // uses raw data access via Section and Item objects
@@ -65,7 +65,7 @@ namespace NTEST_dNETbm98
       Assert.AreEqual( "Section2", ini.SectionCatalog.Sections.ElementAt( 2 ).Name );
 
       s = ini.GetSection( ini.SectionCatalog.Sections.ElementAt( 1 ).Name ); // S1
-      Assert.AreEqual( 3, s.Count );
+      Assert.HasCount( 3, s );
       sect = ini.SectionCatalog.GetSection( "Section1" );
       Assert.AreEqual( 3, sect.Items.Count );
 
@@ -74,7 +74,7 @@ namespace NTEST_dNETbm98
       item = sect.Items.GetItem( "S1_K3" ).Value; Assert.AreEqual( "12345.456", item );
 
       s = ini.GetSection( ini.SectionCatalog.Sections.ElementAt( 2 ).Name ); // S2
-      Assert.AreEqual( 3 + 4, s.Count ); // Dicts are not supported in plain ini file
+      Assert.HasCount( 3 + 4, s ); // Dicts are not supported in plain ini file
       sect = ini.SectionCatalog.GetSection( "Section2" );
       Assert.AreEqual( 3 + 4, sect.Items.Count );
 
@@ -101,11 +101,11 @@ namespace NTEST_dNETbm98
       var ini = GetIniFile_UTF8( true ); // unquote
 
       Assert.IsNotNull( ini );
-      Assert.AreEqual( true, ini.IsValid );
+      Assert.IsTrue( ini.IsValid );
       Assert.AreEqual( 3, ini.SectionCatalog.Count );
 
       var s = ini.GetSection( "" ); // List of main items
-      Assert.AreEqual( 3, s.Count );
+      Assert.HasCount( 3, s );
       var sect = ini.SectionCatalog.GetSection( "" );
       Assert.AreEqual( 3, sect.Items.Count );
       // uses primary data access via Sect and ItemKey
@@ -117,7 +117,7 @@ namespace NTEST_dNETbm98
       Assert.AreEqual( "Section2", ini.SectionCatalog.Sections.ElementAt( 2 ).Name );
 
       s = ini.GetSection( ini.SectionCatalog.Sections.ElementAt( 1 ).Name ); // S1
-      Assert.AreEqual( 3, s.Count );
+      Assert.HasCount( 3, s );
       sect = ini.SectionCatalog.GetSection( "Section1" );
       Assert.AreEqual( 3, sect.Items.Count );
 
@@ -126,7 +126,7 @@ namespace NTEST_dNETbm98
       item = ini.ItemValue( "Section1", "S1_K3" ); Assert.AreEqual( "12345.456", item );
 
       s = ini.GetSection( ini.SectionCatalog.Sections.ElementAt( 2 ).Name ); // S2
-      Assert.AreEqual( 3 + 4, s.Count ); // Dicts are not supported in plain ini file
+      Assert.HasCount( 3 + 4, s ); // Dicts are not supported in plain ini file
       sect = ini.SectionCatalog.GetSection( "Section2" );
       Assert.AreEqual( 3 + 4, sect.Items.Count );
 

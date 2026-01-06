@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace dNetBm98
 {
   /// <summary>
-  /// Using a .Net System.Drawing.Point: and adding some methods
+  /// Using a .Net System.Drawing.Point/PointF: and adding some methods
   /// </summary>
   public static class XPoint
   {
@@ -47,6 +47,16 @@ namespace dNetBm98
 
      */
     // public static explicit operator Size( this Point, Point p ) -- not possible
+
+    /// <summary>
+    /// Returns a Point
+    /// </summary>
+    public static Point ToPoint( this PointF _p ) => new Point( (int)_p.X, (int)_p.Y );
+    /// <summary>
+    /// Returns a PointF
+    /// </summary>
+    public static PointF ToPointF( this Point _p ) => new PointF( _p.X, _p.Y );
+
 
     /// <summary>
     /// Returns A Size item from this Point values
@@ -293,7 +303,7 @@ namespace dNetBm98
     {
       // never fail
       try {
-        Match match = rxPtf.Match( ps.Trim() );
+        Match match = rxPtf.Match( ps.Trim( ) );
         if (match.Success) {
           float x = float.Parse( match.Groups["x"].Value, CultureInfo.InvariantCulture );
           float y = float.Parse( match.Groups["y"].Value, CultureInfo.InvariantCulture );

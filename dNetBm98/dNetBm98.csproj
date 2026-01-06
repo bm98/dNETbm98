@@ -90,6 +90,7 @@
     <Compile Include="Job\JobRunner.cs" />
     <Compile Include="Win\WinFormInvoker.cs" />
     <Compile Include="Win\WinKbdSender.cs" />
+    <Compile Include="Win\WinMemMonitor.cs" />
     <Compile Include="Win\WinUser.cs" />
     <Compile Include="Win\WinVirtualKeys.cs" />
     <Compile Include="XColor.cs" />
@@ -103,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.26100.4188</Version>
+      <Version>10.0.26100.6901</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
